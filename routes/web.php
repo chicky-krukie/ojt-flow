@@ -5,7 +5,7 @@ use App\Models\Inventory;
 use Illuminate\Support\Facades\Route;
 
 //Display Inventory Table
-Route::get('/inventory', [InventoryController::class, 'inventoryTable']);
+Route::get('/inventory', [InventoryController::class, 'inventoryTable'])->name('inventory');
 
 //Import CSV file
 Route::post('/importProduct', [InventoryController::class, 'importCsv']);
@@ -20,3 +20,6 @@ Route::get('/orders', function () {
 Route::get('/settings', function () {
     return view('settings');
 });
+
+Route::post('/update/{id}', [InventoryController::class, 'update'])->name('csv.update');
+Route::post('/delete/{id}/{uid}', [InventoryController::class, 'delete'])->name('csv.delete');

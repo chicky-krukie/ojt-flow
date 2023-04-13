@@ -68,7 +68,7 @@
                     <td>Action</td>
                     </th>
                     @if (isset($inventories) && $inventories->count() > 0)
-                        @foreach ($inventories as $item)
+                        @foreach ($inventories as $index => $item)
                             @php
                                 $storage = $loop->iteration;
                             @endphp
@@ -81,14 +81,18 @@
                                 <td>{{ $item->frame }}</td>
                                 <td>{{ $item->finishes }}</td>
                                 <td>{{ $item->rarity }}</td>
-                                @foreach ($csv_outputs as $data)
-                                    @if ($storage == $data->id)
-                                        <td>{{ $data->quantity }}</td>
-                                        <td>{{ $data->price_each }}</td>
-                                        <td>${{ floatval($data->quantity) * floatval(preg_replace("/[^-0-9\.]/","",$data->price_each)) }}</td>
-                                    @endif
-                                @endforeach
-                                <td>Action</td>
+                                <td>{{$csv_outputs[$index]->quantity}}</td>
+                                <td>{{$csv_outputs[$index]->price_each}}</td>
+                                <td>${{ floatval($csv_outputs[$index]->quantity) * floatval(preg_replace('/[^-0-9\.]/', '', $csv_outputs[$index]->price_each)) }}
+                                </td>
+                    
+                                <td>
+                                    <a href="#edit{{$item->id}}" data-bs-toggle="modal" class="btn btn-success"><i class='fa fa-shopping-cart'></i> Sold</a>
+                                    <a href="#delete{{$item->id}}" data-bs-toggle="modal" class="btn btn-danger"><i class='fa fa-trash'></i> Delete</a>
+                                    @include('action-popUp.action')
+                   
+                     
+                                </td>
                             </tr>
                         @endforeach
                 </table>
