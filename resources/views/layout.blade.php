@@ -18,9 +18,9 @@
 <nav class="navbar navbar-expand-lg navbar-light bg-light col-lg-12">
   <div class="collapse navbar-collapse" id="navbarNavAltMarkup">
     <div class="navbar-nav ml-auto">
-      <a class="nav-item nav-link active" href="{{ url('/') }}">Inventory<span class="sr-only">(current)</span></a>
-      <a class="nav-item nav-link" href="{{ url('/orders') }}">Orders</a>
-      <a class="nav-item nav-link" href="{{ url('/settings') }}">Settings</a>
+      <a class="nav-item nav-link mx-4 active" href="{{ url('/') }}">Inventory<span class="sr-only">(current)</span></a>
+      <a class="nav-item nav-link mx-4" href="{{ url('/orders') }}">Orders</a>
+      <a class="nav-item nav-link mx-4" href="{{ url('/settings') }}">Settings</a>
     </div>
   </div>
 </nav>
