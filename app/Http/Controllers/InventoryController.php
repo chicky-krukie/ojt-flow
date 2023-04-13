@@ -28,7 +28,7 @@ class InventoryController extends Controller
     {
         $validatedData = $request->validate([
             'file' => 'required',
-        ],[
+        ], [
             'file.required' => 'this file required'
         ]);
 
@@ -36,10 +36,33 @@ class InventoryController extends Controller
         foreach ($delete as $del) {
             $del->delete();
         }
-        
+
         Excel::import(new InventoryImport, $request->file('file'));
         Excel::import(new CounterImport, $request->file('file'));
         $inventory = app(Inventory::class);
         return $inventory->storeCsv();
+    }
+
+    public function update(Request $request, $id)
+    {
+        $csv = CsvOutput::find($id);
+        $input = $request->all();
+        $csv->fill($input)->save();
+
+        return redirect()->route('inventory')->with('sucess', 'Product updated');
+    }
+
+    public function delete($id, $uid)
+    {
+        $csv = CsvOutput::find($id);
+        // dd($csv->id);
+        $csv->delete();
+        
+        // Delete a row from the Inventory table
+        $json = Inventory::where('uid', $uid)->firstOrFail();
+        // dd($json->uid);
+        $json->delete();
+
+        return redirect()->route('inventory')->with('sucess', 'Product deleted');
     }
 }

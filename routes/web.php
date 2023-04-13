@@ -20,4 +20,10 @@ Route::get('/orders', [OrderController::class, 'orders'])->name('orders');
 Route::get('/settings', function () {
     return view('settings');
 });
+
+
+Route::post('/update/{id}', [InventoryController::class, 'update'])->name('csv.update');
+Route::post('/delete/{id}/{uid}', [InventoryController::class, 'delete'])->name('csv.delete');
+
 Route::get('/',[HomeController::class,'home'])->name('home');
+
