@@ -11,6 +11,9 @@
   <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js"></script>
   <title>OJT FLOW</title>
 
+
+    <title>@yield('pageTitle')</title>
+
 </head>
 <style>
   body {
@@ -19,14 +22,16 @@
 </style>
 
 <body>
-  <nav class="navbar navbar-expand-lg navbar-light bg-light col-lg-12">
-    <div class="collapse navbar-collapse" id="navbarNavAltMarkup">
-      <div class="navbar-nav ml-auto">
-        <a class="nav-item nav-link active" href="{{ url('/') }}">Inventory<span class="sr-only">(current)</span></a>
-        <a class="nav-item nav-link" href="{{ url('/orders') }}">Orders</a>
-        <a class="nav-item nav-link" href="{{ url('/settings') }}">Settings</a>
-      </div>
+
+<nav class="navbar navbar-expand-lg navbar-light bg-light col-lg-12">
+  <div class="collapse navbar-collapse" id="navbarNavAltMarkup">
+    <a class="navbar-nav nav-item nav-link active" href="{{ route('home') }}">Home</a>
+    <div class="navbar-nav ml-auto">
+      <a class="nav-item nav-link " href="{{ route('inventory') }}">Inventory</a>
+      <a class="nav-item nav-link" href="{{ route('orders') }}">Orders</a>
+
     </div>
+  </div>
   </nav>
 
 
