@@ -15,6 +15,9 @@ Route::post('/importProduct', [InventoryController::class, 'importCsv']);
 //StoreData from excel into database
 Route::post('/storeCsv', [Inventory::class, 'storeCsv']);
 
+//Edit TCG Mid price
+Route::put('/update-item-price/{id}', [InventoryController::class, 'updateItemPrice'])->name('newPrice');
+
 Route::get('/orders', [OrderController::class, 'orders'])->name('orders');
 
 Route::get('/settings', function () {
@@ -26,4 +29,3 @@ Route::post('/update/{id}', [InventoryController::class, 'update'])->name('csv.u
 Route::post('/delete/{id}/{uid}', [InventoryController::class, 'delete'])->name('csv.delete');
 
 Route::get('/',[HomeController::class,'home'])->name('home');
-
