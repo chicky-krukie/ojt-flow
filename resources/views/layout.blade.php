@@ -5,7 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.0.0/dist/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
 
-    <title>OJT FLOW</title>
+    <title>@yield('pageTitle')</title>
 </head>
 <style>
     body {
@@ -17,10 +17,10 @@
 <body>
 <nav class="navbar navbar-expand-lg navbar-light bg-light col-lg-12">
   <div class="collapse navbar-collapse" id="navbarNavAltMarkup">
+    <a class="navbar-nav nav-item nav-link active" href="{{ route('home') }}">Home</a>
     <div class="navbar-nav ml-auto">
-      <a class="nav-item nav-link active" href="{{ url('/') }}">Inventory<span class="sr-only">(current)</span></a>
-      <a class="nav-item nav-link" href="{{ url('/orders') }}">Orders</a>
-      <a class="nav-item nav-link" href="{{ url('/settings') }}">Settings</a>
+      <a class="nav-item nav-link " href="{{ route('inventory') }}">Inventory</a>
+      <a class="nav-item nav-link" href="{{ route('orders') }}">Orders</a>
     </div>
   </div>
 </nav>
