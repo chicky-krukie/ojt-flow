@@ -1,7 +1,9 @@
 @extends('layout')
 @section('pageTitle','Home Page')
 @section('content')
-    <div class="">
-        <div>home page</div>
-    </div>
+@foreach ($settings['payment_methods'] as $method)
+    <li>{{ $method['method'] }}</li>
+@endforeach
+    
+
 @endsection
