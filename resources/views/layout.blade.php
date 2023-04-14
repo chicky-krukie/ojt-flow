@@ -26,11 +26,11 @@
 <body>
     <nav class="navbar navbar-expand-lg navbar-light bg-light col-lg-12">
         <div class="collapse navbar-collapse" id="navbarNavAltMarkup">
+            <a class="nav-item nav-link active" href="{{ route('home') }}">Home</a>
             <div class="navbar-nav ml-auto">
-                <a class="nav-item nav-link active" href="{{ url('/') }}">Inventory<span
-                        class="sr-only">(current)</span></a>
-                <a class="nav-item nav-link" href="{{ url('/orders') }}">Orders</a>
-                <a class="nav-item nav-link" href="{{ url('/settings') }}">Settings</a>
+                <a class="nav-item nav-link active" href="{{ route('inventory') }}">Inventory</a>
+                <a class="nav-item nav-link" href="{{ route('orders') }}">Orders</a>
+                <a class="nav-item nav-link" href="{{ route('settings') }}">Settings</a>
             </div>
         </div>
     </nav>

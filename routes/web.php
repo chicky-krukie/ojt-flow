@@ -22,7 +22,7 @@ Route::get('/orders', [OrderController::class, 'orders'])->name('orders');
 
 Route::get('/settings', function () {
     return view('settings');
-});
+})->name('settings');
 
 
 Route::post('/update/{id}', [InventoryController::class, 'update'])->name('csv.update');
