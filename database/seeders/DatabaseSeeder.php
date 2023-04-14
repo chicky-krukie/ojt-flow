@@ -37,7 +37,7 @@ class DatabaseSeeder extends Seeder
             ]);
         }
 
-        $methods = ['Gcash','Unpaid','Reserve'];
+        $methods = ['Gcash','Cash','Bank'];
         foreach($methods as $method)
         {
             $settings->paymentMethods()->create([
