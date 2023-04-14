@@ -2,7 +2,9 @@
 
 namespace App\Http\Controllers;
 
+
 use App\Models\Setting;
+
 use Illuminate\Http\Request;
 
 class SettingsController extends Controller
@@ -63,6 +65,4 @@ class SettingsController extends Controller
 
         return redirect()->back()->with('success', 'Saved successfully.');
     }
-   
-    
 }

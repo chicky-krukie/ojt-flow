@@ -6,7 +6,6 @@
         <!-- This is the Form -->
         <form class="row" action="{{ route('settings', $settings['id']) }}" method="post">
             @csrf
-
             <div class="col-lg-6">
                 <div class="my-4">
                     <p><b>Payment Methods </b></p>

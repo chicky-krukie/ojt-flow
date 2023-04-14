@@ -46,6 +46,8 @@ class DatabaseSeeder extends Seeder
             ]);
         }
 [];
+
+
         
        
             $settings->currency()->create([
@@ -59,6 +61,7 @@ class DatabaseSeeder extends Seeder
                 'settings_id'=> $settings->id,
             ]);
         
+
 
 
 

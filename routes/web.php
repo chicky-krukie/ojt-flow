@@ -28,3 +28,5 @@ Route::post('/update/{id}', [InventoryController::class, 'update'])->name('csv.u
 Route::post('/delete/{id}/{uid}', [InventoryController::class, 'delete'])->name('csv.delete');
 
 Route::get('/',[HomeController::class,'home'])->name('home');
+
+Route::get('/delete/{id}', [OrderController::class, 'delete' ])->name('delete');
