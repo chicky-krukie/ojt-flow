@@ -84,12 +84,13 @@
                                 <td>{{ $item->rarity }}</td>
                                 <td>{{$csv_outputs[$index]->quantity}}</td>
                                 <td>{{$csv_outputs[$index]->price_each}}</td>
-                                <td>${{ floatval($csv_outputs[$index]->quantity) * floatval(preg_replace('/[^-0-9\.]/', '', $csv_outputs[$index]->price_each)) }}
+                                <td>${{$csv_outputs[$index]->total }}
                                 </td>
+                              
                     
                                 <td>
-                                    <a href="#edit{{$item->id}}" data-bs-toggle="modal" class="btn btn-success"><i class='fa fa-shopping-cart'></i> Sold</a>
-                                    <a href="#delete{{$item->id}}" data-bs-toggle="modal" class="btn btn-danger"><i class='fa fa-trash'></i> Delete</a>
+                                    <a href="#edit{{$item->uid}}" data-bs-toggle="modal" class="btn btn-success"><i class='fa fa-shopping-cart'></i> Sold</a>
+                                    <a href="#delete{{$item->uid}}" data-bs-toggle="modal" class="btn btn-danger"><i class='fa fa-trash'></i> Delete</a>
                                     @include('action-popUp.action')
                    
                      
