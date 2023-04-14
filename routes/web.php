@@ -1,10 +1,11 @@
 <?php
 
-use App\Http\Controllers\HomeController;
-use App\Http\Controllers\InventoryController;
-use App\Http\Controllers\OrderController;
 use App\Models\Inventory;
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\HomeController;
+use App\Http\Controllers\OrderController;
+use App\Http\Controllers\SettingsController;
+use App\Http\Controllers\InventoryController;
 
 //Display Inventory Table
 Route::get('/inventory', [InventoryController::class, 'inventoryTable'])->name('inventory');
@@ -20,9 +21,7 @@ Route::put('/update-item-price/{id}', [InventoryController::class, 'updateItemPr
 
 Route::get('/orders', [OrderController::class, 'orders'])->name('orders');
 
-Route::get('/settings', function () {
-    return view('settings');
-})->name('settings');
+Route::match(['post','get'],'/settings/{id?}', [SettingsController::class, 'settings'])->name('settings');
 
 
 Route::post('/update/{id}', [InventoryController::class, 'update'])->name('csv.update');

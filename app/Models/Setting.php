@@ -20,4 +20,8 @@ class Setting extends Model
     {
         return $this->hasOne(Currency::class, 'settings_id');
     }
+    protected $fillable = [
+        'multiplier_default',
+        'multiplier_cost',
+    ];
 }

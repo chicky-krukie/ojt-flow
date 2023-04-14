@@ -2,16 +2,39 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Setting;
 use Illuminate\Http\Request;
-use App\Models\Settings;
 
 class SettingsController extends Controller
 {
     // Show the settings form
-    public function index()
+    public function settings(Request $request,$id = null)
     {
-        $settings = Settings::firstOrFail();
-        return view('settings.index', compact('settings'));
+        if ($request->isMethod('post')){
+            // dd($request);
+            $settings =  Setting::find($id);
+            $settings->update([
+                'multiplier_default'=> $request->multiplier_default,
+                'multiplier_cost'=> $request->multiplier_cost,
+
+            ]);
+            $settings->currency()->update([
+                'tcg_low'=> $request->tcg_low,
+                'tcg_mid'=> $request->tcg_mid,
+                'tcg_high'=> $request->tcg_high,
+                'sold_price'=> $request->sold_price,
+                'estimated_card_cost'=> $request->estimated_card_cost,
+                'ship_cost'=> $request->ship_cost,
+                'ship_price'=> $request->ship_price,
+
+            ]);
+            return redirect()->back();
+        }
+       
+
+        $settings = Setting::with('paymentMethods','paymentStatus','currency')->get()->first()->toArray(); 
+        // dd($settings);
+        return view('settings')->with(compact('settings'));
     }
 
     public function save(Request $request)
