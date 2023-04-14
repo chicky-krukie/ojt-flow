@@ -34,75 +34,37 @@
     }
     
 @endphp
-
 @extends('layout')
-@section('pageTitle','Inventory')
+@section('pageTitle', 'Inventory')
 @section('content')
+    <br>
     <div class="container">
         <div class="row">
             {{-- Upload CSV --}}
-            <div class="col-10">
-                <form action="{{ url('importProduct') }}" class="row" accept-charset="utf-8" enctype="multipart/form-data"
+            <div class="">
+                <form action="{{ url('importProduct') }}" class="row justify-content-center" accept-charset="utf-8" enctype="multipart/form-data"
                     method="POST">
                     @csrf
-                    <input type="file" name="file" id="importFile" class="form-control col-auto w-50">
-                    <button type="submit" id="submit" class="btn btn-success col-auto">Import CSV</button>
+                    <input type="file" name="file" id="importFile" class="form-control col-8 w-75 mr-2">
+                    <button type="submit" id="submit" class="btn btn-success col-2 w-auto ">Import CSV</button>
                 </form>
             </div>
-        </div>
-        
-        {{-- Table --}}
-        <div class="row">
-            <div class="table-responsive">
-                <table class="table">
-                    <th>
-                    <td>Selector</td>
-                    <td>Name</td>
-                    <td>Color Identity</td>
-                    <td>Type</td>
-                    <td>Frame Effects</td>
-                    <td>Finish</td>
-                    <td>Rarity</td>
-                    <td>Quantity</td>
-                    <td>TCG Mid</td>
-                    <td>Total</td>
-                    <td>Action</td>
-                    </th>
-                    @if (isset($inventories) && $inventories->count() > 0)
-                        @foreach ($inventories as $index => $item)
-                            @php
-                                $storage = $loop->iteration;
-                            @endphp
-                            <tr>
-                                <td></td>
-                                <td><input type="checkbox" name="checkbox" id="checkbox"></td>
-                                <td>{{ $item->name }}</td>
-                                <td>{{ $item->color_identity }}</td>
-                                <td>{{ $item->type_line }}</td>
-                                <td>{{ $item->frame }}</td>
-                                <td>{{ $item->finishes }}</td>
-                                <td>{{ $item->rarity }}</td>
-                                <td>{{$csv_outputs[$index]->quantity}}</td>
-                                <td>{{$csv_outputs[$index]->price_each}}</td>
-                                <td>${{$csv_outputs[$index]->total }}
-                                </td>
-                              
-                    
-                                <td>
-                                    <a href="#edit{{$item->uid}}" data-bs-toggle="modal" class="btn btn-success"><i class='fa fa-shopping-cart'></i> Sold</a>
-                                    <a href="#delete{{$item->uid}}" data-bs-toggle="modal" class="btn btn-danger"><i class='fa fa-trash'></i> Delete</a>
-                                    @include('action-popUp.action')
-                   
-                     
-                                </td>
-                            </tr>
-                        @endforeach
-                </table>
-            </div>
-        @else
-            <h1>There is NO DATA</h1>
+
+            {{-- Error handler for file import --}}
+            @if ($errors->any())
+                <div class="alert alert-danger form-control">
+                    @foreach ($errors->all() as $error)
+                        <div class="note note-danger mb-3">
+                            <strong>{{ $error[0] }}:</strong> {{ $error[1] }}
+                        </div>
+                    @endforeach
+                </div>
             @endif
         </div>
-    </div>
-@endsection
 
+        <br>
+
+    </div>
+    @include('table.inventoryTable')
+
+@endsection
