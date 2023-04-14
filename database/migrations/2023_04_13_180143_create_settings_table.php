@@ -15,6 +15,8 @@ return new class extends Migration
     {
         Schema::create('settings', function (Blueprint $table) {
             $table->id();
+            $table->string('multiplier_default');
+            $table->string('multiplier_cost');
             $table->timestamps();
         });
     }
