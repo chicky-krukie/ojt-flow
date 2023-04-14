@@ -16,8 +16,8 @@ class Setting extends Model
     {
         return $this->hasMany(PaymentMethod::class, 'settings_id');
     }
-    public function tcg()
+    public function currency()
     {
-        return $this->hasMany(TCG::class, 'settings_id');
+        return $this->hasOne(Currency::class, 'settings_id');
     }
 }
