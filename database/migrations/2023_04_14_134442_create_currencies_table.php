@@ -13,10 +13,15 @@ return new class extends Migration
      */
     public function up()
     {
-        Schema::create('t_c_g_s', function (Blueprint $table) {
+        Schema::create('currencies', function (Blueprint $table) {
             $table->id();
-            $table->string('tcg_level');
-            $table->string('tcg');
+            $table->string('tcg_low');
+            $table->string('tcg_mid');
+            $table->string('tcg_high');
+            $table->string('sold_price');
+            $table->string('ship_cost');
+            $table->string('ship_price');
+            $table->string('estimated_card_cost');
             $table->bigInteger('settings_id');
             $table->timestamps();
         });
@@ -29,6 +34,6 @@ return new class extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('t_c_g_s');
+        Schema::dropIfExists('currencies');
     }
 };

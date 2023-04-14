@@ -52,9 +52,10 @@ class InventoryController extends Controller
         // return $inventory->storeCsv();
 
         $validatedData = $request->validate([
-            'file' => 'required',
+            'file' => 'required|mimes:csv,text',
         ], [
-            'file.required' => 'This file is required',
+            'file.required' => ['Required CSV File', 'Please double-check that you are submitting a CSV (Comma Separated Values) file before clicking submit. Any other file formats will not be accepted.'],
+            'file.mimes' => ['The file must be a CSV', 'Please ensure that the file you upload is in CSV (Comma Separated Values) format. Only CSV files are accepted.'],
         ]);
 
         $delete = Counter::all();
@@ -77,6 +78,7 @@ class InventoryController extends Controller
         return $inventory->storeCsv();
     }
 
+    //Sold
     public function update(Request $request, $id)
     {
         
@@ -113,17 +115,25 @@ class InventoryController extends Controller
         return redirect()->route('inventory')->with('sucess', 'Product updated');
     }
 
+    //Delete Row
     public function delete($id, $uid)
     {
         $csv = CsvOutput::find($id);
-        // dd($csv->id);
         $csv->delete();
 
         // Delete a row from the Inventory table
         $json = Inventory::where('uid', $uid)->firstOrFail();
-        // dd($json->uid);
         $json->delete();
 
         return redirect()->route('inventory')->with('sucess', 'Product deleted');
+    }
+
+    public function updateItemPrice(Request $request, $id)
+    {
+        $item = CsvOutput::findOrFail($id);
+        $item->price_each = $request->price;
+        $item->save();
+
+        return response()->json(['success' => true]);
     }
 }
