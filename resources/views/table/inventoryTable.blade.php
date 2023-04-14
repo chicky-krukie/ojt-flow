@@ -69,16 +69,16 @@
 
                                     {{-- Action Column --}}
                                     <td class="">
-                                        <a href="#view{{ $item->id }}" data-bs-toggle="modal"
+                                        <a href="#view{{ $item->uid }}" data-bs-toggle="modal"
                                             class="btn btn-primary mb-1 form-control"><i class="fa fa-info"></i>
                                             View</a>
                                         <br>
-                                        <a href="#edit{{ $item->id }}" data-bs-toggle="modal"
+                                        <a href="#edit{{ $item->uid }}" data-bs-toggle="modal"
                                             class="btn btn-success mb-1 form-control"><i
                                                 class='fa fa-shopping-cart'></i>
                                             Sold</a>
                                         <br>
-                                        <a href="#delete{{ $item->id }}" data-bs-toggle="modal"
+                                        <a href="#delete{{ $item->uid }}" data-bs-toggle="modal"
                                             class="btn btn-danger form-control"><i class='fa fa-trash'></i> Delete</a>
                                         @include('action-popUp.action')
                                         @include('action-popUp.view')

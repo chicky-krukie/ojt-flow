@@ -19,7 +19,7 @@ class InventoryController extends Controller
     //Inventory Table Function
     public function inventoryTable()
     {
-        $settings = Setting::with('paymentMethods', 'paymentStatus', 'tcg')->get()->first()->toArray();
+        $settings = Setting::with('paymentMethods', 'paymentStatus', 'currency')->get()->first()->toArray();
         // dd($settings);
         // import
         $product = Inventory::all();
