@@ -17,7 +17,7 @@
 
     $totalSoldPrc = 0;
     function toFloatPhp($soldPrc, &$totalSoldPrc){
-        $floatNumber = floatval(str_replace('Php', '', $soldPrc));
+        $floatNumber = floatval(str_replace('₱', '', $soldPrc));
         $totalSoldPrc += $floatNumber;
         return $floatNumber.' Php';
     }
@@ -40,26 +40,7 @@
 @section('content')
 
 
-    <!-- Modal -->
-    <div class="modal fade" id="deleteModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
-        <div class="modal-dialog" role="document">
-            <div class="modal-content">
-            <div class="modal-header">
-                <h5 class="modal-title" id="exampleModalLabel">Delete Order</h5>
-                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                    <span aria-hidden="true">&times;</span>
-                </button>
-            </div>
-            <div class="modal-body">
-                Are you sure you want to delete this record?
-            </div>
-            <div class="modal-footer">
-                <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
-                <button type="button" class="btn btn-primary">Delete</button>
-            </div>
-            </div>
-        </div>
-    </div>
+   
 
 
     <div class="col-lg-10 mx-auto">
@@ -101,16 +82,12 @@
                     <td>{{ $order->payment_status }}</td>
                     <td>{{ $order->payment_method }}</td>
                     <td class="">
-                        <div class="dropdown">
-                            <button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                            Action
-                            </button>
-                            <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
-                                <a class="dropdown-item" href="#">Edit</a>
-                                <a class="dropdown-item" href="{{ route('delete', ['id' => $order->id]) }}" data-id="{{ $order->id }}" >Delete</a>
-                            </div>
-                        </div>
+                        <button class="btn" data-toggle="modal" data-target="{{ '#edit-order'.$order->id }}"><i class='fa fa-pencil'></i></button>
+                        <button class="btn" data-toggle="modal" data-target="{{'#order'.$order->id}}"><i class='fa fa-trash'></i></button>
+                       @include('order-modals.delete-modal')
+                       @include('order-modals.edit-modal')
                     </td>
+                
                 </tr>
             @endforeach
             <tr>
