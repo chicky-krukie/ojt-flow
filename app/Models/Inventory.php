@@ -24,12 +24,9 @@ class Inventory extends Model
         foreach ($count as $data) {
             $response = file_get_contents('https://api.scryfall.com/cards/tcgplayer/' . $data->product_id);
             $card = json_decode($response, true);
-            // $data = str_replace('_', ' ', $data);
-
+        
             $product = new Inventory();
             foreach ($card as $key => $value) {
-                //$key = str_replace('_', ' ', $key);
-                //$key = ucwords($key);
 
                 if (!Schema::hasColumn('inventories', $key)) {
                     Schema::table('inventories', function ($table) use ($key) {
