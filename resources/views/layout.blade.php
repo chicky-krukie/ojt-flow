@@ -3,9 +3,12 @@
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.0.0/dist/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.0.0/dist/css/bootstrap.min.css">
 
-    <title>OJT FLOW</title>
+    <!-- jquery -->
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+
+    <title>@yield('pageTitle')</title>
 </head>
 <style>
     body {
@@ -17,20 +20,23 @@
 <body>
 <nav class="navbar navbar-expand-lg navbar-light bg-light col-lg-12">
   <div class="collapse navbar-collapse" id="navbarNavAltMarkup">
+    <a class="navbar-nav nav-item nav-link active" href="{{ route('home') }}">Home</a>
     <div class="navbar-nav ml-auto">
-      <a class="nav-item nav-link mx-4 active" href="{{ url('/') }}">Inventory<span class="sr-only">(current)</span></a>
-      <a class="nav-item nav-link mx-4" href="{{ url('/orders') }}">Orders</a>
-      <a class="nav-item nav-link mx-4" href="{{ url('/settings') }}">Settings</a>
+      <a class="nav-item nav-link " href="{{ route('inventory') }}">Inventory</a>
+      <a class="nav-item nav-link" href="{{ route('orders') }}">Orders</a>
     </div>
   </div>
 </nav>
 
 
-<div>
+<div class="container-fluid">
     @yield('content')
 </div>
 
 
+
+
+    @yield('scripts')
 
 
     <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>

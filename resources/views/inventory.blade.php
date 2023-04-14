@@ -36,6 +36,7 @@
 @endphp
 
 @extends('layout')
+@section('pageTitle','Inventory')
 @section('content')
     <div class="container">
         <div class="row">
@@ -99,3 +100,4 @@
         </div>
     </div>
 @endsection
+
