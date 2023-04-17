@@ -15,14 +15,6 @@ class OrderController extends Controller
         return view('orders')->with(compact('orders'));
     }
 
-    public function delete(Request $request,$id){
-        $row = Order::find($id);
-        $row->delete();
-
-        return redirect('/orders');
-    }
-
-
     public function deleteOrder($id){
         $order = Order::find($id)->delete();
 
