@@ -8,6 +8,7 @@ use App\Models\Inventory;
 use Illuminate\Http\Request;
 use App\Imports\CounterImport;
 use App\Imports\InventoryImport;
+use Illuminate\Support\Facades\DB;
 use Maatwebsite\Excel\Facades\Excel;
 
 class InventoryController extends Controller
@@ -44,6 +45,42 @@ class InventoryController extends Controller
         return $inventory->storeCsv();
     }
 
+    //Sort Quantity Function
+    public function sortQuantity(Request $request)
+    {
+        $condition = $request->input('condition');
+        $value = $request->input('value');
+
+        $query = DB::table('csv_outputs')->orderBy('quantity');
+
+        switch ($condition) {
+            case '=':
+                $query->where('quantity', $value);
+                break;
+            case '<':
+                $query->where('quantity', '<', $value);
+                break;
+            case '<=':
+                $query->where('quantity', '<=', $value);
+                break;
+            case '>':
+                $query->where('quantity', '>', $value);
+                break;
+            case '>=':
+                $query->where('quantity', '>=', $value);
+                break;
+            default:
+                // handle invalid condition
+                break;
+        }
+        $product = Inventory::all();
+        $csv = CsvOutput::all();
+
+        return view('inventory', [
+            'inventories' => $product, 'csv_outputs' => $csv
+        ])->with('condition', $condition)->with('value', $value);
+    }
+
     //Sold
     public function update(Request $request, $id)
     {
@@ -51,7 +88,7 @@ class InventoryController extends Controller
         $input = $request->all();
         $csv->fill($input)->save();
 
-        return redirect()->route('inventory')->with('sucess', 'Product updated');
+        return redirect()->route('inventory')->with('success', 'Product updated');
     }
 
     //Delete Row
@@ -67,12 +104,14 @@ class InventoryController extends Controller
         return redirect()->route('inventory')->with('sucess', 'Product deleted');
     }
 
-    public function updateItemPrice(Request $request, $id)
+    //Inline Edit (not working)
+    public function updatePrice(Request $request)
     {
-        $item = CsvOutput::findOrFail($id);
-        $item->price_each = $request->price;
-        $item->save();
-
-        return response()->json(['success' => true]);
+        if ($request->ajax()) {
+            CsvOutput::find($request->pk)->update([
+                $request->name => $request->value
+            ]);
+            return response()->json(['success' => true]);
+        }
     }
 }

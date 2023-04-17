@@ -2,7 +2,7 @@
         <div class="container-fluid px-5">
             @if (isset($inventories) && $inventories->count() > 0)
                 <div class="table-responsive-md">
-                    <table class="table table-hover">
+                    <table class="table table-hover display" id="ojt_flow">
                         <thead>
                             <tr class="">
                                 <th class="col-1">Selector</th>
@@ -13,77 +13,39 @@
                                 <th>Frame Effects</th>
                                 <th>Finish</th>
                                 <th>Rarity</th>
-                                <th>Quantity</th>
+                                <th><a href="#sort" data-bs-toggle="modal">Quantity</a></th>
                                 <th>TCG Mid</th>
                                 <th>Total</th>
                                 <th>Action</th>
+                                @include('action-popUp.sortQuantity')
                             </tr>
                         </thead>
                         <tbody>
                             @foreach ($inventories as $index => $item)
-                                @php
-                                    $storage = $loop->iteration;
-                                @endphp
-
-                                <tr class="">
-                                    <td><input type="checkbox" name="checkbox" id="checkbox"></td>
-
-                                    {{-- Get art_crop and normal image link --}}
-                                    @php
-                                        $image = json_decode($item->image_uris, true);
-                                        $normalUri = $image['normal'];
-                                        $artCropUri = $image['art_crop'];
-                                    @endphp
-                                    <td>
-                                        <img src="{{ $artCropUri }}" alt="{{ $item->name }}" class="thumbnail"
-                                            onmouseenter="this.src='{{ $normalUri }}'"
-                                            onmouseleave="this.src='{{ $artCropUri }}'">
-                                    </td>
-
-                                    <td>{{ $item->name }}</td>
-
-                                    {{-- Check if the color_identity is blank --}}
-                                    @if ($item->color_identity == '[]')
-                                        <td>land</td>
-                                    @else
-                                        <td>{{ is_valid_json($item->color_identity) }}</td>
+                                {{-- Quantity Sorting --}}
+                                @if ($condition == '=')
+                                    @if ($csv_outputs[$index]->quantity == $value)
+                                        @include('sort-list.inventoryRow')
                                     @endif
-
-                                    <td>{{ $item->type_line }}</td>
-
-                                    {{-- Check if the frame is blank --}}
-                                    @if ($item->frame == '')
-                                        <td>normal</td>
-                                    @else
-                                        <td>{{ $item->frame }}</td>
+                                @elseif ($condition == '<')
+                                    @if ($csv_outputs[$index]->quantity < $value)
+                                        @include('sort-list.inventoryRow')
                                     @endif
-
-                                    <td>{{ $csv_outputs[$index]->printing }}</td>
-                                    <td>{{ $item->rarity }}</td>
-                                    <td>{{ $csv_outputs[$index]->quantity }}</td>
-                                    <td class="editable" contenteditable="true">{{ $csv_outputs[$index]->price_each }}
-                                    </td>
-                                    <td>
-                                        ${{ floatval($csv_outputs[$index]->quantity) * floatval(preg_replace('/[^-0-9\.]/', '', $csv_outputs[$index]->price_each)) }}
-                                    </td>
-
-                                    {{-- Action Column --}}
-                                    <td class="">
-                                        <a href="#view{{ $item->id }}" data-bs-toggle="modal"
-                                            class="btn btn-primary mb-1 form-control"><i class="fa fa-info"></i>
-                                            View</a>
-                                        <br>
-                                        <a href="#edit{{ $item->id }}" data-bs-toggle="modal"
-                                            class="btn btn-success mb-1 form-control"><i
-                                                class='fa fa-shopping-cart'></i>
-                                            Sold</a>
-                                        <br>
-                                        <a href="#delete{{ $item->id }}" data-bs-toggle="modal"
-                                            class="btn btn-danger form-control"><i class='fa fa-trash'></i> Delete</a>
-                                        @include('action-popUp.action')
-                                        @include('action-popUp.view')
-                                    </td>
-                                </tr>
+                                @elseif ($condition == '<=')
+                                    @if ($csv_outputs[$index]->quantity <= $value)
+                                        @include('sort-list.inventoryRow')
+                                    @endif
+                                @elseif ($condition == '>')
+                                    @if ($csv_outputs[$index]->quantity > $value)
+                                        @include('sort-list.inventoryRow')
+                                    @endif
+                                @elseif ($condition == '>=')
+                                    @if ($csv_outputs[$index]->quantity >= $value)
+                                        @include('sort-list.inventoryRow')
+                                    @endif
+                                @else
+                                    @include('sort-list.inventoryRow')
+                                @endif
                             @endforeach
                         </tbody>
                     </table>
@@ -94,24 +56,11 @@
             @endif
         </div>
 
-        <script>
-            $(document).on('blur', '.editable', function() {
-                var $cell = $(this);
-                var newValue = $cell.text();
-                var itemId = $cell.closest('tr').data('item-id');
-
-                $.ajax({
-                    url: '/update-item-price/' + itemId,
-                    type: 'PUT',
-                    data: {
-                        price: newValue
-                    },
-                    success: function(data) {
-                        // handle successful response
-                    },
-                    error: function(xhr, status, error) {
-                        // handle error response
-                    }
+        <script type="text/javascript">
+            $(document).ready(function() {
+                $('#ojt_flow').DataTable({
+                    "lengthMenu": [50, 100, 200, 500],
+                    // sort: false,
                 });
             });
         </script>
