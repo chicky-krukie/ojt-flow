@@ -15,6 +15,7 @@ return new class extends Migration
             $table->string('product_id');
             $table->string('price_each');
             $table->string('printing');
+            $table->string('total')->nullable();
             $table->timestamps();
         });
     }

@@ -5,21 +5,16 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-class Order extends Model
+class Currency extends Model
 {
     use HasFactory;
     protected $fillable = [
-        'sold_date',
-        'sold_to',
-        'card_name',
-        'set',
-        'finish',
+        'tcg_low',
         'tcg_mid',
-        'qty',
+        'tcg_high',
         'sold_price',
+        'estimated_card_cost',
         'ship_cost',
-        'payment_status',
-        'payment_method',
-        'multiplier_default',
+        'ship_price',
     ];
 }

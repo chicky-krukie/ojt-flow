@@ -17,10 +17,6 @@ return new class extends Migration
             $table->id();
             $table->string('multiplier_default');
             $table->string('multiplier_cost');
-            $table->string('sold_price');
-            $table->string('ship_cost');
-            $table->string('ship_price');
-            $table->string('estimated_card_cost');
             $table->timestamps();
         });
     }

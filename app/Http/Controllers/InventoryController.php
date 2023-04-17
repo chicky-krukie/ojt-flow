@@ -2,11 +2,14 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Order;
 use App\Models\Counter;
+use App\Models\Setting;
 use App\Models\CsvOutput;
 use App\Models\Inventory;
 use Illuminate\Http\Request;
 use App\Imports\CounterImport;
+use Illuminate\Support\Carbon;
 use App\Imports\InventoryImport;
 use Illuminate\Support\Facades\DB;
 use Maatwebsite\Excel\Facades\Excel;
@@ -17,16 +20,38 @@ class InventoryController extends Controller
     //Inventory Table Function
     public function inventoryTable()
     {
+        $settings = Setting::with('paymentMethods', 'paymentStatus', 'currency')->get()->first()->toArray();
+        // dd($settings);
+        // import
         $product = Inventory::all();
         $csv = CsvOutput::all();
+        $order = Order::all();
+
         return view('inventory', [
-            'inventories' => $product, 'csv_outputs' => $csv
+            'inventories' => $product, 'csv_outputs' => $csv,
+            'orders' => $order, 'settings' => $settings,
         ]);
     }
 
     //Import CSV
     public function importCsv(Request $request)
     {
+        // $validatedData = $request->validate([
+        //     'file' => 'required',
+        // ], [
+        //     'file.required' => 'this file required'
+        // ]);
+
+        // $delete = Counter::all();
+        // foreach ($delete as $del) {
+        //     $del->delete();
+        // }
+
+        // Excel::import(new InventoryImport, $request->file('file'));
+        // Excel::import(new CounterImport, $request->file('file'));
+        // $inventory = app(Inventory::class);
+        // return $inventory->storeCsv();
+
         $validatedData = $request->validate([
             'file' => 'required|mimes:csv,text',
         ], [
@@ -41,6 +66,15 @@ class InventoryController extends Controller
 
         Excel::import(new InventoryImport, $request->file('file'));
         Excel::import(new CounterImport, $request->file('file'));
+
+        // Calculate the total values and save them to the database
+        $csv_outputs = CsvOutput::all();
+        foreach ($csv_outputs as $csv_output) {
+            $total = floatval($csv_output->quantity) * floatval(preg_replace('/[^-0-9\.]/', '', $csv_output->price_each));
+            $csv_output->total = $total;
+            $csv_output->save();
+        }
+
         $inventory = app(Inventory::class);
         return $inventory->storeCsv();
     }
@@ -84,9 +118,8 @@ class InventoryController extends Controller
     //Sold
     public function update(Request $request, $id)
     {
-        $csv = CsvOutput::find($id);
-        $input = $request->all();
-        $csv->fill($input)->save();
+        
+        //SOLD POP UP STORED IN DATA TABLES OF 'Order'
 
         return redirect()->route('inventory')->with('success', 'Product updated');
     }

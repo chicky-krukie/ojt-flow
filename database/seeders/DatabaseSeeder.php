@@ -26,10 +26,6 @@ class DatabaseSeeder extends Seeder
         $settings = Setting::create([
             'multiplier_default' => '50',
             'multiplier_cost' => '50',
-            'sold_price' => '50',
-            'ship_cost' => '50',
-            'ship_price' => '50',
-            'estimated_card_cost' => '50',
         ]);
 
         $status = ['Paid','Unpaid','Reserve'];
@@ -41,7 +37,7 @@ class DatabaseSeeder extends Seeder
             ]);
         }
 
-        $methods = ['Gcash','Unpaid','Reserve'];
+        $methods = ['Gcash','Cash','Bank'];
         foreach($methods as $method)
         {
             $settings->paymentMethods()->create([
@@ -50,18 +46,22 @@ class DatabaseSeeder extends Seeder
             ]);
         }
 [];
-        $tcgs = [
-            ['TCG Low','TCG Mid','TCG High'],
-            ['$10','$50','$100']
-        ];
-        foreach($tcgs[0] as $index => $tcg)
-        {
-            $settings->tcg()->create([
-                'tcg_level'=> $tcg,
-                'tcg'=> $tcgs[1][$index],
-                'settings_id' => $settings->id,
+
+
+        
+       
+            $settings->currency()->create([
+                'tcg_low'=> '$',
+                'tcg_mid'=> '$',
+                'tcg_high'=> '$',
+                'sold_price'=> 'Php',
+                'ship_cost'=> 'Php',
+                'ship_price'=> 'Php',
+                'estimated_card_cost'=> 'Php',
+                'settings_id'=> $settings->id,
             ]);
-        }
+        
+
 
 
 
