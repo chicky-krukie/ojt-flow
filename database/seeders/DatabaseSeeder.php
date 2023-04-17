@@ -4,6 +4,9 @@ namespace Database\Seeders;
 
 // use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 
+use App\Models\Currency;
+use App\Models\PaymentMethod;
+use App\Models\PaymentStatus;
 use App\Models\Setting;
 use Illuminate\Database\Seeder;
 
@@ -26,40 +29,45 @@ class DatabaseSeeder extends Seeder
         $settings = Setting::create([
             'multiplier_default' => '50',
             'multiplier_cost' => '50',
+            'currency_id' => 1,
+            'payment_method_id' => 1,
+            'payment_status_id' => 1,
+            'tcg_low' => 1,
+            'tcg_mid' => 1,
+            'tcg_high' => 1,
+            'sold_price' => 2,
+            'ship_cost' => 2,
+            'ship_price' => 2,
+            'estimated_card_cost' => 2,
+
         ]);
 
         $status = ['Paid','Unpaid','Reserve'];
         foreach($status as $stat)
         {
-            $settings->paymentStatus()->create([
+            PaymentStatus::create([
                 'status'=> $stat,
-                'settings_id' => $settings->id,
             ]);
         }
 
         $methods = ['Gcash','Cash','Bank'];
         foreach($methods as $method)
         {
-            $settings->paymentMethods()->create([
+            PaymentMethod::create([
                 'method'=> $method,
-                'settings_id' => $settings->id,
             ]);
         }
-[];
 
 
-        
-       
-            $settings->currency()->create([
-                'tcg_low'=> '$',
-                'tcg_mid'=> '$',
-                'tcg_high'=> '$',
-                'sold_price'=> 'Php',
-                'ship_cost'=> 'Php',
-                'ship_price'=> 'Php',
-                'estimated_card_cost'=> 'Php',
-                'settings_id'=> $settings->id,
+        $currencies = ['Dollar' => '$', 'Peso' => '₱'];
+        foreach($currencies as $name => $symbol)
+        {
+            Currency::create([
+                'currency_name' => $name,
+                'symbol' => $symbol,
             ]);
+        }
+
         
 
 

@@ -15,14 +15,8 @@ return new class extends Migration
     {
         Schema::create('currencies', function (Blueprint $table) {
             $table->id();
-            $table->string('tcg_low');
-            $table->string('tcg_mid');
-            $table->string('tcg_high');
-            $table->string('sold_price');
-            $table->string('ship_cost');
-            $table->string('ship_price');
-            $table->string('estimated_card_cost');
-            $table->bigInteger('settings_id');
+            $table->string('currency_name');
+            $table->string('symbol');
             $table->timestamps();
         });
     }
