@@ -10,18 +10,26 @@ class Setting extends Model
     use HasFactory;
     public function paymentStatus()
     {
-        return $this->hasMany(PaymentStatus::class, 'settings_id');
+        return $this->belongsTo(PaymentStatus::class, 'payment_status_id');
     }
     public function paymentMethods()
     {
-        return $this->hasMany(PaymentMethod::class, 'settings_id');
+        return $this->belongsTo(PaymentMethod::class, 'payment_method_id');
     }
     public function currency()
     {
-        return $this->hasOne(Currency::class, 'settings_id');
+        return $this->belongsTo(Currency::class, 'currency_id');
     }
+
     protected $fillable = [
         'multiplier_default',
         'multiplier_cost',
+        'tcg_low',
+        'tcg_mid',
+        'tcg_high',
+        'sold_price',
+        'ship_cost',
+        'ship_price',
+        'estimated_card_cost'
     ];
 }

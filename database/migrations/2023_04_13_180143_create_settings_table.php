@@ -17,6 +17,16 @@ return new class extends Migration
             $table->id();
             $table->string('multiplier_default');
             $table->string('multiplier_cost');
+            $table->unsignedBigInteger('currency_id');
+            $table->unsignedBigInteger('payment_method_id');
+            $table->unsignedBigInteger('payment_status_id');
+            $table->unsignedBigInteger('tcg_low');
+            $table->unsignedBigInteger('tcg_mid');
+            $table->unsignedBigInteger('tcg_high');
+            $table->unsignedBigInteger('sold_price');
+            $table->unsignedBigInteger('ship_cost');
+            $table->unsignedBigInteger('ship_price');
+            $table->unsignedBigInteger('estimated_card_cost');
             $table->timestamps();
         });
     }
