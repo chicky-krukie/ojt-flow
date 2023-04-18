@@ -5,13 +5,12 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-class PaymentMethod extends Model
+class DataUpload extends Model
 {
     use HasFactory;
-    protected $fillable = [
-        'method',
-    ];
+
+    public function product()
+    {
+        return $this->hasOne(Product::class, 'id');
+    }
 }
-
-
-
