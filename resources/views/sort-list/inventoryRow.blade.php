@@ -35,9 +35,19 @@
 
     {{-- Increment/Decrement --}}
     <td>
-        <a href="" id="decrement-btn" class="btn">-</a>
-        {{ $csv_outputs[$index]->quantity }}
-        <a href="" id="increment-btn" class="btn">+</a>
+        <div class="row">
+            <form method="post" action="{{ route('quantity.down', $csv_outputs[$index]->id) }}">
+                @method('PUT')
+                @csrf
+                <input class="" name="submitbutton" value="-" type="submit">
+            </form>
+            {{ $csv_outputs[$index]->quantity }}
+            <form method="post" action="{{ route('quantity.up', $csv_outputs[$index]->id) }}">
+                @method('PUT')
+                @csrf
+                <input class="" name="submitbutton" value="+" type="submit">
+            </form>
+        </div>
     </td>
 
     <td>{{ $csv_outputs[$index]->price_each }}</td>
@@ -47,10 +57,11 @@
     </td>
 
     {{-- Action Column --}}
-    <td class="">
-        <a href="#view{{ $item->id }}" data-bs-toggle="modal" class="btn btn-primary mb-1 form-control"><i
-                class="fa fa-info"></i>
+    <td>
+        <a href="#view{{ $item->id }}" data-bs-toggle="modal"
+            class="btn btn-primary mb-1 form-control"><i class="fa fa-info"></i>
             View</a>
+            @include('action-popUp.view')
         <br>
         <a href="#edit{{ $item->id }}" data-bs-toggle="modal" class="btn btn-success mb-1 form-control"><i
                 class='fa fa-shopping-cart'></i>
@@ -60,6 +71,5 @@
                 class='fa fa-trash'></i>
             Delete</a>
         @include('action-popUp.action')
-        @include('action-popUp.view')
     </td>
 </tr>

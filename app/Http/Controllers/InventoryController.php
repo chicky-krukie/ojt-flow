@@ -115,10 +115,36 @@ class InventoryController extends Controller
         ])->with('condition', $condition)->with('value', $value);
     }
 
+    public function up(Request $request, $id)
+    {
+        $csvOutput = CsvOutput::find($id);
+
+        if ($csvOutput) {
+            $csvOutput->increment('quantity', 1);
+        }
+    
+        return redirect()->back();
+    }
+
+    public function down(Request $request, $id)
+    {
+        $csvOutput = CsvOutput::find($id);
+
+        if ($csvOutput) {
+            if($csvOutput->quantity <= 0){
+                $csvOutput->quantity = 0;
+            }else{
+                $csvOutput->decrement('quantity', 1);
+            }    
+        }
+    
+        return redirect()->back();
+    }
+
     //Sold
     public function update(Request $request, $id)
     {
-        
+
         //SOLD POP UP STORED IN DATA TABLES OF 'Order'
 
         return redirect()->route('inventory')->with('success', 'Product updated');

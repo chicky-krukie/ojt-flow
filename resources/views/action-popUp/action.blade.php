@@ -19,8 +19,8 @@
                     </div>
         
                     <div class="mb-3">
-                        <strong>Sold Price (Peso):</strong>
-                        <input type="text" name="sold" value="₱{{ floatval($settings['multiplier_default']) * floatval(preg_replace('/[^-0-9\.]/', '', $csv_outputs[$index]->total )) }}" class="form-control" >
+                        {{-- <strong>Sold Price (Peso):</strong>
+                        <input type="text" name="sold" value="₱{{ floatval($settings['multiplier_default']) * floatval(preg_replace('/[^-0-9\.]/', '', $csv_outputs[$index]->total )) }}" class="form-control" > --}}
                     </div>
 
                     <div class="mb-3">
@@ -36,33 +36,33 @@
                     <div class="mb-3">
             
             
-                       <input type="text" name="payment_status" value="{{$settings['payment_status'][2]['status']}}" class="hidden d-none">
-                    </div>
+                       {{-- <input type="text" name="payment_status" value="{{$settings['payment_status'][2]['status']}}" class="hidden d-none">
+                    </div> --}}
 
                     <div class="mb-3">
                         <strong>Payment Method</strong>
                         <select name="payment_methods" class="form-control" >
                             <option value="" disabled selected hidden>Enter your mode of payment</option>
-                            @foreach($settings['payment_methods'] as $setting)
+                            {{-- @foreach($settings['payment_methods'] as $setting)
                                 <option value="{{$setting['method']}}">{{$setting['method']}}</option>
-                            @endforeach
+                            @endforeach --}}
                           
                         </select><br>
                     </div>
 
                     <div class="mb-3">
-                        <strong>Multiplier:</strong>
-                        <input type="text" name="multiplier" value="{{$settings['multiplier_default']}}" class="form-control" placeholder="">
+                        {{-- <strong>Multiplier:</strong>
+                        <input type="text" name="multiplier" value="{{$settings['multiplier_default']}}" class="form-control" placeholder=""> --}}
                     </div>
 
                     <div class="mb-3">
-                        <strong>Multiplied Price:</strong>
-                        <input type="text" name="multiplied_price" value="₱{{ floatval($settings['multiplier_default']) * floatval(preg_replace('/[^-0-9\.]/', '', $csv_outputs[$index]->price_each)) }}" class="form-control" placeholder="">
+                        {{-- <strong>Multiplied Price:</strong>
+                        <input type="text" name="multiplied_price" value="₱{{ floatval($settings['multiplier_default']) * floatval(preg_replace('/[^-0-9\.]/', '', $csv_outputs[$index]->price_each)) }}" class="form-control" placeholder=""> --}}
                     </div>
 
                     <div class="mb-3">
-                        <strong>Estimated Card Cost:</strong>
-                        ₱{{ floatval($settings['multiplier_cost']) * floatval(preg_replace('/[^-0-9\.]/', '', $csv_outputs[$index]->price_each)) }}
+                        {{-- <strong>Estimated Card Cost:</strong>
+                        ₱{{ floatval($settings['multiplier_cost']) * floatval(preg_replace('/[^-0-9\.]/', '', $csv_outputs[$index]->price_each)) }} --}}
                     </div>
 
 

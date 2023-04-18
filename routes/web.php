@@ -23,6 +23,12 @@ Route::post('/update', [InventoryController::class, 'update'])->name('update');
 //Sort Quantity
 Route::get('/inventory', [InventoryController::class, 'sortQuantity'])->name('sortQuantity');
 
+//Increment
+Route::put('/increment/{id}', [InventoryController::class, 'up'])->name('quantity.up');
+
+//Decrement
+Route::put('/decrement/{id}', [InventoryController::class, 'down'])->name('quantity.down');
+
 Route::get('/orders', [OrderController::class, 'orders'])->name('orders');
 
 Route::match(['post','get'],'/settings/{id?}', [SettingsController::class, 'settings'])->name('settings');
@@ -33,5 +39,3 @@ Route::post('/delete/{id}/{uid}', [InventoryController::class, 'delete'])->name(
 Route::get('/',[HomeController::class,'home'])->name('home');
 
 Route::get('/delete-order/{id}', [OrderController::class, 'deleteOrder'])->name('delete-order');
-
-

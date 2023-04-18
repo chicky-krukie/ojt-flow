@@ -42,7 +42,7 @@ class SettingsController extends Controller
     public function save(Request $request)
     {
         // Save
-        Settings::create([
+        Setting::create([
             'payment_methods' => $request->payment_methods,
             'payment_status' => $request->payment_status,
             'multiplier_default' => $request->multiplier_default,
