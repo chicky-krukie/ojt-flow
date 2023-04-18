@@ -13,7 +13,8 @@
                                 <th scope="col" class="text-center">Frame Effects</th>
                                 <th scope="col" class="text-center">Finish</th>
                                 <th scope="col" class="text-center">Rarity</th>
-                                <th scope="col" class="col-1 text-center"><a href="#sort" data-bs-toggle="modal" style="text-decoration: none; color:black;">Quantity</a></th>
+                                <th scope="col" class="col-1 text-center"><a href="#sort" data-bs-toggle="modal"
+                                        style="text-decoration: none; color:black;">Quantity</a></th>
                                 <th scope="col" class="text-center">TCG Mid</th>
                                 <th scope="col" class="text-center">Total</th>
                                 <th scope="col" class="text-center">Action</th>
@@ -22,18 +23,15 @@
                         </thead>
                         <tbody>
                             @foreach ($inventories as $index => $item)
-
                                 {{-- Quantity Sorting --}}
                                 @if ($condition == '=')
                                     @if ($csv_outputs[$index]->quantity == $value)
                                         @include('sort-list.inventoryRow')
-
                                     @endif
                                 @elseif ($condition == '<')
                                     @if ($csv_outputs[$index]->quantity < $value)
                                         @include('sort-list.inventoryRow')
                                     @endif
-
                                 @elseif ($condition == '<=')
                                     @if ($csv_outputs[$index]->quantity <= $value)
                                         @include('sort-list.inventoryRow')
@@ -49,7 +47,6 @@
                                 @else
                                     @include('sort-list.inventoryRow')
                                 @endif
-
                             @endforeach
                         </tbody>
                     </table>
@@ -59,33 +56,36 @@
                 <h1 class="text-center">There is NO DATA</h1>
             @endif
         </div>
+        <script>
+            $('#ojt_flow').DataTable({
+                "lengthMenu": [50, 100, 200, 500],
+
+            })
+        </script>
 
 
         @push('scripts')
             <script>
-             $('#ojt_flow').DataTable({
-                    "lengthMenu": [50, 100, 200, 500],
-                    // sort: false, })
-
                 $(document).on('change', '.quantity', function(event) {
                     if (event.target === this) {
                         var row = $(this).closest('.product_row')
-                        var tcg_mid = row.find('.tcg_mid').text().trim().replace('$','');
+                        var tcg_mid = row.find('.tcg_mid').val().trim().replace('$', '');
                         var multiplier = row.find('.multiplier').val()
                         var quantity = $(this).val()
-                        var sold = (parseFloat(tcg_mid)  * parseFloat(multiplier)) * quantity;
+                        var sold = (parseFloat(tcg_mid) * parseFloat(multiplier)) * quantity;
                         row.find('.sold').val(sold);
-
+                      
                     }
                 })
 
-                $(document).on('change', '.multiplier', function(event){
-                    if(event.target === this){
+                $(document).on('change', '.multiplier', function(event) {
+                    if (event.target === this) {
                         var row = $(this).closest('.product_row')
-                        var tcg_mid = row.find('.tcg_mid').text().trim().replace('$','');
+                        var tcg_mid = row.find('.tcg_mid').val().trim().replace('$', '');
                         var multiplier = row.find('.multiplier').val();
                         var multiplied_price = (parseFloat(tcg_mid) * parseFloat(multiplier))
                         row.find('.multiplied_price').val(multiplied_price)
+                   
                     }
                 })
 

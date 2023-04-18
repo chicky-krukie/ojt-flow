@@ -15,9 +15,9 @@
                     </div>
                     <div class="mb-3">
                         <strong>Quantity</strong>
-                        <input type="number" name="quantity" value="{{ $csv_outputs[$index]->quantity }}"
+                        <input type="number" name="quantity" 
                             class="form-control quantity" placeholder="quantity" value="1" min="1"
-                            max="10" data-row="{{ $item->uid }}">
+                            max="{{ $csv_outputs[$index]->quantity }}" data-row="{{ $item->uid }}">
                     </div>
 
                     <strong>Sold Price:</strong>

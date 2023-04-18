@@ -33,6 +33,7 @@ class InventoryController extends Controller
         $settings['currency_option'] =  Currency::get(['id', 'currency_name', 'symbol'])->toArray();
         // dd($settings);
         // import
+        
         $product = Inventory::all();
         $csv = CsvOutput::all();
         $order = Order::all();
@@ -96,6 +97,10 @@ class InventoryController extends Controller
         $value = $request->input('value');
 
         $query = DB::table('csv_outputs')->orderBy('quantity');
+        $settings = Setting::with('paymentMethods','paymentStatus','currency')->first()->toArray(); 
+        $settings['method'] =  PaymentMethod::get()->toArray();
+        $settings['status'] =  PaymentStatus::get()->toArray();
+        $settings['currency_option'] =  Currency::get(['id', 'currency_name', 'symbol'])->toArray();
 
         switch ($condition) {
             case '=':
@@ -117,12 +122,11 @@ class InventoryController extends Controller
                 // handle invalid condition
                 break;
         }
-        $product = Inventory::all();
-        $csv = CsvOutput::all();
+        $inventories = Inventory::all();
+        $csv_outputs = CsvOutput::all();
 
-        return view('inventory', [
-            'inventories' => $product, 'csv_outputs' => $csv
-        ])->with('condition', $condition)->with('value', $value);
+        return view('inventory')
+        ->with(compact('inventories','csv_outputs','condition','value','settings'));
     }
 
     //Increment QTY
