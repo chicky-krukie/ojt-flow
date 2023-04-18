@@ -34,3 +34,4 @@ Route::get('/delete/{id}', [OrderController::class, 'delete' ])->name('delete');
 Route::get('/delete-order/{id}', [OrderController::class, 'deleteOrder'])->name('delete-order');
 
 
+Route::post('/import-product-from-excel', [HomeController::class, 'importProductFromExcel'])->name('importProductFromExcel');
