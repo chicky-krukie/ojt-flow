@@ -2,21 +2,21 @@
         <div class="container-fluid px-5">
             @if (isset($inventories) && $inventories->count() > 0)
                 <div class="table-responsive-md">
-                    <table class="table table-hover display" id="ojt_flow">
+                    <table class="table table-hover" id="ojt_flow">
                         <thead>
-                            <tr class="">
-                                <th class="col-1">Selector</th>
-                                <th class="">Thumbnail</th>
-                                <th>Name</th>
-                                <th>Color Identity</th>
-                                <th>Type</th>
-                                <th>Frame Effects</th>
-                                <th>Finish</th>
-                                <th>Rarity</th>
-                                <th><a href="#sort" data-bs-toggle="modal">Quantity</a></th>
-                                <th>TCG Mid</th>
-                                <th>Total</th>
-                                <th>Action</th>
+                            <tr>
+                                <th scope="col" class="col-1 text-center">Selector</th>
+                                <th scope="col" class="text-center">Thumbnail</th>
+                                <th scope="col" class="text-center">Name</th>
+                                <th scope="col" class="text-center">Color Identity</th>
+                                <th scope="col" class="text-center">Type</th>
+                                <th scope="col" class="text-center">Frame Effects</th>
+                                <th scope="col" class="text-center">Finish</th>
+                                <th scope="col" class="text-center">Rarity</th>
+                                <th scope="col" class="col-1 text-center"><a href="#sort" data-bs-toggle="modal" style="text-decoration: none; color:black;">Quantity</a></th>
+                                <th scope="col" class="text-center">TCG Mid</th>
+                                <th scope="col" class="text-center">Total</th>
+                                <th scope="col" class="text-center">Action</th>
                                 @include('action-popUp.sortQuantity')
                             </tr>
                         </thead>

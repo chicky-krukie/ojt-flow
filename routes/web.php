@@ -23,11 +23,14 @@ Route::post('/update', [InventoryController::class, 'update'])->name('update');
 //Sort Quantity
 Route::get('/inventory', [InventoryController::class, 'sortQuantity'])->name('sortQuantity');
 
-//Increment
+//Increment Quantity
 Route::put('/increment/{id}', [InventoryController::class, 'up'])->name('quantity.up');
 
-//Decrement
+//Decrement Quantity
 Route::put('/decrement/{id}', [InventoryController::class, 'down'])->name('quantity.down');
+
+//Inline Edit price_each (TCG Mid)
+Route::put('/edit/{id}', [InventoryController::class, 'edit'])->name('price_each.edit');
 
 Route::get('/orders', [OrderController::class, 'orders'])->name('orders');
 

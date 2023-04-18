@@ -1,75 +1,105 @@
-<tr class="">
-    <td><input type="checkbox" name="checkbox" id="checkbox"></td>
+<tr class="col-1">
+    <td class="text-center align-middle"><input type="checkbox" name="checkbox" id="checkbox" class="select-row"></td>
 
     {{-- Get art_crop and normal image link --}}
     @php
         $image = json_decode($item->image_uris, true);
-        $normalUri = $image['normal'];
         $artCropUri = $image['art_crop'];
+        $normalUri = $image['normal'];
     @endphp
-    <td>
+    <td class="align-middle">
         <img src="{{ $artCropUri }}" alt="{{ $item->name }}" class="thumbnail"
             onmouseenter="this.src='{{ $normalUri }}'" onmouseleave="this.src='{{ $artCropUri }}'">
     </td>
 
-    <td>{{ $item->name }}</td>
+    <td class="align-middle">{{ $item->name }}</td>
 
     {{-- Check if the color_identity is blank --}}
     @if ($item->color_identity == '[]')
-        <td>land</td>
+        <td class="align-middle">land</td>
     @else
-        <td>{{ is_valid_json($item->color_identity) }}</td>
+        <td class="align-middle">{{ is_valid_json($item->color_identity) }}</td>
     @endif
 
-    <td>{{ $item->type_line }}</td>
+    <td class="align-middle">{{ $item->type_line }}</td>
 
     {{-- Check if the frame_effects is blank --}}
     @if ($item->frame_effects == '')
-        <td>normal</td>
+        <td class="align-middle">normal</td>
     @else
-        <td>{{ is_valid_json($item->frame_effects) }}</td>
+        <td class="align-middle">{{ is_valid_json($item->frame_effects) }}</td>
     @endif
 
-    <td>{{ $csv_outputs[$index]->printing }}</td>
-    <td>{{ $item->rarity }}</td>
+    <td class="align-middle">{{ $csv_outputs[$index]->printing }}</td>
+    <td class="align-middle">{{ $item->rarity }}</td>
 
     {{-- Increment/Decrement --}}
-    <td>
-        <div class="row">
+    <td class="text-center align-middle">
+        <div class="btn-group" role="group" aria-label="Quantity">
             <form method="post" action="{{ route('quantity.down', $csv_outputs[$index]->id) }}">
                 @method('PUT')
                 @csrf
-                <input class="" name="submitbutton" value="-" type="submit">
+                <button type="submit" class="btn btn-secondary btn-sm"><i class="fa fa-minus"></i></button>
             </form>
-            {{ $csv_outputs[$index]->quantity }}
+            <span class="mx-2">{{ $csv_outputs[$index]->quantity }}</span>
             <form method="post" action="{{ route('quantity.up', $csv_outputs[$index]->id) }}">
                 @method('PUT')
                 @csrf
-                <input class="" name="submitbutton" value="+" type="submit">
+                <button type="submit" class="btn btn-secondary btn-sm"><i class="fa fa-plus"></i></button>
             </form>
         </div>
     </td>
 
-    <td>{{ $csv_outputs[$index]->price_each }}</td>
 
-    <td>
-        ${{ floatval($csv_outputs[$index]->quantity) * floatval(preg_replace('/[^-0-9\.]/', '', $csv_outputs[$index]->price_each)) }}
+    {{-- Price (Edit) --}}
+    <td class="col-1 align-middle">
+        <form method="post" action="{{ route('price_each.edit', $csv_outputs[$index]->id) }}">
+            @method('PUT')
+            @csrf
+            <div class="input-group">
+                <input name="price_each" value="{{ $csv_outputs[$index]->price_each }}" type="text"
+                    class="form-control">
+                <button type="submit" class="btn btn-primary" data-bs-toggle="tooltip" data-bs-placement="top"
+                    title="Save Price"><i class="fa fa-save"></i></button>
+            </div>
+        </form>
+    </td>
+
+    <td class="align-middle">
+        <strong>
+            ${{ floatval($csv_outputs[$index]->quantity) * floatval(preg_replace('/[^-0-9\.]/', '', $csv_outputs[$index]->price_each)) }}
+        </strong>
     </td>
 
     {{-- Action Column --}}
-    <td>
-        <a href="#view{{ $item->id }}" data-bs-toggle="modal"
-            class="btn btn-primary mb-1 form-control"><i class="fa fa-info"></i>
-            View</a>
+    <td class="align-middle">
+        <div class="btn-group" role="group">
+            <a class="btn btn-secondary" href="#view{{ $item->id }}" data-bs-toggle="modal"
+                data-bs-toggle="tooltip" data-bs-placement="top" title="View {{ $item->name }}"><i
+                    class="fa fa-eye"></i></a>
             @include('action-popUp.view')
-        <br>
-        <a href="#edit{{ $item->id }}" data-bs-toggle="modal" class="btn btn-success mb-1 form-control"><i
-                class='fa fa-shopping-cart'></i>
-            Sold</a>
-        <br>
-        <a href="#delete{{ $item->id }}" data-bs-toggle="modal" class="btn btn-danger form-control"><i
-                class='fa fa-trash'></i>
-            Delete</a>
-        @include('action-popUp.action')
+            <a class="btn btn-success" href="#edit{{ $item->id }}" data-bs-toggle="modal" data-bs-toggle="tooltip"
+                data-bs-placement="top" title="Sold {{ $item->name }}"><i class="fa fa-shopping-cart"></i></a>
+            <a class="btn btn-danger" href="#delete{{ $item->id }}" data-bs-toggle="modal" data-bs-toggle="tooltip"
+                data-bs-placement="top" title="Delete {{ $item->name }}"><i class="fa fa-trash"></i></a>
+            @include('action-popUp.action')
+        </div>
     </td>
 </tr>
+
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script>
+    $(document).ready(function() {
+        // Add click event to checkbox input
+        $('.select-row').click(function() {
+            // Toggle 'selected' class on parent row element
+            $(this).closest('tr').toggleClass('selected');
+        });
+    });
+</script>
+
+<style>
+    .selected {
+        background-color: red;
+    }
+</style>

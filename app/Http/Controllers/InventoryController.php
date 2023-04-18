@@ -7,6 +7,7 @@ use App\Models\Counter;
 use App\Models\Setting;
 use App\Models\CsvOutput;
 use App\Models\Inventory;
+use Illuminate\Support\Str;
 use Illuminate\Http\Request;
 use App\Imports\CounterImport;
 use Illuminate\Support\Carbon;
@@ -115,6 +116,7 @@ class InventoryController extends Controller
         ])->with('condition', $condition)->with('value', $value);
     }
 
+    //Increment QTY
     public function up(Request $request, $id)
     {
         $csvOutput = CsvOutput::find($id);
@@ -122,22 +124,42 @@ class InventoryController extends Controller
         if ($csvOutput) {
             $csvOutput->increment('quantity', 1);
         }
-    
+
         return redirect()->back();
     }
 
+    //Decrement QTY
     public function down(Request $request, $id)
     {
         $csvOutput = CsvOutput::find($id);
 
         if ($csvOutput) {
-            if($csvOutput->quantity <= 0){
+            if ($csvOutput->quantity <= 0) {
                 $csvOutput->quantity = 0;
-            }else{
+            } else {
                 $csvOutput->decrement('quantity', 1);
-            }    
+            }
         }
-    
+
+        return redirect()->back();
+    }
+
+    //Edit Price
+    public function edit(Request $request, $id)
+    {
+
+        $csvOutput = CsvOutput::find($id);
+        $priceEach = $request->price_each;
+
+        // Remove all $ signs except the first one
+        while (Str::contains(substr($priceEach, 1), '$')) {
+            $priceEach = str_replace('$', '', substr_replace($priceEach, '', strpos($priceEach, '$', 1), 1));
+        }
+
+        $csvOutput->update(['price_each' =>'$' . $priceEach]);
+
+
+
         return redirect()->back();
     }
 
