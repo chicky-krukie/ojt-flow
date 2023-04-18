@@ -12,3 +12,6 @@ class PaymentMethod extends Model
         'method',
     ];
 }
+
+
+
