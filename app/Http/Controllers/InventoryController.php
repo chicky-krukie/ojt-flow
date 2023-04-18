@@ -11,6 +11,9 @@ use Illuminate\Http\Request;
 use App\Imports\CounterImport;
 use Illuminate\Support\Carbon;
 use App\Imports\InventoryImport;
+use App\Models\Currency;
+use App\Models\PaymentMethod;
+use App\Models\PaymentStatus;
 use Maatwebsite\Excel\Facades\Excel;
 
 class InventoryController extends Controller
@@ -19,7 +22,10 @@ class InventoryController extends Controller
     //Inventory Table Function
     public function inventoryTable()
     {
-        $settings = Setting::with('paymentMethods', 'paymentStatus', 'currency')->get()->first()->toArray();
+        $settings = Setting::with('paymentMethods','paymentStatus','currency')->first()->toArray(); 
+        $settings['method'] =  PaymentMethod::get()->toArray();
+        $settings['status'] =  PaymentStatus::get()->toArray();
+        $settings['currency_option'] =  Currency::get(['id', 'currency_name', 'symbol'])->toArray();
         // dd($settings);
         // import
         $product = Inventory::all();

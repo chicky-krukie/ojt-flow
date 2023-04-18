@@ -1,5 +1,6 @@
 @extends('layout')
 @section('content')
+
 <div class="col-lg-12">
     <h2 class="my-4">Settings</h2>
     <hr>
@@ -33,15 +34,17 @@
                 </select>
             </div>
 
-            <div class="my-4">
-                <p><b>Multiplier default</b></p>
-                <input name="multiplier_default" class="form-control" value="{{ $settings['multiplier_default'] }}">
-            </div>
 
-            <div class="my-4">
-                <p><b>Multiplier Cost</b></p>
-                <input name="multiplier_cost" class="form-control" placeholder="Your Multiplier cost is.." value="{{ $settings['multiplier_cost'] }}">
-            </div>
+                <div class="my-4">
+                    <p><b>Multiplier default</b></p>
+                    <input name="multiplier_default" class="form-control" value="{{ $settings['multiplier_default'] }}">
+                </div>
+
+                <div class="my-4">
+                    <p><b>Multiplier Cost</b></p>
+                    <input name="multiplier_cost" class="form-control" placeholder="Your Multiplier cost is.."
+                        value="{{ $settings['multiplier_cost'] }}">
+                </div>
 
             <div class="my-4">
                 <!-- It shows the value of the card/inventory not the currency -->
@@ -57,19 +60,21 @@
                     @endforeach
                 </select>
 
-                <p>TCG Mid</p>
-                <select name="tcg_mid" class="form-control">
-                    @foreach ($settings['currency_option'] as $settingCurrency)
-                    <option value="{{ $settingCurrency['id'] }}" @if ($settings['tcg_mid']===$settingCurrency['id']) selected @endif>{{ $settingCurrency['symbol'] }}</option>
-                    @endforeach
-                </select>
+                    <p>TCG Mid</p>
+                    <select name="tcg_mid" class="form-control">
+                        @foreach ($settings['currency_option'] as $settingCurrency)
+                            <option value="{{ $settingCurrency['id'] }}" @if ($settings['tcg_mid'] === $settingCurrency['id']) selected @endif>
+                                {{ $settingCurrency['symbol'] }}</option>
+                        @endforeach
+                    </select>
 
-                <p>TCG High</p>
-                <select name="tcg_high" class="form-control">
-                    @foreach ($settings['currency_option'] as $settingCurrency)
-                    <option value="{{ $settingCurrency['id'] }}" @if ($settings['tcg_high']===$settingCurrency['id']) selected @endif>{{ $settingCurrency['symbol'] }}</option>
-                    @endforeach
-                </select>
+                    <p>TCG High</p>
+                    <select name="tcg_high" class="form-control">
+                        @foreach ($settings['currency_option'] as $settingCurrency)
+                            <option value="{{ $settingCurrency['id'] }}" @if ($settings['tcg_high'] === $settingCurrency['id']) selected @endif>
+                                {{ $settingCurrency['symbol'] }}</option>
+                        @endforeach
+                    </select>
 
             </div>
         </div>
@@ -117,12 +122,13 @@
 
 
 
-        </div>
+
+            </div>
 
 
-    </form>
+        </form>
 
 
-</div>
-</div>
+    </div>
+    </div>
 @endsection
