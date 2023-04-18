@@ -33,6 +33,10 @@ Route::get('/',[HomeController::class,'home'])->name('home');
 Route::get('/delete-order/{id}', [OrderController::class, 'deleteOrder'])->name('delete-order');
 
 
+
+Route::post('/import-product-from-excel', [HomeController::class, 'importProductFromExcel'])->name('importProductFromExcel');
+
 // settings
 Route::post('/add-currency', [CurrencyController::class, 'addCurrency'])->name('add-currency');
 Route::post('/add-method', [CurrencyController::class, 'addMethod'])->name('add-method');
+
