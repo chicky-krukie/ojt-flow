@@ -25,7 +25,7 @@
                                     $storage = $loop->iteration;
                                 @endphp
 
-                                <tr class="">
+                                <tr class="product_row">
                                     <td><input type="checkbox" name="checkbox" id="checkbox"></td>
 
                                     {{-- Get art_crop and normal image link --}}
@@ -61,25 +61,27 @@
                                     <td>{{ $csv_outputs[$index]->printing }}</td>
                                     <td>{{ $item->rarity }}</td>
                                     <td>{{ $csv_outputs[$index]->quantity }}</td>
-                                    <td class="editable" contenteditable="true">{{ $csv_outputs[$index]->price_each }}
+                                    <td class="editable tcg_mid" contenteditable="true">
+                                        {{ $csv_outputs[$index]->price_each }}
                                     </td>
                                     <td>
-                                        ${{ floatval($csv_outputs[$index]->quantity) * floatval(preg_replace('/[^-0-9\.]/', '', $csv_outputs[$index]->price_each)) }}
+                                        ${{ $csv_outputs[$index]->total }}
                                     </td>
 
                                     {{-- Action Column --}}
                                     <td class="">
-                                        <a href="#view{{ $item->id }}" data-bs-toggle="modal"
+                                        <button data-bs-target="#view{{ $item->id }}" data-bs-toggle="modal"
                                             class="btn btn-primary mb-1 form-control"><i class="fa fa-info"></i>
-                                            View</a>
+                                            View</button>
                                         <br>
-                                        <a href="#edit{{ $item->uid }}" data-bs-toggle="modal"
-                                            class="btn btn-success mb-1 form-control"><i
-                                                class='fa fa-shopping-cart'></i>
-                                            Sold</a>
+                                        <button data-bs-target="#edit{{ $item->uid }}" data-bs-toggle="modal"
+                                            class="btn btn-success mb-1 form-control sold"
+                                            data-item="{{ $item }}"><i class='fa fa-shopping-cart'></i>
+                                            Sold</button>
                                         <br>
-                                        <a href="#delete{{ $item->uid }}" data-bs-toggle="modal"
-                                            class="btn btn-danger form-control"><i class='fa fa-trash'></i> Delete</a>
+                                        <button data-bs-target="#delete{{ $item->uid }}" data-bs-toggle="modal"
+                                            class="btn btn-danger form-control "><i class='fa fa-trash'></i>
+                                            Delete</button>
                                         @include('action-popUp.action')
                                         @include('action-popUp.view')
                                     </td>
@@ -94,24 +96,51 @@
             @endif
         </div>
 
-        <script>
-            $(document).on('blur', '.editable', function() {
-                var $cell = $(this);
-                var newValue = $cell.text();
-                var itemId = $cell.closest('tr').data('item-id');
+        @push('scripts')
+            <script>
 
-                $.ajax({
-                    url: '/update-item-price/' + itemId,
-                    type: 'PUT',
-                    data: {
-                        price: newValue
-                    },
-                    success: function(data) {
-                        // handle successful response
-                    },
-                    error: function(xhr, status, error) {
-                        // handle error response
+                $(document).on('change', '.quantity', function(event) {
+                    if (event.target === this) {
+                        var row = $(this).closest('.product_row')
+                        var tcg_mid = row.find('.tcg_mid').text().trim().replace('$','');
+                        var multiplier = row.find('.multiplier').val()
+                        var quantity = $(this).val()
+                        var sold = (parseFloat(tcg_mid)  * parseFloat(multiplier)) * quantity;
+                        row.find('.sold').val(sold);
+
                     }
+                })
+
+                $(document).on('change', '.multiplier', function(event){
+                    if(event.target === this){
+                        var row = $(this).closest('.product_row')
+                        var tcg_mid = row.find('.tcg_mid').text().trim().replace('$','');
+                        var multiplier = row.find('.multiplier').val();
+                        var multiplied_price = (parseFloat(tcg_mid) * parseFloat(multiplier))
+                        row.find('.multiplied_price').val(multiplied_price)
+                    }
+                })
+
+
+
+                $(document).on('blur', '.editable', function() {
+                    var $cell = $(this);
+                    var newValue = $cell.text();
+                    var itemId = $cell.closest('tr').data('item-id');
+
+                    $.ajax({
+                        url: '/update-item-price/' + itemId,
+                        type: 'PUT',
+                        data: {
+                            price: newValue
+                        },
+                        success: function(data) {
+                            // handle successful response
+                        },
+                        error: function(xhr, status, error) {
+                            // handle error response
+                        }
+                    });
                 });
-            });
-        </script>
+            </script>
+        @endpush
