@@ -1,4 +1,4 @@
-<tr class="col-1">
+<tr class="col-1 product_row" >
     <td class="text-center align-middle"><input type="checkbox" name="checkbox" id="checkbox" class="select-row"></td>
 
     {{-- Get art_crop and normal image link --}}
@@ -58,7 +58,7 @@
             @csrf
             <div class="input-group">
                 <input name="price_each" value="{{ $csv_outputs[$index]->price_each }}" type="text"
-                    class="form-control">
+                    class="form-control tcg_mid">
                 <button type="submit" class="btn btn-primary" data-bs-toggle="tooltip" data-bs-placement="top"
                     title="Save Price"><i class="fa fa-save"></i></button>
             </div>
@@ -78,28 +78,11 @@
                 data-bs-toggle="tooltip" data-bs-placement="top" title="View {{ $item->name }}"><i
                     class="fa fa-eye"></i></a>
             @include('action-popUp.view')
-            <a class="btn btn-success" href="#edit{{ $item->id }}" data-bs-toggle="modal" data-bs-toggle="tooltip"
+            <a class="btn btn-success" href="#edit{{ $item->uid }}" data-bs-toggle="modal" data-bs-toggle="tooltip"
                 data-bs-placement="top" title="Sold {{ $item->name }}"><i class="fa fa-shopping-cart"></i></a>
-            <a class="btn btn-danger" href="#delete{{ $item->id }}" data-bs-toggle="modal" data-bs-toggle="tooltip"
+            <a class="btn btn-danger" href="#delete{{ $item->uid }}" data-bs-toggle="modal" data-bs-toggle="tooltip"
                 data-bs-placement="top" title="Delete {{ $item->name }}"><i class="fa fa-trash"></i></a>
             @include('action-popUp.action')
         </div>
     </td>
 </tr>
-
-<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-<script>
-    $(document).ready(function() {
-        // Add click event to checkbox input
-        $('.select-row').click(function() {
-            // Toggle 'selected' class on parent row element
-            $(this).closest('tr').toggleClass('selected');
-        });
-    });
-</script>
-
-<style>
-    .selected {
-        background-color: red;
-    }
-</style>
