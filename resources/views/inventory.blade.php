@@ -68,3 +68,4 @@
     @include('table.inventoryTable')
 
 @endsection
+
