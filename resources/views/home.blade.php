@@ -1,6 +1,7 @@
 @extends('layout')
 @section('pageTitle', 'Home Page')
 @section('content')
+
   
     <br>
     <div class="container">
@@ -105,3 +106,4 @@
 
 
 @endsection
+

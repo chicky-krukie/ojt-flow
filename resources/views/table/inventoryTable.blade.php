@@ -2,90 +2,54 @@
         <div class="container-fluid px-5">
             @if (isset($inventories) && $inventories->count() > 0)
                 <div class="table-responsive-md">
-                    <table class="table table-hover">
+                    <table class="table table-hover" id="ojt_flow">
                         <thead>
-                            <tr class="">
-                                <th class="col-1">Selector</th>
-                                <th class="">Thumbnail</th>
-                                <th>Name</th>
-                                <th>Color Identity</th>
-                                <th>Type</th>
-                                <th>Frame Effects</th>
-                                <th>Finish</th>
-                                <th>Rarity</th>
-                                <th>Quantity</th>
-                                <th>TCG Mid</th>
-                                <th>Total</th>
-                                <th>Action</th>
+                            <tr>
+                                <th scope="col" class="col-1 text-center">Selector</th>
+                                <th scope="col" class="text-center">Thumbnail</th>
+                                <th scope="col" class="text-center">Name</th>
+                                <th scope="col" class="text-center">Color Identity</th>
+                                <th scope="col" class="text-center">Type</th>
+                                <th scope="col" class="text-center">Frame Effects</th>
+                                <th scope="col" class="text-center">Finish</th>
+                                <th scope="col" class="text-center">Rarity</th>
+                                <th scope="col" class="col-1 text-center"><a href="#sort" data-bs-toggle="modal" style="text-decoration: none; color:black;">Quantity</a></th>
+                                <th scope="col" class="text-center">TCG Mid</th>
+                                <th scope="col" class="text-center">Total</th>
+                                <th scope="col" class="text-center">Action</th>
+                                @include('action-popUp.sortQuantity')
                             </tr>
                         </thead>
                         <tbody>
                             @foreach ($inventories as $index => $item)
-                                @php
-                                    $storage = $loop->iteration;
-                                @endphp
 
-                                <tr class="product_row">
-                                    <td><input type="checkbox" name="checkbox" id="checkbox"></td>
+                                {{-- Quantity Sorting --}}
+                                @if ($condition == '=')
+                                    @if ($csv_outputs[$index]->quantity == $value)
+                                        @include('sort-list.inventoryRow')
 
-                                    {{-- Get art_crop and normal image link --}}
-                                    @php
-                                        $image = json_decode($item->image_uris, true);
-                                        $normalUri = $image['normal'];
-                                        $artCropUri = $image['art_crop'];
-                                    @endphp
-                                    <td>
-                                        <img src="{{ $artCropUri }}" alt="{{ $item->name }}" class="thumbnail"
-                                            onmouseenter="this.src='{{ $normalUri }}'"
-                                            onmouseleave="this.src='{{ $artCropUri }}'">
-                                    </td>
-
-                                    <td>{{ $item->name }}</td>
-
-                                    {{-- Check if the color_identity is blank --}}
-                                    @if ($item->color_identity == '[]')
-                                        <td>land</td>
-                                    @else
-                                        <td>{{ is_valid_json($item->color_identity) }}</td>
+                                    @endif
+                                @elseif ($condition == '<')
+                                    @if ($csv_outputs[$index]->quantity < $value)
+                                        @include('sort-list.inventoryRow')
                                     @endif
 
-                                    <td>{{ $item->type_line }}</td>
-
-                                    {{-- Check if the frame is blank --}}
-                                    @if ($item->frame == '')
-                                        <td>normal</td>
-                                    @else
-                                        <td>{{ $item->frame }}</td>
+                                @elseif ($condition == '<=')
+                                    @if ($csv_outputs[$index]->quantity <= $value)
+                                        @include('sort-list.inventoryRow')
                                     @endif
+                                @elseif ($condition == '>')
+                                    @if ($csv_outputs[$index]->quantity > $value)
+                                        @include('sort-list.inventoryRow')
+                                    @endif
+                                @elseif ($condition == '>=')
+                                    @if ($csv_outputs[$index]->quantity >= $value)
+                                        @include('sort-list.inventoryRow')
+                                    @endif
+                                @else
+                                    @include('sort-list.inventoryRow')
+                                @endif
 
-                                    <td>{{ $csv_outputs[$index]->printing }}</td>
-                                    <td>{{ $item->rarity }}</td>
-                                    <td>{{ $csv_outputs[$index]->quantity }}</td>
-                                    <td class="editable tcg_mid" contenteditable="true">
-                                        {{ $csv_outputs[$index]->price_each }}
-                                    </td>
-                                    <td>
-                                        ${{ $csv_outputs[$index]->total }}
-                                    </td>
-
-                                    {{-- Action Column --}}
-                                    <td class="">
-                                        <button data-bs-target="#view{{ $item->id }}" data-bs-toggle="modal"
-                                            class="btn btn-primary mb-1 form-control"><i class="fa fa-info"></i>
-                                            View</button>
-                                        <br>
-                                        <button data-bs-target="#edit{{ $item->uid }}" data-bs-toggle="modal"
-                                            class="btn btn-success mb-1 form-control sold"
-                                            data-item="{{ $item }}"><i class='fa fa-shopping-cart'></i>
-                                            Sold</button>
-                                        <br>
-                                        <button data-bs-target="#delete{{ $item->uid }}" data-bs-toggle="modal"
-                                            class="btn btn-danger form-control "><i class='fa fa-trash'></i>
-                                            Delete</button>
-                                        @include('action-popUp.action')
-                                        @include('action-popUp.view')
-                                    </td>
-                                </tr>
                             @endforeach
                         </tbody>
                     </table>
@@ -96,8 +60,12 @@
             @endif
         </div>
 
+
         @push('scripts')
             <script>
+             $('#ojt_flow').DataTable({
+                    "lengthMenu": [50, 100, 200, 500],
+                    // sort: false, })
 
                 $(document).on('change', '.quantity', function(event) {
                     if (event.target === this) {
@@ -141,6 +109,7 @@
                             // handle error response
                         }
                     });
+
                 });
             </script>
         @endpush

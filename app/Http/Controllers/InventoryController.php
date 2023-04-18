@@ -7,13 +7,18 @@ use App\Models\Counter;
 use App\Models\Setting;
 use App\Models\CsvOutput;
 use App\Models\Inventory;
+use Illuminate\Support\Str;
 use Illuminate\Http\Request;
 use App\Imports\CounterImport;
 use Illuminate\Support\Carbon;
 use App\Imports\InventoryImport;
+
+use Illuminate\Support\Facades\DB;
+
 use App\Models\Currency;
 use App\Models\PaymentMethod;
 use App\Models\PaymentStatus;
+
 use Maatwebsite\Excel\Facades\Excel;
 
 class InventoryController extends Controller
@@ -84,41 +89,96 @@ class InventoryController extends Controller
         return $inventory->storeCsv();
     }
 
+    //Sort Quantity Function
+    public function sortQuantity(Request $request)
+    {
+        $condition = $request->input('condition');
+        $value = $request->input('value');
+
+        $query = DB::table('csv_outputs')->orderBy('quantity');
+
+        switch ($condition) {
+            case '=':
+                $query->where('quantity', $value);
+                break;
+            case '<':
+                $query->where('quantity', '<', $value);
+                break;
+            case '<=':
+                $query->where('quantity', '<=', $value);
+                break;
+            case '>':
+                $query->where('quantity', '>', $value);
+                break;
+            case '>=':
+                $query->where('quantity', '>=', $value);
+                break;
+            default:
+                // handle invalid condition
+                break;
+        }
+        $product = Inventory::all();
+        $csv = CsvOutput::all();
+
+        return view('inventory', [
+            'inventories' => $product, 'csv_outputs' => $csv
+        ])->with('condition', $condition)->with('value', $value);
+    }
+
+    //Increment QTY
+    public function up(Request $request, $id)
+    {
+        $csvOutput = CsvOutput::find($id);
+
+        if ($csvOutput) {
+            $csvOutput->increment('quantity', 1);
+        }
+
+        return redirect()->back();
+    }
+
+    //Decrement QTY
+    public function down(Request $request, $id)
+    {
+        $csvOutput = CsvOutput::find($id);
+
+        if ($csvOutput) {
+            if ($csvOutput->quantity <= 0) {
+                $csvOutput->quantity = 0;
+            } else {
+                $csvOutput->decrement('quantity', 1);
+            }
+        }
+
+        return redirect()->back();
+    }
+
+    //Edit Price
+    public function edit(Request $request, $id)
+    {
+
+        $csvOutput = CsvOutput::find($id);
+        $priceEach = $request->price_each;
+
+        // Remove all $ signs except the first one
+        while (Str::contains(substr($priceEach, 1), '$')) {
+            $priceEach = str_replace('$', '', substr_replace($priceEach, '', strpos($priceEach, '$', 1), 1));
+        }
+
+        $csvOutput->update(['price_each' =>'$' . $priceEach]);
+
+
+
+        return redirect()->back();
+    }
+
     //Sold
     public function update(Request $request, $id)
     {
-        
+
         //SOLD POP UP STORED IN DATA TABLES OF 'Order'
 
-        $csv = CsvOutput::with('inventory')->find($id)->toArray();
-        // dd($csv);
-        // $input = $request->all();
-        // $csv->fill($input)->save;
-        // $csv = Inventory::where('uid', $id)->get();
-        // dd($csv);
-        
-
-        $orders = new Order;
-        $orders->sold_date = Carbon::now()->format('Y/m/d');
-        $orders->sold_to = $request->name;
-        $orders->card_name = $csv['inventory']['name'];
-        $orders->set = $csv['inventory']['set'];
-        $orders->finish = $csv['printing'];
-        $orders->tcg_mid = $csv['price_each'];
-        $orders->qty = $request->quantity;
-        $orders->sold_price = $request->sold;
-        $orders->ship_cost = $request->ship_cost;
-        $orders->payment_status = $request->payment_status;
-        $orders->payment_method = $request->payment_methods;
-        $orders->tcgplacer_id = $csv['product_id'];
-        $orders->ship_price = $request->ship_price;
-        // $orders->tracking_number = $request->tracking_number;
-        $orders->multiplier = $request->multiplier;
-        $orders->multiplier_price = $request->multiplied_price;
-        $orders->note = $request->note;
-        $orders->save();
-      
-        return redirect()->route('inventory')->with('sucess', 'Product updated');
+        return redirect()->route('inventory')->with('success', 'Product updated');
     }
 
     //Delete Row
@@ -134,12 +194,14 @@ class InventoryController extends Controller
         return redirect()->route('inventory')->with('sucess', 'Product deleted');
     }
 
-    public function updateItemPrice(Request $request, $id)
+    //Inline Edit (not working)
+    public function updatePrice(Request $request)
     {
-        $item = CsvOutput::findOrFail($id);
-        $item->price_each = $request->price;
-        $item->save();
-
-        return response()->json(['success' => true]);
+        if ($request->ajax()) {
+            CsvOutput::find($request->pk)->update([
+                $request->name => $request->value
+            ]);
+            return response()->json(['success' => true]);
+        }
     }
 }

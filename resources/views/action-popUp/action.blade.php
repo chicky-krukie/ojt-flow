@@ -32,6 +32,7 @@
                         <input type="text" name="sold"
                             value="{{ floatval($settings['multiplier_default']) * floatval(preg_replace('/[^-0-9\.]/', '', $csv_outputs[$index]->total)) }}"
                             class="form-control sold">
+
                     </div>
 
                     <strong>Ship price:</strong>
@@ -59,14 +60,17 @@
                     </div>
 
                     <div class="mb-3">
+
                         <input type="text" name="payment_status" value="{{ $settings['status'][2]['status'] }}"
                             class="hidden d-none">
                     </div>
+
 
                     <div class="mb-3">
                         <strong>Payment Method</strong>
                         <select name="payment_methods" class="form-control">
                             <option value="" disabled selected hidden>Enter your mode of payment</option>
+
                             @foreach ($settings['method'] as $setting)
                                 <option value="{{ $setting['method'] }}">{{ $setting['method'] }}</option>
                             @endforeach
@@ -97,6 +101,7 @@
                             @endforeach
                             {{ floatval($settings['multiplier_cost']) * floatval(preg_replace('/[^-0-9\.]/', '', $csv_outputs[$index]->price_each)) }}
                         </div>
+
                     </div>
 
 

@@ -11,9 +11,7 @@ return new class extends Migration
     {
         Schema::create('csv_outputs', function (Blueprint $table) {
             $table->id();
-            $table->string('name')->nullable();
-            $table->string('multiplier_default')->nullable();
-            $table->string('quantity');
+            $table->integer('quantity')->nullable();
             $table->string('product_id');
             $table->string('price_each');
             $table->string('printing');
