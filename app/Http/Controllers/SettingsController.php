@@ -2,7 +2,9 @@
 
 namespace App\Http\Controllers;
 
-
+use App\Models\Currency;
+use App\Models\PaymentMethod;
+use App\Models\PaymentStatus;
 use App\Models\Setting;
 
 use Illuminate\Http\Request;
@@ -18,9 +20,6 @@ class SettingsController extends Controller
             $settings->update([
                 'multiplier_default'=> $request->multiplier_default,
                 'multiplier_cost'=> $request->multiplier_cost,
-
-            ]);
-            $settings->currency()->update([
                 'tcg_low'=> $request->tcg_low,
                 'tcg_mid'=> $request->tcg_mid,
                 'tcg_high'=> $request->tcg_high,
@@ -34,7 +33,10 @@ class SettingsController extends Controller
         }
        
 
-        $settings = Setting::with('paymentMethods','paymentStatus','currency')->get()->first()->toArray(); 
+        $settings = Setting::with('paymentMethods','paymentStatus','currency')->first()->toArray(); 
+        $settings['method'] =  PaymentMethod::get()->toArray();
+        $settings['status'] =  PaymentStatus::get()->toArray();
+        $settings['currency_option'] =  Currency::get(['id', 'currency_name', 'symbol'])->toArray();
         // dd($settings);
         return view('settings')->with(compact('settings'));
     }
