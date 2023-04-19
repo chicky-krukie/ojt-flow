@@ -27,13 +27,13 @@ class InventoryController extends Controller
     //Inventory Table Function
     public function inventoryTable()
     {
-        $settings = Setting::with('paymentMethods','paymentStatus','currency')->first()->toArray(); 
+        $settings = Setting::with('paymentMethods', 'paymentStatus', 'currency')->first()->toArray();
         $settings['method'] =  PaymentMethod::get()->toArray();
         $settings['status'] =  PaymentStatus::get()->toArray();
         $settings['currency_option'] =  Currency::get(['id', 'currency_name', 'symbol'])->toArray();
         // dd($settings);
         // import
-        
+
         $product = Inventory::all();
         $csv = CsvOutput::all();
         $order = Order::all();
@@ -97,7 +97,7 @@ class InventoryController extends Controller
         $value = $request->input('value');
 
         $query = DB::table('csv_outputs')->orderBy('quantity');
-        $settings = Setting::with('paymentMethods','paymentStatus','currency')->first()->toArray(); 
+        $settings = Setting::with('paymentMethods', 'paymentStatus', 'currency')->first()->toArray();
         $settings['method'] =  PaymentMethod::get()->toArray();
         $settings['status'] =  PaymentStatus::get()->toArray();
         $settings['currency_option'] =  Currency::get(['id', 'currency_name', 'symbol'])->toArray();
@@ -126,7 +126,7 @@ class InventoryController extends Controller
         $csv_outputs = CsvOutput::all();
 
         return view('inventory')
-        ->with(compact('inventories','csv_outputs','condition','value','settings'));
+            ->with(compact('inventories', 'csv_outputs', 'condition', 'value', 'settings'));
     }
 
     //Increment QTY
@@ -169,7 +169,7 @@ class InventoryController extends Controller
             $priceEach = str_replace('$', '', substr_replace($priceEach, '', strpos($priceEach, '$', 1), 1));
         }
 
-        $csvOutput->update(['price_each' =>'$' . $priceEach]);
+        $csvOutput->update(['price_each' => '$' . $priceEach]);
 
 
 
@@ -181,8 +181,29 @@ class InventoryController extends Controller
     {
 
         //SOLD POP UP STORED IN DATA TABLES OF 'Order'
+        $csv = CsvOutput::with('inventory')->find($id)->toArray();
 
-        return redirect()->route('inventory')->with('success', 'Product updated');
+        $orders = new Order;
+
+        $orders->sold_date = Carbon::now()->format('Y/m/d');
+        $orders->sold_to = $request->name;
+        $orders->card_name = $csv['inventory']['name'];
+        $orders->set = $csv['inventory']['set'];
+        $orders->finish = $csv['printing'];
+        $orders->tcg_mid = $csv['price_each'];
+        $orders->qty = $request->quantity;
+        $orders->sold_price = $request->sold;
+        $orders->ship_cost = $request->ship_cost;
+        $orders->payment_status = $request->payment_status;
+        $orders->payment_method = $request->payment_methods;
+        $orders->tcgplacer_id = $csv['product_id'];
+        $orders->ship_price = $request->ship_price;
+        $orders->multiplier = $request->multiplier;
+        $orders->multiplier_price = $request->multiplied_price;
+        $orders->note = $request->note;
+        $orders->save();
+
+        return redirect()->route('sortQuantity')->with('success', 'Product updated');
     }
 
     //Delete Row

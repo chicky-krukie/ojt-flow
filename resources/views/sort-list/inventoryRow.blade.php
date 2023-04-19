@@ -1,4 +1,4 @@
-<tr class="col-1 product_row" >
+<tr class="col-1 product_row">
     <td class="text-center align-middle"><input type="checkbox" name="checkbox" id="checkbox" class="select-row"></td>
 
     {{-- Get art_crop and normal image link --}}
@@ -78,10 +78,15 @@
                 data-bs-toggle="tooltip" data-bs-placement="top" title="View {{ $item->name }}"><i
                     class="fa fa-eye"></i></a>
             @include('action-popUp.view')
-            <a class="btn btn-success" href="#edit{{ $item->uid }}" data-bs-toggle="modal" data-bs-toggle="tooltip"
-                data-bs-placement="top" title="Sold {{ $item->name }}"><i class="fa fa-shopping-cart"></i></a>
-            <a class="btn btn-danger" href="#delete{{ $item->uid }}" data-bs-toggle="modal" data-bs-toggle="tooltip"
-                data-bs-placement="top" title="Delete {{ $item->name }}"><i class="fa fa-trash"></i></a>
+
+
+            <button class="btn btn-success" data-bs-target="#edit{{ $item->uid }}" data-bs-toggle="modal"
+                data-bs-placement="top" title="Sold {{ $item->name }}" @if ($csv_outputs[$index]->quantity === 0)  disabled @endif><i
+                    class="fa fa-shopping-cart"></i></button>
+
+
+            <button class="btn btn-danger" data-bs-target="#delete{{ $item->uid }}" data-bs-toggle="modal"
+                data-bs-placement="top" title="Delete {{ $item->name }}"><i class="fa fa-trash"></i></button>
             @include('action-popUp.action')
         </div>
     </td>
