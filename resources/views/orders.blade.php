@@ -46,7 +46,7 @@
     <div class="col-lg-10 mx-auto">
         <h1 class="my-4">Orders</h1>
 
-        <table class="table">
+        <table class="table" id='order-table'>
             <thead>
                 <tr>
                     <th scope="col" >Selector</th>
@@ -109,4 +109,11 @@
         </table>
     </div>
 
+
+    <script>
+        $('#order-table').DataTable({
+            "lengthMenu": [50, 100, 200, 500],
+
+        })
+    </script>
 @endsection
