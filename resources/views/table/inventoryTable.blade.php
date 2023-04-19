@@ -59,7 +59,7 @@
         <script>
             $('#ojt_flow').DataTable({
                 "lengthMenu": [50, 100, 200, 500],
-
+                scrollY: 580,
             })
         </script>
 

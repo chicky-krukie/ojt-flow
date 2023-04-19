@@ -69,8 +69,8 @@ class InventoryController extends Controller
             return [
                 'tcgplayer_id' => isset($data['tcgplayer_id']) ? $data['tcgplayer_id'] : $data['tcgplayer_etched_id'],
                 'name' => $data['name'],
-                'normal' => $data['image_uris']['normal'],
-                'art_crop' => $data['image_uris']['art_crop'],
+                'normal' => isset($data['image_uris']) ? $data['image_uris']['normal'] : null,
+                'art_crop' => isset($data['image_uris']) ? $data['image_uris']['art_crop'] : null,
                 'type_line' => $data['type_line'],
                 'color_identity' => empty($data['color_identity']) ? 'land' : implode(',', $data['color_identity']),
                 'finishes' => implode(',', $data['finishes']),
