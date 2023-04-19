@@ -99,7 +99,7 @@
             </div>
         @else
             <br>
-            <h1 class="text-center">There is NO DATA</h1>
+            <h1 class="text-center">HOME PAGE</h1>
         @endif
     </div>
 
