@@ -21,6 +21,7 @@ use Illuminate\Support\Carbon;
 
 use App\Imports\InventoryImport;
 use App\Imports\DataUploadImport;
+use App\Jobs\ProcessCsvImport;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Http;
 use Maatwebsite\Excel\Facades\Excel;
@@ -60,32 +61,10 @@ class InventoryController extends Controller
         $path = $request->file('file')->getRealPath();
         $data = Excel::toArray(new DataUploadImport, $path)[0];
 
-        $dataIds = collect($data)->pluck('product_id')->toArray();
+        ProcessCsvImport::dispatch($data);
 
-        $apiData = collect($dataIds)->map(function ($id) {
-            $response = Http::get('https://api.scryfall.com/cards/tcgplayer/' . $id);
-            $data = $response->json();
-
-            return [
-                'tcgplayer_id' => isset($data['tcgplayer_id']) ? $data['tcgplayer_id'] : $data['tcgplayer_etched_id'],
-                'name' => $data['name'],
-                'normal' => $data['image_uris']['normal'],
-                'art_crop' => $data['image_uris']['art_crop'],
-                'type_line' => $data['type_line'],
-                'color_identity' => empty($data['color_identity']) ? 'land' : implode(',', $data['color_identity']),
-                'finishes' => implode(',', $data['finishes']),
-                'set_name' => $data['set_name'],
-                'rarity' => $data['rarity'],
-                'frame_effects' => isset($data['frame_effects']) ? implode(',', $data['frame_effects']) : 'normal',
-            ];
-        })->toArray();
-
-        DataUpload::upsert($data, ['product_id'], ['product_id', 'quantity', 'price_each', 'printing',]);
-        Product::upsert($apiData, ['tcgplayer_id'], ['tcgplayer_id', 'name', 'set_name', 'normal', 'art_crop', 'type_line', 'color_identity', 'finishes', 'rarity', 'frame_effects',]);
 
         return redirect('inventory');
-
-        //return redirect()->back();
     }
 
     //Sort Quantity Function
@@ -171,15 +150,15 @@ class InventoryController extends Controller
         return redirect()->back();
     }
 
-                            // KIM
+    // KIM
     //Sold
     public function sold(Request $request, $id)
     {
 
         //SOLD POP UP STORED IN DATA TABLES OF 'Order'
         $csv = DataUpload::with('product')->find($id)->toArray();
-      
- 
+
+
         DataUpload::find($id)->update([
             'quantity' =>  (int)($csv['quantity']) -  (int)$request->quantity
         ]);
@@ -212,7 +191,7 @@ class InventoryController extends Controller
         $csv = DataUpload::find($id);
         $csv->product()->delete();
         $csv->delete();
-     
+
         return redirect()->back()->with('sucess', 'Product deleted');
     }
 }
