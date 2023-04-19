@@ -35,7 +35,7 @@ Route::get('/orders', [OrderController::class, 'orders'])->name('orders');
 
 Route::match(['post','get'],'/settings/{id?}', [SettingsController::class, 'settings'])->name('settings');
 
-Route::post('/update/{id}', [InventoryController::class, 'update'])->name('csv.update');
+Route::post('/update/{id}', [InventoryController::class, 'sold'])->name('csv.update');
 Route::post('/delete/{id}', [InventoryController::class, 'delete'])->name('csv.delete');
 
 Route::get('/',[HomeController::class,'home'])->name('home');
