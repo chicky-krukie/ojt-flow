@@ -140,17 +140,22 @@ class InventoryController extends Controller
         $csvOutput = DataUpload::find($id);
         $priceEach = $request->price_each;
 
-        // Remove all $ signs except the first one
-        while (Str::contains(substr($priceEach, 1), '$')) {
-            $priceEach = str_replace('$', '', substr_replace($priceEach, '', strpos($priceEach, '$', 1), 1));
+        if (preg_match('/^\$?\d+(\.\d{1,2})?$/', $priceEach)) {
+            if (Str::contains(substr($priceEach, 1), '$')) {
+                $priceEach = str_replace('$', '', substr_replace($priceEach, '', strpos($priceEach, '$', 1), 1));
+            }if (strpos($priceEach, '$') === false) {
+                $priceEach = '$' . $priceEach;
+                $csvOutput->update(['price_each' => $priceEach]);
+                return redirect()->back();
+            }else{
+                return redirect()->back();
+            }
+        } else {
+            return redirect()->back();
         }
 
-        $csvOutput->update(['price_each' => '$' . $priceEach]);
-
-        return redirect()->back();
     }
 
-    // KIM
     //Sold
     public function sold(Request $request, $id)
     {
