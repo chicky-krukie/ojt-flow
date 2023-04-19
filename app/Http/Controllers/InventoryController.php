@@ -177,7 +177,7 @@ class InventoryController extends Controller
     }
 
     //Sold
-    public function update(Request $request, $id)
+    public function sold(Request $request, $id)
     {
 
         //SOLD POP UP STORED IN DATA TABLES OF 'Order'
@@ -216,7 +216,7 @@ class InventoryController extends Controller
         $json = Inventory::where('uid', $uid)->firstOrFail();
         $json->delete();
 
-        return redirect()->route('inventory')->with('sucess', 'Product deleted');
+        return redirect()->route('sortQuantity')->with('sucess', 'Product deleted');
     }
 
     //Inline Edit (not working)

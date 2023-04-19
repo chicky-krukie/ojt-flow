@@ -18,8 +18,6 @@ Route::post('/importProduct', [InventoryController::class, 'importCsv']);
 //StoreData from excel into database
 Route::post('/storeCsv', [Inventory::class, 'storeCsv']);
 
-//Edit TCG Mid price
-Route::post('/update', [InventoryController::class, 'update'])->name('update');
 
 //Sort Quantity
 Route::get('/inventory', [InventoryController::class, 'sortQuantity'])->name('sortQuantity');
@@ -37,7 +35,7 @@ Route::get('/orders', [OrderController::class, 'orders'])->name('orders');
 
 Route::match(['post','get'],'/settings/{id?}', [SettingsController::class, 'settings'])->name('settings');
 
-Route::post('/update/{id}', [InventoryController::class, 'update'])->name('csv.update');
+Route::post('/update/{id}', [InventoryController::class, 'sold'])->name('csv.update');
 Route::post('/delete/{id}/{uid}', [InventoryController::class, 'delete'])->name('csv.delete');
 
 Route::get('/',[HomeController::class,'home'])->name('home');

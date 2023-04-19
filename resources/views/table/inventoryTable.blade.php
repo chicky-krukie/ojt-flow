@@ -67,52 +67,63 @@
         @push('scripts')
             <script>
                 $(document).on('change', '.quantity', function(event) {
-                            if (event.target === this) {
-                                var row = $(this).closest('.product_row')
-                                var tcg_mid = row.find('.tcg_mid').val().trim().replace('$', '');
-                                var multiplier = row.find('.multiplier').val()
-                                var quantity = $(this).val()
-                                var sold = (parseFloat(tcg_mid) * parseFloat(multiplier)) * quantity;
-                                row.find('.sold').val(sold.toLocaleString(undefined, {
-                                        minimumFractionDigits: 2,
-                                        maximumFractionDigits: 2,
-                                    }));
+                    if (event.target === this) {
+                        var row = $(this).closest('.product_row')
+                        var tcg_mid = row.find('.tcg_mid').val().trim().replace('$', '')
+                        var multiplier = row.find('.multiplier').val()
+                        var quantity = $(this).val()
+                        var sold = (parseFloat(tcg_mid) * parseFloat(multiplier)) * quantity;
+                        row.find('.sold').val(sold.toLocaleString(undefined, {
+                            minimumFractionDigits: 2,
+                            maximumFractionDigits: 2,
+                        }))
 
-                                }
-                            })
+                    }
+                })
 
-                        $(document).on('change', '.multiplier', function(event) {
-                            if (event.target === this) {
-                                var row = $(this).closest('.product_row')
-                                var tcg_mid = row.find('.tcg_mid').val().trim().replace('$', '');
-                                var multiplier = row.find('.multiplier').val();
-                                var multiplied_price = (parseFloat(tcg_mid) * parseFloat(multiplier))
-                                row.find('.multiplied_price').val(multiplied_price)
+                $(document).on('change', '.multiplier', function(event) {
+                    if (event.target === this) {
+                        var row = $(this).closest('.product_row')
+                        var multiplier = $(this).val()
+                        var tcg_mid = row.find('.tcg_mid').val().trim().replace('$', '')
+                        var multiplied_price = (parseFloat(tcg_mid) * parseFloat(multiplier))
+                        row.find('.multiplied_price').val(multiplied_price.toLocaleString(undefined, {
+                            minimumFractionDigits: 2,
+                            maximumFractionDigits: 2,
+                        }));
 
-                            }
-                        })
+                        var quantity = row.find('.quantity').val()
+                        var sold = (parseFloat(tcg_mid) * parseFloat(multiplier)) * quantity;
+                        row.find('.sold').val(sold.toLocaleString(undefined,{
+                            manimumFractionDigits: 2,
+                            maximumFractionDigits: 2,
+                            
+                        }))
+
+                    }
+                })
 
 
 
-                        $(document).on('blur', '.editable', function() {
-                            var $cell = $(this);
-                            var newValue = $cell.text();
-                            var itemId = $cell.closest('tr').data('item-id');
+                $(document).on('blur', '.editable', function() {
+                    var $cell = $(this);
+                    var newValue = $cell.text();
+                    var itemId = $cell.closest('tr').data('item-id');
 
-                            $.ajax({
-                                url: '/update-item-price/' + itemId,
-                                type: 'PUT',
-                                data: {
-                                    price: newValue
-                                },
-                                success: function(data) {
-                                    // handle successful response
-                                },
-                                error: function(xhr, status, error) {
-                                    // handle error response
-                                }
-                            });
+                    $.ajax({
+                        url: '/update-item-price/' + itemId,
+                        type: 'PUT',
+                        data: {
+                            price: newValue
+                        },
+                        success: function(data) {
+                            // handle successful response
+                        },
+                        error: function(xhr, status, error) {
+                            // handle error response
+                        }
+                    });
 
-                        });
+                });
             </script>
         @endpush

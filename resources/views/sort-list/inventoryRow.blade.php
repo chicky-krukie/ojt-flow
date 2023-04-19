@@ -81,8 +81,8 @@
 
 
             <button class="btn btn-success" data-bs-target="#edit{{ $item->uid }}" data-bs-toggle="modal"
-                data-bs-placement="top" title="Sold {{ $item->name }}" @if ($csv_outputs[$index]->quantity === 0)  disabled @endif><i
-                    class="fa fa-shopping-cart"></i></button>
+                data-bs-placement="top" title="Sold {{ $item->name }}"
+                @if ($csv_outputs[$index]->quantity === 0) disabled @endif><i class="fa fa-shopping-cart"></i></button>
 
 
             <button class="btn btn-danger" data-bs-target="#delete{{ $item->uid }}" data-bs-toggle="modal"
