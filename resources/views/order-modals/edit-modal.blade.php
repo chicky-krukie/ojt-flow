@@ -8,37 +8,25 @@
                     <span aria-hidden="true">&times;</span>
                 </button>
             </div>
-            <div class="modal-body">
 
-                <div class="mb-3">
-                    <strong>TCGPLAYER ID</strong>
-                    <input type="text" name="name" class="form-control" placeholder="Name">
+            <form action="{{ route('edit-order', $order->id) }}" method="post">
+                @csrf
+                <div class="modal-body">
+                    <div class="mb-3">
+                        <strong>Payment Status</strong>
+                        <select name="payment_status" class="form-control">
+                        @foreach ($settings['status'] as $settingStatus)
+                            <option value="{{ $settingStatus['id'] }}" @if (intval($order->payment_status) === $settingStatus['id']) selected @endif>{{ $settingStatus['status'] }}</option>
+                        @endforeach
+                        </select>
+                    </div>
                 </div>
-                <div class="mb-3">
-                    <strong>Quantity</strong>
-                    <input type="number" name="quantity" class="form-control" placeholder="quantity" value="1" min="1" max="10">
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                    <button type="submit" class="btn btn-primary">Save changes</button>
                 </div>
+            </form>
 
-                <div class="mb-3">
-                    <strong>Sold Price (Peso):</strong>
-                    <input type="text" name="sold" class="form-control">
-                </div>
-
-                <div class="mb-3">
-                    <strong>Ship price:</strong>
-                    <input type="text" name="ship_price" class="form-control" placeholder="">
-                </div>
-
-                <div class="mb-3">
-                    <strong>Ship cost:</strong>
-                    <input type="text" name="ship_cost" class="form-control" placeholder="">
-                </div>
-
-            </div>
-            <div class="modal-footer">
-                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                <button type="button" class="btn btn-primary">Save changes</button>
-            </div>
         </div>
     </div>
 </div>

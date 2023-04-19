@@ -43,7 +43,7 @@ Route::get('/',[HomeController::class,'home'])->name('home');
 
 
 Route::get('/delete-order/{id}', [OrderController::class, 'deleteOrder'])->name('delete-order');
-
+Route::post('/edit-order/{id}', [OrderController::class, 'editOrder'])->name('edit-order');
 
 
 Route::post('/import-product-from-excel', [HomeController::class, 'importProductFromExcel'])->name('importProductFromExcel');
