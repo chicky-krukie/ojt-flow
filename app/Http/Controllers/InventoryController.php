@@ -4,21 +4,25 @@ namespace App\Http\Controllers;
 
 use App\Models\Order;
 use App\Models\Counter;
+use App\Models\Product;
 use App\Models\Setting;
+use App\Models\Currency;
 use App\Models\CsvOutput;
 use App\Models\Inventory;
+use App\Models\DataUpload;
 use Illuminate\Support\Str;
 use Illuminate\Http\Request;
+
+use App\Models\PaymentMethod;
+
+use App\Models\PaymentStatus;
 use App\Imports\CounterImport;
 use Illuminate\Support\Carbon;
+
 use App\Imports\InventoryImport;
-
+use App\Imports\DataUploadImport;
 use Illuminate\Support\Facades\DB;
-
-use App\Models\Currency;
-use App\Models\PaymentMethod;
-use App\Models\PaymentStatus;
-
+use Illuminate\Support\Facades\Http;
 use Maatwebsite\Excel\Facades\Excel;
 
 class InventoryController extends Controller
@@ -31,63 +35,57 @@ class InventoryController extends Controller
         $settings['method'] =  PaymentMethod::get()->toArray();
         $settings['status'] =  PaymentStatus::get()->toArray();
         $settings['currency_option'] =  Currency::get(['id', 'currency_name', 'symbol'])->toArray();
-        // dd($settings);
-        // import
 
-        $product = Inventory::all();
-        $csv = CsvOutput::all();
-        $order = Order::all();
-
-        return view('inventory', [
-            'inventories' => $product, 'csv_outputs' => $csv,
-            'orders' => $order, 'settings' => $settings,
-        ]);
+        //$inventories = DataUpload::all();
+        $inventories = DataUpload::with('product')->get()->toArray();
+        //dd($inventories);
+        return view('inventory')->with(compact('inventories', 'settings'));
+        // return view('inventory', [
+        //     'inventories' => $product, 'csv_outputs' => $csv,
+        //     'orders' => $order, 'settings' => $settings,
+        // ]);
     }
 
     //Import CSV
     public function importCsv(Request $request)
     {
-        // $validatedData = $request->validate([
-        //     'file' => 'required',
-        // ], [
-        //     'file.required' => 'this file required'
-        // ]);
 
-        // $delete = Counter::all();
-        // foreach ($delete as $del) {
-        //     $del->delete();
-        // }
-
-        // Excel::import(new InventoryImport, $request->file('file'));
-        // Excel::import(new CounterImport, $request->file('file'));
-        // $inventory = app(Inventory::class);
-        // return $inventory->storeCsv();
-
-        $validatedData = $request->validate([
+        $request->validate([
             'file' => 'required|mimes:csv,text',
         ], [
             'file.required' => ['Required CSV File', 'Please double-check that you are submitting a CSV (Comma Separated Values) file before clicking submit. Any other file formats will not be accepted.'],
             'file.mimes' => ['The file must be a CSV', 'Please ensure that the file you upload is in CSV (Comma Separated Values) format. Only CSV files are accepted.'],
         ]);
 
-        $delete = Counter::all();
-        foreach ($delete as $del) {
-            $del->delete();
-        }
+        $path = $request->file('file')->getRealPath();
+        $data = Excel::toArray(new DataUploadImport, $path)[0];
 
-        Excel::import(new InventoryImport, $request->file('file'));
-        Excel::import(new CounterImport, $request->file('file'));
+        $dataIds = collect($data)->pluck('product_id')->toArray();
 
-        // Calculate the total values and save them to the database
-        $csv_outputs = CsvOutput::all();
-        foreach ($csv_outputs as $csv_output) {
-            $total = floatval($csv_output->quantity) * floatval(preg_replace('/[^-0-9\.]/', '', $csv_output->price_each));
-            $csv_output->total = $total;
-            $csv_output->save();
-        }
+        $apiData = collect($dataIds)->map(function ($id) {
+            $response = Http::get('https://api.scryfall.com/cards/tcgplayer/' . $id);
+            $data = $response->json();
 
-        $inventory = app(Inventory::class);
-        return $inventory->storeCsv();
+            return [
+                'tcgplayer_id' => isset($data['tcgplayer_id']) ? $data['tcgplayer_id'] : $data['tcgplayer_etched_id'],
+                'name' => $data['name'],
+                'normal' => $data['image_uris']['normal'],
+                'art_crop' => $data['image_uris']['art_crop'],
+                'type_line' => $data['type_line'],
+                'color_identity' => empty($data['color_identity']) ? 'land' : implode(',', $data['color_identity']),
+                'finishes' => implode(',', $data['finishes']),
+                'set_name' => $data['set_name'],
+                'rarity' => $data['rarity'],
+                'frame_effects' => isset($data['frame_effects']) ? implode(',', $data['frame_effects']) : 'normal',
+            ];
+        })->toArray();
+
+        DataUpload::upsert($data, ['product_id'], ['product_id', 'quantity', 'price_each', 'printing',]);
+        Product::upsert($apiData, ['tcgplayer_id'], ['tcgplayer_id', 'name', 'set_name', 'normal', 'art_crop', 'type_line', 'color_identity', 'finishes', 'rarity', 'frame_effects',]);
+
+        return redirect('inventory');
+
+        //return redirect()->back();
     }
 
     //Sort Quantity Function
@@ -122,17 +120,16 @@ class InventoryController extends Controller
                 // handle invalid condition
                 break;
         }
-        $inventories = Inventory::all();
-        $csv_outputs = CsvOutput::all();
 
+        $inventories = DataUpload::with('product')->get()->toArray();
         return view('inventory')
-            ->with(compact('inventories', 'csv_outputs', 'condition', 'value', 'settings'));
+            ->with(compact('inventories', 'condition', 'value', 'settings'));
     }
 
     //Increment QTY
     public function up(Request $request, $id)
     {
-        $csvOutput = CsvOutput::find($id);
+        $csvOutput = DataUpload::find($id);
 
         if ($csvOutput) {
             $csvOutput->increment('quantity', 1);
@@ -144,7 +141,7 @@ class InventoryController extends Controller
     //Decrement QTY
     public function down(Request $request, $id)
     {
-        $csvOutput = CsvOutput::find($id);
+        $csvOutput = DataUpload::find($id);
 
         if ($csvOutput) {
             if ($csvOutput->quantity <= 0) {
@@ -161,7 +158,7 @@ class InventoryController extends Controller
     public function edit(Request $request, $id)
     {
 
-        $csvOutput = CsvOutput::find($id);
+        $csvOutput = DataUpload::find($id);
         $priceEach = $request->price_each;
 
         // Remove all $ signs except the first one
@@ -171,24 +168,27 @@ class InventoryController extends Controller
 
         $csvOutput->update(['price_each' => '$' . $priceEach]);
 
-
-
         return redirect()->back();
     }
 
+                            // KIM
     //Sold
-    public function update(Request $request, $id)
+    public function sold(Request $request, $id)
     {
 
         //SOLD POP UP STORED IN DATA TABLES OF 'Order'
-        $csv = CsvOutput::with('inventory')->find($id)->toArray();
-
+        $csv = DataUpload::with('product')->find($id)->toArray();
+      
+ 
+        DataUpload::find($id)->update([
+            'quantity' =>  (int)($csv['quantity']) -  (int)$request->quantity
+        ]);
         $orders = new Order;
 
         $orders->sold_date = Carbon::now()->format('Y/m/d');
         $orders->sold_to = $request->name;
-        $orders->card_name = $csv['inventory']['name'];
-        $orders->set = $csv['inventory']['set'];
+        $orders->card_name = $csv['product']['name'];
+        $orders->set = $csv['product']['set_name'];
         $orders->finish = $csv['printing'];
         $orders->tcg_mid = $csv['price_each'];
         $orders->qty = $request->quantity;
@@ -207,26 +207,12 @@ class InventoryController extends Controller
     }
 
     //Delete Row
-    public function delete($id, $uid)
+    public function delete($id)
     {
-        $csv = CsvOutput::find($id);
+        $csv = DataUpload::find($id);
+        $csv->product()->delete();
         $csv->delete();
-
-        // Delete a row from the Inventory table
-        $json = Inventory::where('uid', $uid)->firstOrFail();
-        $json->delete();
-
-        return redirect()->route('inventory')->with('sucess', 'Product deleted');
-    }
-
-    //Inline Edit (not working)
-    public function updatePrice(Request $request)
-    {
-        if ($request->ajax()) {
-            CsvOutput::find($request->pk)->update([
-                $request->name => $request->value
-            ]);
-            return response()->json(['success' => true]);
-        }
+     
+        return redirect()->back()->with('sucess', 'Product deleted');
     }
 }

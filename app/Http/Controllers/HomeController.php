@@ -17,10 +17,10 @@ class HomeController extends Controller
 {
     public function home()
     {
-        $inventories = DataUpload::with('product')->get()->toArray();
-        // echo '<pre>'; print_r($inventories); die;
+        // $inventories = DataUpload::with('product')->get()->toArray();
+        // return view('home')->with(compact('inventories'));
 
-        return view('home')->with(compact('inventories'));
+        return "hello world";
     }
 
     public function importProductFromExcel(Request $request)
@@ -58,12 +58,6 @@ class HomeController extends Controller
                 'frame_effects' => isset($data['frame_effects']) ? implode(',', $data['frame_effects']) : 'normal',
             ];
         })->toArray();
-
-
-        // echo '<pre>';
-        // print_r($apiData);
-        // die;
-
 
 
         DataUpload::upsert($data, ['product_id'], ['product_id', 'quantity', 'price_each', 'printing',]);

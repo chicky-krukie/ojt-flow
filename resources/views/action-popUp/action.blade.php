@@ -1,12 +1,12 @@
 <!-- Sold Modal -->
-<div class="modal fade" id="edit{{ $item->uid }}" tabindex="-1" aria-labelledby="myModalLabel" aria-hidden="true">
+<div class="modal fade" id="edit{{ $item['id'] }}" tabindex="-1" aria-labelledby="myModalLabel" aria-hidden="true">
     <div class="modal-dialog">
         <div class="modal-content">
             <div class="modal-header">
-                <h5 class="modal-title" id="myModalLabel">{{ $item->name }} Sold</h5>
+                <h5 class="modal-title" id="myModalLabel">{{ $item['product']['name'] }} Sold</h5>
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
-            <form action="{{ route('csv.update', $item->uid) }}" method="post" enctype="multipart/form-data">
+            <form action="{{ route('csv.update', $item['id']) }}" method="post" enctype="multipart/form-data">
                 @csrf
                 <div class="modal-body">
                     <div class="mb-3">
@@ -17,7 +17,7 @@
                         <strong>Quantity</strong>
                         <input type="number" name="quantity" 
                             class="form-control quantity" placeholder="quantity" value="1" min="1"
-                            max="{{ $csv_outputs[$index]->quantity }}" data-row="{{ $item->uid }}">
+                            max="{{ $item['quantity'] }}" data-row="{{ $item['id'] }}">
                     </div>
 
                     <strong>Sold Price:</strong>
@@ -30,7 +30,7 @@
                             @endforeach
                         </div>
                         <input type="text" name="sold"
-                            value="{{ number_format(floatval(preg_replace('/[^-0-9\.]/', '', $csv_outputs[$index]->price_each)) * floatval($settings['multiplier_default']), 2, '.', ',')  }}"
+                            value="{{ number_format(floatval(preg_replace('/[^-0-9\.]/', '', $item['price_each'])) * floatval($settings['multiplier_default']), 2, '.', ',')  }}"
                             class="form-control sold">
                             
                     </div>
@@ -84,7 +84,7 @@
                     <div class="mb-3 input-group">
                         <div class="input-group-text">₱</div>
                         <input type="text" name="multiplied_price"
-                            value="{{ floatval($settings['multiplier_default']) * floatval(preg_replace('/[^-0-9\.]/', '', $csv_outputs[$index]->price_each)) }}"
+                            value="{{ floatval($settings['multiplier_default']) * floatval(preg_replace('/[^-0-9\.]/', '', $item['price_each'])) }}"
                             class="form-control multiplied_price" placeholder="">
                     </div>
 
@@ -96,7 +96,7 @@
                                     {{ $currency['symbol'] }}
                                 @endif
                             @endforeach
-                            {{ floatval($settings['multiplier_cost']) * floatval(preg_replace('/[^-0-9\.]/', '', $csv_outputs[$index]->price_each)) }}
+                            {{ floatval($settings['multiplier_cost']) * floatval(preg_replace('/[^-0-9\.]/', '', $item['price_each'])) }}
                         </div>
                     </div>
 
@@ -121,7 +121,7 @@
 </div>
 
 <!-- Delete Modal -->
-<div class="modal fade" id="delete{{ $item->uid }}" tabindex="-1" aria-labelledby="myModalLabel"
+<div class="modal fade" id="delete{{ $item['id'] }}" tabindex="-1" aria-labelledby="myModalLabel"
     aria-hidden="true">
     <div class="modal-dialog">
         <div class="modal-content">
@@ -129,7 +129,7 @@
                 <h5 class="modal-title" id="myModalLabel">Delete Row</h5>
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
-            <form action="{{ route('csv.delete', ['id' => $csv_outputs[$index]->id, 'uid' => $item->uid]) }}"
+            <form action="{{ route('csv.delete', ['id' => $item['id']]) }}"
                 method="post" enctype="multipart/form-data">
 
                 @csrf
