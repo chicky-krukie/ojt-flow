@@ -133,6 +133,8 @@ class InventoryController extends Controller
         return redirect()->back();
     }
 
+
+    
     //Edit Price
     public function edit(Request $request, $id)
     {
