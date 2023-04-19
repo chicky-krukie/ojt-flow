@@ -4,10 +4,12 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Spatie\Activitylog\LogOptions;
+use Spatie\Activitylog\Traits\LogsActivity;
 
 class DataUpload extends Model
 {
-    use HasFactory;
+    use HasFactory, LogsActivity;
 
     protected $fillable = [
         'multiplier_default',
@@ -18,6 +20,23 @@ class DataUpload extends Model
         'printing',
         'total',
     ];
+
+    protected static $logAttributes = ['product_id','quantity','price_each'];
+    protected static $ignoreChangeAttributes = ['product_id','quantity','price_each'];
+    protected static $recordEvents = ['created','updated','deleted'];
+
+    public function getDescriptionForEvent(string $eventName): string
+    {
+        return "Card have been {$eventName}";
+    }
+
+    public function getActivitylogOptions(): LogOptions
+    {
+        return LogOptions::defaults()
+        ->logOnly(['product_id','quantity','price_each'])
+        ->logOnlyDirty();
+        // Chain fluent methods for configuration options
+    }
 
     public function product()
     {
