@@ -140,14 +140,18 @@ class InventoryController extends Controller
         $csvOutput = DataUpload::find($id);
         $priceEach = $request->price_each;
 
-        // Remove all $ signs except the first one
-        while (Str::contains(substr($priceEach, 1), '$')) {
-            $priceEach = str_replace('$', '', substr_replace($priceEach, '', strpos($priceEach, '$', 1), 1));
+        if (preg_match('/^\$?\d+(\.\d{1,2})?$/', $priceEach)) {
+            // The input is a float with one or zero dollar signs and two or zero decimal places
+            while (Str::contains(substr($priceEach, 1), '$')) {
+                $priceEach = str_replace('$', '', substr_replace($priceEach, '', strpos($priceEach, '$', 1), 1));
+            }
+
+            $csvOutput->update(['price_each' => $priceEach]);
+            return redirect()->back();
+        } else {
+            // The input is not in the correct format, return an error message
+            return redirect()->back();
         }
-
-        $csvOutput->update(['price_each' => '$' . $priceEach]);
-
-        return redirect()->back();
     }
 
     // KIM
