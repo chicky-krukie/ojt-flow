@@ -26,8 +26,6 @@ return new class extends Migration
             $table->string('ship_cost')->nullable();
             $table->string('payment_status')->nullable();
             $table->string('payment_method')->nullable();
-            // $table->string('multiplier_default')->nullable();
-            $table->string('name')->nullable();
             $table->string('note')->nullable();
             $table->string('ship_price')->nullable();
             $table->string('tcgplacer_id')->nullable();
