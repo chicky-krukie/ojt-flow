@@ -1,6 +1,6 @@
         {{-- Table --}}
         <div class="container-fluid px-5">
-            @if (isset($inventories) && $inventories->count() > 0)
+            @if (isset($inventories) && count($inventories) > 0)
                 <div class="table-responsive-md">
                     <table class="table table-hover" id="ojt_flow">
                         <thead>
@@ -22,26 +22,26 @@
                             </tr>
                         </thead>
                         <tbody>
-                            @foreach ($inventories as $index => $item)
+                            @foreach ($inventories as $item)
                                 {{-- Quantity Sorting --}}
                                 @if ($condition == '=')
-                                    @if ($csv_outputs[$index]->quantity == $value)
+                                    @if ($item['quantity'] == $value)
                                         @include('sort-list.inventoryRow')
                                     @endif
                                 @elseif ($condition == '<')
-                                    @if ($csv_outputs[$index]->quantity < $value)
+                                    @if ($item['quantity'] < $value)
                                         @include('sort-list.inventoryRow')
                                     @endif
                                 @elseif ($condition == '<=')
-                                    @if ($csv_outputs[$index]->quantity <= $value)
+                                    @if ($item['quantity'] <= $value)
                                         @include('sort-list.inventoryRow')
                                     @endif
                                 @elseif ($condition == '>')
-                                    @if ($csv_outputs[$index]->quantity > $value)
+                                    @if ($item['quantity'] > $value)
                                         @include('sort-list.inventoryRow')
                                     @endif
                                 @elseif ($condition == '>=')
-                                    @if ($csv_outputs[$index]->quantity >= $value)
+                                    @if ($item['quantity'] >= $value)
                                         @include('sort-list.inventoryRow')
                                     @endif
                                 @else
