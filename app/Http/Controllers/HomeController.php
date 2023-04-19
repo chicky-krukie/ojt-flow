@@ -12,11 +12,14 @@ use Illuminate\Contracts\Session\Session;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Http;
 use Maatwebsite\Excel\Facades\Excel;
+use Spatie\Activitylog\Models\Activity;
 
 class HomeController extends Controller
 {
     public function home()
     {
+        $logs = Activity::get()->toArray();
+        dd($logs);
         // $inventories = DataUpload::with('product')->get()->toArray();
         // return view('home')->with(compact('inventories'));
 

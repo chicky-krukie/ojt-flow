@@ -22,12 +22,19 @@ class DataUpload extends Model
     ];
 
     protected static $logAttributes = ['product_id','quantity','price_each'];
+    protected static $ignoreChangeAttributes = ['product_id','quantity','price_each'];
     protected static $recordEvents = ['created','updated','deleted'];
+
+    public function getDescriptionForEvent(string $eventName): string
+    {
+        return "Card have been {$eventName}";
+    }
 
     public function getActivitylogOptions(): LogOptions
     {
         return LogOptions::defaults()
-        ->logOnly(['name', 'text']);
+        ->logOnly(['product_id','quantity','price_each'])
+        ->logOnlyDirty();
         // Chain fluent methods for configuration options
     }
 
