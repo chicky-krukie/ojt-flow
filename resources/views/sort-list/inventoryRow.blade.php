@@ -3,16 +3,18 @@
 
     {{-- Get art_crop and normal image link --}}
     <td>
-        <img src="{{ $item['product']['art_crop'] }}" alt="{{ $item['product']['name'] }}" class="thumbnail align-middle"
-            onmouseenter="this.src='{{ $item['product']['normal'] }}'"
-            onmouseleave="this.src='{{ $item['product']['art_crop'] }}'">
+        @if ($item['product']['art_crop'] !== null && $item['product']['normal'] !== null)
+            <img src="{{ $item['product']['art_crop'] }}" alt="{{ $item['product']['name'] }}"
+                class="thumbnail align-middle" onmouseenter="this.src='{{ $item['product']['normal'] }}'"
+                onmouseleave="this.src='{{ $item['product']['art_crop'] }}'">
+        @endif
     </td>
 
     <td class="align-middle">{{ $item['product']['name'] }}</td>
 
     <td class="align-middle">{{ $item['product']['color_identity'] }}</td>
 
-    <td class="align-middle">{{  $item['product']['type_line'] }}</td>
+    <td class="align-middle">{{ $item['product']['type_line'] }}</td>
 
     <td class="align-middle">{{ $item['product']['frame_effects'] }}</td>
 
@@ -44,8 +46,7 @@
             @method('PUT')
             @csrf
             <div class="input-group">
-                <input name="price_each" value="{{ $item['price_each'] }}" type="text"
-                    class="form-control tcg_mid">
+                <input name="price_each" value="{{ $item['price_each'] }}" type="text" class="form-control tcg_mid">
                 <button type="submit" class="btn btn-primary" data-bs-toggle="tooltip" data-bs-placement="top"
                     title="Save Price"><i class="fa fa-save"></i></button>
             </div>
@@ -68,12 +69,13 @@
 
 
             <button class="btn btn-success" data-bs-target="#edit{{ $item['id'] }}" data-bs-toggle="modal"
-                data-bs-placement="top" title="Sold {{ $item['product']['name'] }}" @if ($item['quantity'] === 0)  disabled @endif><i
-                    class="fa fa-shopping-cart"></i></button>
+                data-bs-placement="top" title="Sold {{ $item['product']['name'] }}"
+                @if ($item['quantity'] === 0) disabled @endif><i class="fa fa-shopping-cart"></i></button>
 
 
             <button class="btn btn-danger" data-bs-target="#delete{{ $item['id'] }}" data-bs-toggle="modal"
-                data-bs-placement="top" title="Delete {{ $item['product']['name'] }}"><i class="fa fa-trash"></i></button>
+                data-bs-placement="top" title="Delete {{ $item['product']['name'] }}"><i
+                    class="fa fa-trash"></i></button>
             @include('action-popUp.action')
         </div>
     </td>
