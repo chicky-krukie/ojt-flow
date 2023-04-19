@@ -173,7 +173,7 @@ class InventoryController extends Controller
 
                             // KIM
     //Sold
-    public function update(Request $request, $id)
+    public function sold(Request $request, $id)
     {
 
         //SOLD POP UP STORED IN DATA TABLES OF 'Order'
