@@ -89,7 +89,7 @@
             <tbody>
             @foreach ($orders as $order)
                 <tr>
-                    <th><input type="checkbox"></th>
+                    <th><input data-id="{{ $order->id }}" class="orderCheckbox" type="checkbox"></th>
                     <td>{{ $order->sold_date }}</td>
                     <td>{{ $order->sold_to }}</td>
                     <td>{{ $order->card_name }}</td>
@@ -157,7 +157,6 @@
     <script>
         $('#order-table').DataTable({
             "lengthMenu": [50, 100, 200, 500],
-
-        })
+        });
     </script>
 @endsection
