@@ -10,7 +10,7 @@ use App\Http\Controllers\InventoryController;
 use App\Http\Controllers\CurrencyController;
 
 //Display Inventory Table
-Route::get('/inventory', [InventoryController::class, 'inventoryTable'])->name('inventory');
+Route::get('/inventory1', [InventoryController::class, 'inventoryTable'])->name('inventory');
 
 //Import CSV file
 Route::post('/importProduct', [InventoryController::class, 'importCsv'])->name('importProductFromCsv');;
