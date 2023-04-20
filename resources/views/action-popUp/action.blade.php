@@ -1,6 +1,6 @@
 <!-- Sold Modal -->
 <div class="modal fade" id="edit{{ $item['id'] }}" tabindex="-1" aria-labelledby="myModalLabel" aria-hidden="true">
-    <div class="modal-dialog modal-lg">
+    <div class="modal-dialog modal-dialog-centered modal-lg">
         <div class="modal-content">
             <div class="modal-header">
                 <h5 class="modal-title" id="myModalLabel">{{ $item['product']['name'] }} Sold</h5>
@@ -64,7 +64,7 @@
 
                             <div class="mb-3">
                                 <input type="text" name="payment_status"
-                                    value="{{ $settings['status'][2]['status'] }}" class="hidden d-none">
+                                    value="{{ $settings['status'][2]['id'] }}" class="hidden d-none">
                             </div>
                         </div>
 
@@ -114,57 +114,11 @@
                             </div>
                         </div>
 
-                        <input type="text" name="ship_cost" value="0" class="form-control" placeholder="">
+
+                        
                     </div>
 
-                    <div class="mb-3">
-                        <input type="text" name="payment_status" value="{{ $settings['status'][2]['id'] }}"
-                            class="hidden d-none">
-                    </div>
-
-                    <div class="mb-3">
-                        <strong>Payment Method</strong>
-                        <select required name="payment_methods" class="form-control">
-                            <option value="" disabled selected hidden>Enter your mode of payment</option>
-                            @foreach ($settings['method'] as $setting)
-                                <option value="{{ $setting['method'] }}">{{ $setting['method'] }}</option>
-                            @endforeach
-                        </select>
-                    </div>
-
-                    <div class="mb-3">
-                        <strong>Multiplier:</strong>
-                        <input type="number" name="multiplier" value="{{ $settings['multiplier_default'] }}"
-                            class="form-control multiplier" min="1" max="60">
-                    </div>
-
-                    <strong>Multiplied Price:</strong>
-                    <div class="mb-3 input-group">
-                        <div class="input-group-text">₱</div>
-                        <input type="text" name="multiplied_price"
-                            value="{{ floatval($settings['multiplier_default']) * floatval(preg_replace('/[^-0-9\.]/', '', $item['price_each'])) }}"
-                            class="form-control multiplied_price" placeholder="">
-                    </div>
-
-                    <strong>Estimated Card Cost:</strong>
-                    <div class="mb-3 input-group">
-                        <div class="input-group-text">
-                            @foreach ($settings['currency_option'] as $currency)
-                                @if ($settings['estimated_card_cost'] === $currency['id'])
-                                    {{ $currency['symbol'] }}
-                                @endif
-                            @endforeach
-                            {{ floatval($settings['multiplier_cost']) * floatval(preg_replace('/[^-0-9\.]/', '', $item['price_each'])) }}
-                        </div>
-                    </div>
-
-
-                    <div class="mb-3">
-                        <strong>Note:</strong>
-                        <input type="text" name="note" value="" class="form-control"
-                            placeholder="Enter the note">
-                    </div>
-
+                  
                 </div>
 
                 {{-- fotter button --}}

@@ -12,6 +12,11 @@
                     <input type="file" name="file" id="importFile" class="form-control col-8 w-75 mr-2">
                     <button type="submit" id="submit" class="btn btn-success col-2 w-auto ">Import CSV</button>
                 </form>
+                @if (Cache::get('csv_import_progress') !== null)
+                   
+                    <p>Rows processed: {{ Cache::get('csv_import_progress')['processed'] }}</p>
+                    <p>Total time: {{ Cache::get('totalTime')}} </p>
+                @endif
             </div>
 
             {{-- Error handler for file import --}}

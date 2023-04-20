@@ -17,6 +17,7 @@ use Illuminate\Support\Carbon;
 use App\Imports\InventoryImport;
 use App\Imports\DataUploadImport;
 use App\Jobs\ProcessCsvImport;
+use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\DB;
 use Maatwebsite\Excel\Facades\Excel;
 
@@ -33,7 +34,7 @@ class InventoryController extends Controller
 
         //$inventories = DataUpload::all();
         $inventories = DataUpload::with('product')->get()->toArray();
-        //dd($inventories);
+        // dd($inventories);
         return view('inventory')->with(compact('inventories', 'settings'));
     }
 
@@ -59,6 +60,9 @@ class InventoryController extends Controller
     //Sort Quantity Function
     public function sortQuantity(Request $request)
     {
+        Cache::forget('totalTime');
+        Cache::forget('csv_import_progress');
+        
         $condition = $request->input('condition');
         $value = $request->input('value');
 
@@ -130,6 +134,7 @@ class InventoryController extends Controller
 
         $csvOutput = DataUpload::find($id);
         $priceEach = $request->price_each;
+
 
         // Remove any non-numeric characters except decimal point
         $priceEach = preg_replace('/[^0-9\.]/', '', $priceEach);
