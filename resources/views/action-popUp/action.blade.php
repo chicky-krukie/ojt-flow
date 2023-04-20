@@ -11,7 +11,7 @@
                 <div class="modal-body">
                     <div class="mb-3">
                         <strong>Name:</strong>
-                        <input type="text" name="name" class="form-control" placeholder="Name">
+                        <input required type="text" name="name" class="form-control" placeholder="Name">
                     </div>
                     <div class="mb-3">
                         <strong>Quantity</strong>
@@ -66,7 +66,7 @@
 
                     <div class="mb-3">
                         <strong>Payment Method</strong>
-                        <select name="payment_methods" class="form-control">
+                        <select required name="payment_methods" class="form-control">
                             <option value="" disabled selected hidden>Enter your mode of payment</option>
                             @foreach ($settings['method'] as $setting)
                                 <option value="{{ $setting['method'] }}">{{ $setting['method'] }}</option>

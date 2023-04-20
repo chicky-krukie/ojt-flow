@@ -29,7 +29,7 @@
                 <p><b>Payment Status </b></p>
                 <select name="payment_status" class="form-control">
                     @foreach ($settings['status'] as $settingStatus)
-                    <option value="{{ $settingStatus['id'] }}" @if ($settings['payment_status']['id']===$settingStatus['id']) selected @endif>{{ $settingStatus['status'] }}</option>
+                        <option value="{{ $settingStatus['id'] }}" @if ($settings['payment_status']['id']===$settingStatus['id']) selected @endif>{{ $settingStatus['status'] }}</option>
                     @endforeach
                 </select>
             </div>
@@ -56,7 +56,7 @@
                 <p>TCG Low</p>
                 <select name="tcg_low" class="form-control">
                     @foreach ($settings['currency_option'] as $settingCurrency)
-                    <option value="{{ $settingCurrency['id'] }}" @if ($settings['tcg_low']===$settingCurrency['id']) selected @endif>{{ $settingCurrency['symbol'] }}</option>
+                        <option value="{{ $settingCurrency['id'] }}" @if ($settings['tcg_low']===$settingCurrency['id']) selected @endif>{{ $settingCurrency['symbol'] }}</option>
                     @endforeach
                 </select>
 
