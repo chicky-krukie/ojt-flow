@@ -55,20 +55,22 @@
                 <br>
                 <div class="container">
                     <div class="row justify-content-center align-items-center">
-                      <div class="col-lg-8 text-center p-5">
-                        <img src="https://icon-library.com/images/no-data-icon/no-data-icon-0.jpg" alt="" style="widows: 100px; height: 100px;">
-                        <br>
-                        <br>
-                        <h1>No data found. Please insert a CSV file.</h1>
-                      </div>
+                        <div class="col-lg-8 text-center p-5">
+                            <img src="https://icon-library.com/images/no-data-icon/no-data-icon-0.jpg" alt=""
+                                style="widows: 100px; height: 100px;">
+                            <br>
+                            <br>
+                            <h1>No data found. Please insert a CSV file.</h1>
+                        </div>
                     </div>
-                  </div>                  
+                </div>
             @endif
         </div>
         <script>
             $('#ojt_flow').DataTable({
                 "lengthMenu": [50, 100, 200, 500],
                 scrollY: 580,
+                stateSave: true,
             })
         </script>
 
@@ -103,10 +105,10 @@
 
                         var quantity = row.find('.quantity').val()
                         var sold = (parseFloat(tcg_mid) * parseFloat(multiplier)) * quantity;
-                        row.find('.sold').val(sold.toLocaleString(undefined,{
+                        row.find('.sold').val(sold.toLocaleString(undefined, {
                             manimumFractionDigits: 2,
                             maximumFractionDigits: 2,
-                            
+
                         }))
 
                     }

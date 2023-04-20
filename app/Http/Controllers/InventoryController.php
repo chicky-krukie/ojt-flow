@@ -90,7 +90,6 @@ class InventoryController extends Controller
         }
 
         $inventories = DataUpload::with('product')->get()->toArray();
-        // dd($inventories);
         return view('inventory')
             ->with(compact('inventories', 'condition', 'value', 'settings'));
     }
@@ -136,7 +135,7 @@ class InventoryController extends Controller
         $priceEach = preg_replace('/[^0-9\.]/', '', $priceEach);
 
         // Convert to float
-        $priceEach = floatval($priceEach);
+        $priceEach = number_format(floatval($priceEach), 2, '.', '');
 
         $csvOutput->update(['price_each' => $priceEach]);
         return redirect()->back();
