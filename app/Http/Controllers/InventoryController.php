@@ -17,6 +17,7 @@ use Illuminate\Support\Carbon;
 use App\Imports\InventoryImport;
 use App\Imports\DataUploadImport;
 use App\Jobs\ProcessCsvImport;
+use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\DB;
 use Maatwebsite\Excel\Facades\Excel;
 use Spatie\Activitylog\Models\Activity;
@@ -27,6 +28,7 @@ class InventoryController extends Controller
     //Inventory Table Function
     public function inventoryTable()
     {
+
         $settings = Setting::with('paymentMethods', 'paymentStatus', 'currency')->first()->toArray();
         $settings['method'] =  PaymentMethod::get()->toArray();
         $settings['status'] =  PaymentStatus::get()->toArray();
@@ -34,7 +36,7 @@ class InventoryController extends Controller
 
         //$inventories = DataUpload::all();
         $inventories = DataUpload::with('product')->get()->toArray();
-   
+
         return view('inventory')->with(compact('inventories', 'settings'));
     }
 
@@ -54,13 +56,16 @@ class InventoryController extends Controller
 
         ProcessCsvImport::dispatch($data);
 
+        // Cache::forget('totalTime');
+        // Cache::forget('csv_import_progress');
+
         return redirect('inventory');
     }
 
     //Sort Quantity Function
     public function sortQuantity(Request $request)
     {
-        
+
         $condition = $request->input('condition');
         $value = $request->input('value');
 
@@ -133,6 +138,7 @@ class InventoryController extends Controller
 
         $csvOutput = DataUpload::find($id);
         $priceEach = $request->price_each;
+
 
         // Remove any non-numeric characters except decimal point
         $priceEach = preg_replace('/[^0-9\.]/', '', $priceEach);
