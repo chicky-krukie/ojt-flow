@@ -18,7 +18,7 @@
         foreach($settings['currency_option'] as $currency)
         {
             if($settings['tcg_mid'] === $currency['id']){
-                return $currency['symbol'].$floatNumber;
+                return $currency['symbol'].number_format($floatNumber, 2, '.', ',');
             }
         }
 
@@ -50,7 +50,7 @@
         foreach($settings['currency_option'] as $currency)
         {
             if($settings['ship_cost'] === $currency['id']){
-                return $currency['symbol'].$floatNumber;
+                return $currency['symbol'].number_format($floatNumber, 2, '.', ',');
             }
         }
     }
@@ -128,7 +128,7 @@
                 <td><b>
                     @foreach($settings['currency_option'] as $currency)
                         @if($settings['tcg_mid'] === $currency['id'])
-                            {{ $currency['symbol'].$totalTCG }}
+                            {{ $currency['symbol'].number_format($totalTCG, 2, '.', ',') }}
                         @endif
                     @endforeach
                 </b></td>
@@ -136,14 +136,14 @@
                 <td><b>
                     @foreach($settings['currency_option'] as $currency)
                         @if($settings['sold_price'] === $currency['id'])
-                            {{ $currency['symbol'].$totalSoldPrc }}
+                            {{ $currency['symbol'].number_format($totalSoldPrc, 2, '.', ',') }}
                         @endif
                     @endforeach
                 </b></td>
                 <td><b>
                     @foreach($settings['currency_option'] as $currency)
                         @if($settings['ship_cost'] === $currency['id'])
-                            {{ $currency['symbol'].$totalShip }}
+                            {{ $currency['symbol'].number_format($totalShip, 2, '.', ',') }}
                         @endif
                     @endforeach
                 </b></td>
