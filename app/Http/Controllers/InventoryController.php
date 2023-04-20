@@ -90,7 +90,7 @@ class InventoryController extends Controller
         }
 
         $inventories = DataUpload::with('product')->get()->toArray();
-        dd($inventories);
+        // dd($inventories);
         return view('inventory')
             ->with(compact('inventories', 'condition', 'value', 'settings'));
     }
