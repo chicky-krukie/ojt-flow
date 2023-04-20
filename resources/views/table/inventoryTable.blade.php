@@ -8,9 +8,9 @@
                                 <th scope="col" class="col-1 text-center">Selector</th>
                                 <th scope="col" class="text-center">Thumbnail</th>
                                 <th scope="col" class="text-center">Name</th>
-                                <th scope="col" class="text-center">Color Identity</th>
+                                <th scope="col" class="text-center width-120">Color Identity</th>
                                 <th scope="col" class="text-center">Type</th>
-                                <th scope="col" class="text-center">Frame Effects</th>
+                                <th scope="col" class="text-center width-120">Frame Effects</th>
                                 <th scope="col" class="text-center">Finish</th>
                                 <th scope="col" class="text-center">Rarity</th>
                                 <th scope="col" class="col-1 text-center"><a href="#sort" data-bs-toggle="modal"
