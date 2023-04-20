@@ -64,7 +64,7 @@
 
                             <div class="mb-3">
                                 <input type="text" name="payment_status"
-                                    value="{{ $settings['status'][2]['status'] }}" class="hidden d-none">
+                                    value="{{ $settings['status'][2]['id'] }}" class="hidden d-none">
                             </div>
                         </div>
 
