@@ -46,6 +46,12 @@
             @method('PUT')
             @csrf
             <div class="input-group">
+                {{-- Add Currency Symbol --}}
+                {{-- @foreach ($settings['currency_option'] as $currency)
+                    @if ($settings['sold_price'] === $currency['id'])
+                        {{ $currency['symbol'] }}
+                    @endif
+                @endforeach --}}
                 <input name="price_each" value="{{ $item['price_each'] }}" type="text" class="form-control tcg_mid">
                 <button type="submit" class="btn btn-primary" data-bs-toggle="tooltip" data-bs-placement="top"
                     title="Save Price"><i class="fa fa-save"></i></button>
