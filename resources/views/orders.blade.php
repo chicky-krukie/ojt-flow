@@ -22,6 +22,7 @@
     }
     
     $totalSoldPrc = 0;
+<<<<<<< HEAD
     function toFloatSoldPrc($soldPrc, &$totalSoldPrc, $settings)
     {
         $floatNumber = $soldPrc;
@@ -32,6 +33,21 @@
                 return $currency['symbol'] . $floatNumber;
             }
         }
+=======
+    function toFloatSoldPrc($soldPrc, &$totalSoldPrc, $settings){
+        $floatNumber = floatval(str_replace(',', '', $soldPrc));
+        $totalSoldPrc += $floatNumber;
+        
+
+        foreach($settings['currency_option'] as $currency)
+        {
+            if($settings['sold_price'] === $currency['id']){
+                return $currency['symbol'].number_format($floatNumber, 2, '.', ',');
+            }
+        }
+
+
+>>>>>>> 7d803b6bf76be419a7bdaf6080810afe54cb438e
     }
     
     $totalShip = 0;
