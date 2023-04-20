@@ -22,6 +22,7 @@ use Illuminate\Support\Carbon;
 use App\Imports\InventoryImport;
 use App\Imports\DataUploadImport;
 use App\Jobs\ProcessCsvImport;
+use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Http;
 use Maatwebsite\Excel\Facades\Excel;
@@ -39,7 +40,7 @@ class InventoryController extends Controller
 
         //$inventories = DataUpload::all();
         $inventories = DataUpload::with('product')->get()->toArray();
-        //dd($inventories);
+        // dd($inventories);
         return view('inventory')->with(compact('inventories', 'settings'));
         // return view('inventory', [
         //     'inventories' => $product, 'csv_outputs' => $csv,
@@ -64,12 +65,17 @@ class InventoryController extends Controller
         ProcessCsvImport::dispatch($data);
 
 
+
+
         return redirect('inventory');
     }
 
     //Sort Quantity Function
     public function sortQuantity(Request $request)
     {
+        Cache::forget('totalTime');
+        Cache::forget('csv_import_progress');
+        
         $condition = $request->input('condition');
         $value = $request->input('value');
 
@@ -134,7 +140,7 @@ class InventoryController extends Controller
     }
 
 
-    
+
     //Edit Price
     public function edit(Request $request, $id)
     {
@@ -146,19 +152,17 @@ class InventoryController extends Controller
 
             if (Str::contains(substr($priceEach, 1), '$')) {
                 $priceEach = str_replace('$', '', substr_replace($priceEach, '', strpos($priceEach, '$', 1), 1));
-            }if (strpos($priceEach, '$') === false) {
+            }
+            if (strpos($priceEach, '$') === false) {
                 $priceEach = '$' . $priceEach;
                 $csvOutput->update(['price_each' => $priceEach]);
                 return redirect()->back();
-            }else{
+            } else {
                 return redirect()->back();
             }
         } else {
             return redirect()->back();
         }
-
-
-
     }
 
     //Sold

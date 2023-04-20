@@ -7,6 +7,7 @@ use App\Models\Product;
 use Illuminate\Bus\Queueable;
 use Illuminate\Contracts\Queue\ShouldBeUnique;
 use Illuminate\Contracts\Queue\ShouldQueue;
+use Illuminate\Contracts\Session\Session;
 use Illuminate\Foundation\Bus\Dispatchable;
 use Illuminate\Queue\InteractsWithQueue;
 use Illuminate\Queue\SerializesModels;
@@ -26,9 +27,14 @@ class ProcessCsvImport implements ShouldQueue
 
     public function handle()
     {
-        ini_set('max_execution_time', 300);
+        ini_set('max_execution_time', 1000);
         $dataIds = collect($this->data)->pluck('product_id')->toArray();
         $batches = collect($this->data)->chunk(10);
+
+        // Initialize counter and start time
+        $totalCount = count($dataIds);
+        $processedCount = 0;
+        $startTime = now();
 
         foreach ($batches as $batch) {
             $dataIds = $batch->pluck('product_id')->toArray();
@@ -53,6 +59,25 @@ class ProcessCsvImport implements ShouldQueue
 
             DataUpload::upsert($batch->toArray(), ['product_id'], ['product_id', 'quantity', 'price_each', 'printing',]);
             Product::upsert($apiData, ['tcgplayer_id'], ['tcgplayer_id', 'name', 'set_name', 'normal', 'art_crop', 'type_line', 'color_identity', 'finishes', 'rarity', 'frame_effects']);
+
+            // Increment counter
+            $processedCount += $batch->count();
+
+            // Update progress in cache
+            Cache::put('csv_import_progress', [
+                'total' => $totalCount,
+                'processed' => $processedCount,
+
+            ]);
         }
+
+        // Calculate execution time
+        $hours = gmdate('H', now()->diffInSeconds($startTime));
+        $minutes = gmdate('i', now()->diffInSeconds($startTime));
+        $seconds = gmdate('s', now()->diffInSeconds($startTime));
+
+        $formattedDuration = $hours . ':' . $minutes . ':' . $seconds;
+
+        Cache::put('totalTime', $formattedDuration);
     }
 }
