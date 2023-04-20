@@ -1,5 +1,5 @@
 @php
-
+    
     $totalQty = 0;
     function toInt($qty, &$totalQty)
     {
@@ -7,8 +7,7 @@
         $totalQty += $strToInt;
         return $strToInt;
     }
-
-
+    
     $totalTCG = 0;
     function toFloatTCG($tcg, &$totalTCG, $settings)
     {
@@ -21,10 +20,8 @@
                 return $currency['symbol'].number_format($floatNumber, 2, '.', ',');
             }
         }
-
     }
-
-
+    
     $totalSoldPrc = 0;
     function toFloatSoldPrc($soldPrc, &$totalSoldPrc, $settings){
         $floatNumber = floatval(str_replace(',', '', $soldPrc));
@@ -40,10 +37,10 @@
 
 
     }
-
-
+    
     $totalShip = 0;
-    function toFloatShip($ship, &$totalShip, $settings){
+    function toFloatShip($ship, &$totalShip, $settings)
+    {
         $floatNumber = $ship;
         $totalShip += $floatNumber;
 
@@ -51,13 +48,11 @@
         {
             if($settings['ship_cost'] === $currency['id']){
                 return $currency['symbol'].number_format($floatNumber, 2, '.', ',');
+
             }
         }
     }
-
-
-
-
+    
 @endphp
 
 @extends('layout')
@@ -93,6 +88,7 @@
 
             <tbody>
                 @foreach ($orders as $order)
+
                 <tr>
                     <th><input name="order[]" value="{{ $order->id }}" type="checkbox"></th>
                     <td>{{ $order->sold_date }}</td>
@@ -168,3 +164,4 @@
 
 </script>
 @endsection
+
