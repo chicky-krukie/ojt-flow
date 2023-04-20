@@ -19,11 +19,11 @@ class HomeController extends Controller
     public function home()
     {
         $logs = Activity::get()->toArray();
-        dd($logs);
+        // dd($logs);
         // $inventories = DataUpload::with('product')->get()->toArray();
         // return view('home')->with(compact('inventories'));
 
-        return "hello world";
+        return view('home')->with(compact('logs'));
     }
 
     public function importProductFromExcel(Request $request)
