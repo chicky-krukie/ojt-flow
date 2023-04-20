@@ -27,6 +27,7 @@ class InventoryController extends Controller
     //Inventory Table Function
     public function inventoryTable()
     {
+
         $settings = Setting::with('paymentMethods', 'paymentStatus', 'currency')->first()->toArray();
         $settings['method'] =  PaymentMethod::get()->toArray();
         $settings['status'] =  PaymentStatus::get()->toArray();
@@ -54,15 +55,16 @@ class InventoryController extends Controller
 
         ProcessCsvImport::dispatch($data);
 
+        // Cache::forget('totalTime');
+        // Cache::forget('csv_import_progress');
+
         return redirect('inventory');
     }
 
     //Sort Quantity Function
     public function sortQuantity(Request $request)
     {
-        Cache::forget('totalTime');
-        Cache::forget('csv_import_progress');
-        
+
         $condition = $request->input('condition');
         $value = $request->input('value');
 
