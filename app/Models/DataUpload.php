@@ -33,8 +33,8 @@ class DataUpload extends Model
     public function getActivitylogOptions(): LogOptions
     {
         return LogOptions::defaults()
-        ->logOnly(['product_id','quantity','price_each'])
-        ->logOnlyDirty();
+        ->logOnly(['product_id','quantity','price_each']);
+        
         // Chain fluent methods for configuration options
     }
 

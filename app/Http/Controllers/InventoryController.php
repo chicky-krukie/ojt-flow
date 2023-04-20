@@ -101,6 +101,7 @@ class InventoryController extends Controller
         }
 
         $inventories = DataUpload::with('product')->get()->toArray();
+        dd($inventories);
         return view('inventory')
             ->with(compact('inventories', 'condition', 'value', 'settings'));
     }
@@ -134,7 +135,7 @@ class InventoryController extends Controller
     }
 
 
-    
+
     //Edit Price
     public function edit(Request $request, $id)
     {

@@ -157,6 +157,7 @@
     <script>
         $('#order-table').DataTable({
             "lengthMenu": [50, 100, 200, 500],
+            
         });
     </script>
 @endsection
