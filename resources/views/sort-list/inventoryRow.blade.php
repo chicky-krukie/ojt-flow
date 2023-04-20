@@ -30,7 +30,7 @@
                 @csrf
                 <button type="submit" class="btn btn-secondary btn-sm"><i class="fa fa-minus"></i></button>
             </form>
-            <span class="mx-2">{{ $item['quantity'] }}</span>
+            <span class="mx-3">{{ $item['quantity'] }}</span>
             <form method="post" action="{{ route('quantity.up', $item['id']) }}">
                 @method('PUT')
                 @csrf
@@ -41,7 +41,7 @@
 
 
     {{-- Price (Edit) --}}
-    <td class="col-1 align-middle width-200" >
+    <td class="col-1 align-middle width-200">
         <form method="post" action="{{ route('price_each.edit', $item['id']) }}">
             @method('PUT')
             @csrf
@@ -63,7 +63,7 @@
 
     <td class="align-middle text-center width-120">
         <strong>
-            ${{ floatval($item['quantity']) * floatval(preg_replace('/[^-0-9\.]/', '', $item['price_each'])) }}
+            ${{ number_format(floatval($item['quantity']) * floatval(preg_replace('/[^-0-9\.]/', '', $item['price_each'])), 2) }}
         </strong>
     </td>
 
