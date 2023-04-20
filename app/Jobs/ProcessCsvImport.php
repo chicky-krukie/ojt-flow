@@ -28,6 +28,7 @@ class ProcessCsvImport implements ShouldQueue
     public function handle()
     {
         ini_set('max_execution_time', 1000);
+
         $dataIds = collect($this->data)->pluck('product_id')->toArray();
         $batches = collect($this->data)->chunk(10);
 
@@ -57,7 +58,13 @@ class ProcessCsvImport implements ShouldQueue
                 ];
             })->toArray();
 
-            DataUpload::upsert($batch->toArray(), ['product_id'], ['product_id', 'quantity', 'price_each', 'printing',]);
+            $batch = collect($batch)->map(function ($item) {
+                $item['price_each'] = str_replace('$', '', $item['price_each']);
+                return $item;
+            })->toArray();
+
+            DataUpload::upsert($batch, ['product_id'], ['product_id', 'quantity', 'price_each', 'printing']);
+            // DataUpload::upsert($batch->toArray(), ['product_id'], ['product_id', 'quantity', 'price_each', 'printing',]);
             Product::upsert($apiData, ['tcgplayer_id'], ['tcgplayer_id', 'name', 'set_name', 'normal', 'art_crop', 'type_line', 'color_identity', 'finishes', 'rarity', 'frame_effects']);
 
             // Increment counter

@@ -3,12 +3,8 @@
 namespace App\Http\Controllers;
 
 use App\Models\Order;
-use App\Models\Counter;
-use App\Models\Product;
 use App\Models\Setting;
 use App\Models\Currency;
-use App\Models\CsvOutput;
-use App\Models\Inventory;
 use App\Models\DataUpload;
 use Illuminate\Support\Str;
 use Illuminate\Http\Request;
@@ -16,7 +12,6 @@ use Illuminate\Http\Request;
 use App\Models\PaymentMethod;
 
 use App\Models\PaymentStatus;
-use App\Imports\CounterImport;
 use Illuminate\Support\Carbon;
 
 use App\Imports\InventoryImport;
@@ -24,7 +19,6 @@ use App\Imports\DataUploadImport;
 use App\Jobs\ProcessCsvImport;
 use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\DB;
-use Illuminate\Support\Facades\Http;
 use Maatwebsite\Excel\Facades\Excel;
 
 class InventoryController extends Controller
@@ -42,10 +36,6 @@ class InventoryController extends Controller
         $inventories = DataUpload::with('product')->get()->toArray();
         // dd($inventories);
         return view('inventory')->with(compact('inventories', 'settings'));
-        // return view('inventory', [
-        //     'inventories' => $product, 'csv_outputs' => $csv,
-        //     'orders' => $order, 'settings' => $settings,
-        // ]);
     }
 
     //Import CSV
@@ -63,9 +53,6 @@ class InventoryController extends Controller
         $data = Excel::toArray(new DataUploadImport, $path)[0];
 
         ProcessCsvImport::dispatch($data);
-
-
-
 
         return redirect('inventory');
     }
@@ -148,21 +135,15 @@ class InventoryController extends Controller
         $csvOutput = DataUpload::find($id);
         $priceEach = $request->price_each;
 
-        if (preg_match('/^\$?\d+(\.\d{1,2})?$/', $priceEach)) {
 
-            if (Str::contains(substr($priceEach, 1), '$')) {
-                $priceEach = str_replace('$', '', substr_replace($priceEach, '', strpos($priceEach, '$', 1), 1));
-            }
-            if (strpos($priceEach, '$') === false) {
-                $priceEach = '$' . $priceEach;
-                $csvOutput->update(['price_each' => $priceEach]);
-                return redirect()->back();
-            } else {
-                return redirect()->back();
-            }
-        } else {
-            return redirect()->back();
-        }
+        // Remove any non-numeric characters except decimal point
+        $priceEach = preg_replace('/[^0-9\.]/', '', $priceEach);
+
+        // Convert to float
+        $priceEach = number_format(floatval($priceEach), 2, '.', '');
+
+        $csvOutput->update(['price_each' => $priceEach]);
+        return redirect()->back();
     }
 
     //Sold

@@ -5,22 +5,22 @@
     <td>
         @if ($item['product']['art_crop'] !== null && $item['product']['normal'] !== null)
             <img src="{{ $item['product']['art_crop'] }}" alt="{{ $item['product']['name'] }}"
-                class="thumbnail align-middle" onmouseenter="this.src='{{ $item['product']['normal'] }}'"
+                class="thumbnail align-middle text-center" onmouseenter="this.src='{{ $item['product']['normal'] }}'"
                 onmouseleave="this.src='{{ $item['product']['art_crop'] }}'">
         @endif
     </td>
 
-    <td class="align-middle">{{ $item['product']['name'] }}</td>
+    <td class="align-middle text-center">{{ $item['product']['name'] }}</td>
 
-    <td class="align-middle">{{ $item['product']['color_identity'] }}</td>
+    <td class="align-middle text-center">{{ $item['product']['color_identity'] }}</td>
 
-    <td class="align-middle">{{ $item['product']['type_line'] }}</td>
+    <td class="align-middle text-center">{{ $item['product']['type_line'] }}</td>
 
-    <td class="align-middle">{{ $item['product']['frame_effects'] }}</td>
+    <td class="align-middle text-center">{{ $item['product']['frame_effects'] }}</td>
 
-    <td class="align-middle">{{ $item['printing'] }}</td>
+    <td class="align-middle text-center">{{ $item['printing'] }}</td>
 
-    <td class="align-middle">{{ $item['product']['rarity'] }}</td>
+    <td class="align-middle text-center">{{ $item['product']['rarity'] }}</td>
 
     {{-- Increment/Decrement --}}
     <td class="text-center align-middle">
@@ -41,11 +41,19 @@
 
 
     {{-- Price (Edit) --}}
-    <td class="col-1 align-middle">
+    <td class="col-1 align-middle width-200" >
         <form method="post" action="{{ route('price_each.edit', $item['id']) }}">
             @method('PUT')
             @csrf
-            <div class="input-group">
+            <div class="input-group text-center">
+                <div class="input-group-text">
+                    {{-- Add Currency Symbol --}}
+                    @foreach ($settings['currency_option'] as $currency)
+                        @if ($settings['tcg_mid'] === $currency['id'])
+                            {{ $currency['symbol'] }}
+                        @endif
+                    @endforeach
+                </div>
                 <input name="price_each" value="{{ $item['price_each'] }}" type="text" class="form-control tcg_mid">
                 <button type="submit" class="btn btn-primary" data-bs-toggle="tooltip" data-bs-placement="top"
                     title="Save Price"><i class="fa fa-save"></i></button>
@@ -53,7 +61,7 @@
         </form>
     </td>
 
-    <td class="align-middle">
+    <td class="align-middle text-center width-120">
         <strong>
             ${{ floatval($item['quantity']) * floatval(preg_replace('/[^-0-9\.]/', '', $item['price_each'])) }}
         </strong>

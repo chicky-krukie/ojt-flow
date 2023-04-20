@@ -17,20 +17,10 @@
     <script src="https://cdn.datatables.net/1.13.4/js/jquery.dataTables.min.js"></script>
     <link rel="stylesheet" href="https://cdn.datatables.net/1.13.4/css/jquery.dataTables.min.css">
     <link rel="stylesheet" href="https://cdn.datatables.net/buttons/2.3.6/css/buttons.dataTables.min.css">
-
+    <link rel="stylesheet" href="{{ url('css/custom.css') }}">
 
     <title>OJT FLOW</title>
 </head>
-<style>
-    body {
-        font-family: 'Nunito', sans-serif;
-    }
-
-    .thumbnail {
-        height: 14vh;
-        width: 7vw;
-    }
-</style>
 
 <body>
     <nav class="navbar navbar-expand-lg navbar-light bg-light col-lg-12">

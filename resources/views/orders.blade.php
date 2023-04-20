@@ -27,15 +27,17 @@
 
     $totalSoldPrc = 0;
     function toFloatSoldPrc($soldPrc, &$totalSoldPrc, $settings){
-        $floatNumber = $soldPrc;
+        $floatNumber = floatval(str_replace(',', '', $soldPrc));
         $totalSoldPrc += $floatNumber;
+        
 
         foreach($settings['currency_option'] as $currency)
         {
             if($settings['sold_price'] === $currency['id']){
-                return $currency['symbol'].$floatNumber;
+                return $currency['symbol'].number_format($floatNumber, 2, '.', ',');
             }
         }
+
 
     }
 
@@ -157,6 +159,7 @@
     <script>
         $('#order-table').DataTable({
             "lengthMenu": [50, 100, 200, 500],
+            
         });
     </script>
 @endsection
