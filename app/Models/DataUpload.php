@@ -5,6 +5,7 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Spatie\Activitylog\LogOptions;
+use Spatie\Activitylog\Models\Activity;
 use Spatie\Activitylog\Traits\LogsActivity;
 
 class DataUpload extends Model
@@ -41,5 +42,9 @@ class DataUpload extends Model
     public function product()
     {
         return $this->hasOne(Product::class, 'id');
+    }
+    public function log()
+    {
+        return $this->hasMany(Activity::class, 'subject_id');
     }
 }

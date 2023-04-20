@@ -102,7 +102,14 @@
                                             {{ $currency['symbol'] }}
                                         @endif
                                     @endforeach
-                                    {{ floatval($settings['multiplier_cost']) * floatval(preg_replace('/[^-0-9\.]/', '', $item['price_each'])) }}
+                                  
+                                    @if (!empty($item['log'])) 
+                                    {{ floatval($settings['multiplier_cost']) * floatval(preg_replace('/[^-0-9\.]/', '',   $item['log'][0]['properties']['old']['price_each'])) }}
+                                    @else 
+                                    {{ floatval($settings['multiplier_cost']) * floatval(preg_replace('/[^-0-9\.]/', '',   $item['price_each'])) }}
+                                        
+                                    @endif
+                                    
                                 </div>
                             </div>
 
