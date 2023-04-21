@@ -29,9 +29,11 @@ class OrderController extends Controller
     }
 
     public function deleteOrder($id){
+
         $order = Order::find($id)->delete();
 
-        return redirect()->back();
+        return redirect()->route('sortQuantity')->with('success', 'Order Deleted');
+
     }
 
     public function editOrder(Request $request, $id){
@@ -41,12 +43,10 @@ class OrderController extends Controller
     }
 
     public function deleteSelectOrder(Request $request){
-        // dd($request->order);
+       
+        $ids = $request->ids;
+        Order::whereIn('id',explode(",",$ids))->delete();
+        return response()->json(['success' => "Order Deleted."]);
 
-        foreach($request->order as $orders){
-            $order = Order::find($orders)->delete();
-        }
-
-        return redirect()->back();
     }
 }

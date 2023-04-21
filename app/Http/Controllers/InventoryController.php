@@ -36,7 +36,7 @@ class InventoryController extends Controller
 
         //$inventories = DataUpload::all();
         $inventories = DataUpload::with('product')->get()->toArray();
-
+     
         return view('inventory')->with(compact('inventories', 'settings'));
     }
 
@@ -96,7 +96,7 @@ class InventoryController extends Controller
                 break;
         }
 
-        $inventories = DataUpload::with('product','log')->get()->toArray();
+        $inventories = DataUpload::with('product', 'log')->get()->toArray();
         // dd($inventories);
         return view('inventory')
             ->with(compact('inventories', 'condition', 'value', 'settings'));
