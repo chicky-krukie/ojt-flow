@@ -13,10 +13,11 @@
     {
         $floatNumber = floatval(str_replace('$', '', $tcg));
         $totalTCG += $floatNumber;
-    
-        foreach ($settings['currency_option'] as $currency) {
-            if ($settings['tcg_mid'] === $currency['id']) {
-                return $currency['symbol'] . $floatNumber;
+
+        foreach($settings['currency_option'] as $currency)
+        {
+            if($settings['tcg_mid'] === $currency['id']){
+                return $currency['symbol'].number_format($floatNumber, 2, '.', ',');
             }
         }
     }
@@ -39,10 +40,12 @@
     {
         $floatNumber = $ship;
         $totalShip += $floatNumber;
-    
-        foreach ($settings['currency_option'] as $currency) {
-            if ($settings['ship_cost'] === $currency['id']) {
-                return $currency['symbol'] . $floatNumber;
+
+        foreach($settings['currency_option'] as $currency)
+        {
+            if($settings['ship_cost'] === $currency['id']){
+                return $currency['symbol'].number_format($floatNumber, 2, '.', ',');
+
             }
         }
     }
@@ -52,10 +55,13 @@
 @section('pageTitle', 'Orders')
 @section('content')
 
+<form method="post" action="{{ route('delete-selected-order') }}">
+    @csrf
+    <div class="mx-4">
 
-    <div class="col-lg-10 mx-auto">
         <h1 class="my-4">Orders</h1>
 
+        <button type="submit" class="btn btn-danger btn-sm my-4">Bulk Delete</button>
         <table class="table" id='order-table'>
             <thead>
                 <tr>
@@ -115,6 +121,7 @@
             </tbody>
             {{-- Order Footer --}}
             <tfoot>
+
                 <tr>
                     <th>Total</th>
                     <td></td>
@@ -123,35 +130,35 @@
                     <td></td>
                     <td></td>
                     <td><b>
-                            @foreach ($settings['currency_option'] as $currency)
-                                @if ($settings['tcg_mid'] === $currency['id'])
-                                    {{ $currency['symbol'] . $totalTCG }}
-                                @endif
+                            @foreach($settings['currency_option'] as $currency)
+                            @if($settings['tcg_mid'] === $currency['id'])
+                            {{ $currency['symbol'].number_format($totalTCG, 2, '.', ',') }}
+                            @endif
                             @endforeach
                         </b></td>
                     <td><b>{{ $totalQty }}</b></td>
                     <td><b>
-                            @foreach ($settings['currency_option'] as $currency)
-                                @if ($settings['sold_price'] === $currency['id'])
-                                    {{ $currency['symbol'] . $totalSoldPrc }}
-                                @endif
+                            @foreach($settings['currency_option'] as $currency)
+                            @if($settings['sold_price'] === $currency['id'])
+                            {{ $currency['symbol'].number_format($totalSoldPrc, 2, '.', ',') }}
+                            @endif
                             @endforeach
                         </b></td>
                     <td><b>
-                            @foreach ($settings['currency_option'] as $currency)
-                                @if ($settings['ship_cost'] === $currency['id'])
-                                    {{ $currency['symbol'] . $totalShip }}
-                                @endif
+                            @foreach($settings['currency_option'] as $currency)
+                            @if($settings['ship_cost'] === $currency['id'])
+                            {{ $currency['symbol'].number_format($totalShip, 2, '.', ',') }}
+                            @endif
                             @endforeach
                         </b></td>
                     <td></td>
                     <td></td>
                     <td></td>
                 </tr>
-            </tfoot>
+            </tbody>
         </table>
     </div>
-
+</form>
 
     <script>
         var table = $('#order-table').DataTable({
@@ -160,4 +167,6 @@
             stateSave: true,
         });
     </script>
+
 @endsection
+
