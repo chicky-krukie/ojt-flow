@@ -64,7 +64,6 @@ class ProcessCsvImport implements ShouldQueue
             })->toArray();
 
             DataUpload::upsert($newBatch, ['product_id'], ['product_id', 'quantity', 'price_each', 'printing']);
-            // DataUpload::upsert($batch->toArray(), ['product_id'], ['product_id', 'quantity', 'price_each', 'printing',]);
             Product::upsert($apiData, ['tcgplayer_id'], ['tcgplayer_id', 'name', 'set_name', 'normal', 'art_crop', 'type_line', 'color_identity', 'finishes', 'rarity', 'frame_effects']);
 
             // Increment counter

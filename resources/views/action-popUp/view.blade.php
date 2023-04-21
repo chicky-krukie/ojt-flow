@@ -44,7 +44,7 @@
                     {{-- BTN --}}
                     <div class="d-flex justify-content-center align-items-start mt-3">
                         <div class="">
-                            <h4>Card Price: <strong>{{ $item['price_each'] }}</strong></h4>
+                            <h4>Card Price: <strong>${{ $item['price_each'] }}</strong></h4>
                         </div>         
                             <span class="badge badge-primary rounded-pill ml-3">Quantity: {{ $item['quantity'] }}</span>
                     </div>
