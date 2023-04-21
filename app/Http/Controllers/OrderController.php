@@ -39,4 +39,14 @@ class OrderController extends Controller
 
         return redirect()->back();
     }
+
+    public function deleteSelectOrder(Request $request){
+        // dd($request->order);
+
+        foreach($request->order as $orders){
+            $order = Order::find($orders)->delete();
+        }
+
+        return redirect()->back();
+    }
 }
