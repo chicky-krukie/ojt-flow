@@ -46,7 +46,6 @@
             }
         }
     }
-    
 @endphp
 
 @extends('layout')
@@ -80,6 +79,7 @@
             </thead>
 
             <tbody>
+
                 @if ($orders->count())
                     @foreach ($orders as $order)
                         <tr id="tr_{{ $order->id }}">
@@ -150,9 +150,12 @@
                         <td></td>
                     </tr>
                 @endif
+
+         
             </tbody>
         </table>
     </div>
+
 
 
     <script>
@@ -221,4 +224,5 @@
             });
         });
     </script>
+
 @endsection
