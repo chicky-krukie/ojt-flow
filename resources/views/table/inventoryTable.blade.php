@@ -2,10 +2,10 @@
         <div class="container-fluid px-5">
             @if (isset($inventories) && count($inventories) > 0)
                 <div class="table-responsive-md">
-                    <table class="table table-hover" id="ojt_flow">
-                        <thead>
-                            <tr>
-                                <th scope="col" class="col-1 text-center">Selector</th>
+                    <table class="table table-sm table-hover bg-white" id="ojt_flow">
+                        <thead class="bg-light table-group-divider table-divider-color">
+                            <tr class="tr-background">
+                                <th scope="col" class="text-center width-50">Selector</th>
                                 <th scope="col" class="text-center">Thumbnail</th>
                                 <th scope="col" class="text-center">Name</th>
                                 <th scope="col" class="text-center width-120">Color Identity</th>
@@ -20,7 +20,25 @@
                                 <th scope="col" class="text-center">Action</th>
                                 @include('action-popUp.sortQuantity')
                             </tr>
+
+                            {{-- Search --}}
+                            <tr>
+                                <td scope="col" class="text-center" style="opacity: 0"></td>
+                                <td scope="col" class="text-center" style="opacity: 0">Thumbnail</td>
+                                <td scope="col" class="text-center">Name</td>
+                                <td scope="col" class="text-center width-120">Color Identity</td>
+                                <td scope="col" class="text-center">Type</td>
+                                <td scope="col" class="text-center width-120">Frame Effects</td>
+                                <td scope="col" class="text-center">Finish</td>
+                                <td scope="col" class="text-center">Rarity</td>
+                                <td scope="col" class="col-1 text-center"><a href="#sort" data-bs-toggle="modal"
+                                        style="text-decoration: none; color:black;">Quantity</a></td>
+                                <td scope="col" class="text-center">TCG Mid</td>
+                                <td scope="col" class="text-center">Total</td>
+                                <td scope="col" class="text-center" style="opacity: 0"></td>
+                            </tr>
                         </thead>
+
                         <tbody>
                             @foreach ($inventories as $item)
                                 {{-- Quantity Sorting --}}
@@ -50,6 +68,9 @@
                             @endforeach
                         </tbody>
                     </table>
+                    <tfoot>
+
+                    </tfoot>
                 </div>
             @else
                 <br>
@@ -66,12 +87,37 @@
                 </div>
             @endif
         </div>
+
         <script>
-            $('#ojt_flow').DataTable({
-                "lengthMenu": [50, 100, 200, 500],
-                scrollY: 550,
+            $('#ojt_flow thead td').each(function() {
+                var title = $('#ojt_flow thead td').eq($(this).index()).text();
+                $(this).html('<input type="text" placeholder="' + title + '" />');
+            });
+
+            // DataTable
+            var table = $('#ojt_flow').DataTable({
+                lengthMenu: [50, 100, 200, 500],
+                scrollY: '55vh',
+                scrollCollapse: true,
                 stateSave: true,
-            })
+                // dom: '<"top"if>rt<"bottom" lp>',
+                // dom: 'lBfrtip',
+                // colReorder: true,
+                // buttons: ['colvis'],
+            });
+
+            // Apply the search
+            table.columns().eq(0).each(function(colIdx) {
+                $('input', table.column(colIdx).header()).on('keyup change', function() {
+                    table
+                        .column(colIdx)
+                        .search(this.value)
+                        .draw();
+                });
+                $('input', table.column(colIdx).header()).on('click', function(e) {
+                    e.stopPropagation();
+                });
+            });
         </script>
 
 

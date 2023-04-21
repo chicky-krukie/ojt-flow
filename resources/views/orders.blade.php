@@ -22,19 +22,16 @@
     }
     
     $totalSoldPrc = 0;
-    function toFloatSoldPrc($soldPrc, &$totalSoldPrc, $settings){
+    function toFloatSoldPrc($soldPrc, &$totalSoldPrc, $settings)
+    {
         $floatNumber = floatval(str_replace(',', '', $soldPrc));
         $totalSoldPrc += $floatNumber;
-        
-
-        foreach($settings['currency_option'] as $currency)
-        {
-            if($settings['sold_price'] === $currency['id']){
-                return $currency['symbol'].number_format($floatNumber, 2, '.', ',');
+    
+        foreach ($settings['currency_option'] as $currency) {
+            if ($settings['sold_price'] === $currency['id']) {
+                return $currency['symbol'] . number_format($floatNumber, 2, '.', ',');
             }
         }
-
-
     }
     
     $totalShip = 0;
@@ -49,7 +46,6 @@
             }
         }
     }
-    
 @endphp
 
 @extends('layout')
@@ -83,6 +79,10 @@
             <tbody>
                 @foreach ($orders as $order)
                     <tr>
+                        @php
+                            //dd($order->sold_price);
+                        @endphp
+
                         <th><input data-id="{{ $order->id }}" class="orderCheckbox" type="checkbox"></th>
                         <td>{{ $order->sold_date }}</td>
                         <td>{{ $order->sold_to }}</td>
@@ -113,6 +113,7 @@
                     </tr>
                 @endforeach
             </tbody>
+            {{-- Order Footer --}}
             <tfoot>
                 <tr>
                     <th>Total</th>
@@ -153,7 +154,7 @@
 
 
     <script>
-        $('#order-table').DataTable({
+        var table = $('#order-table').DataTable({
             "lengthMenu": [50, 100, 200, 500],
             scrollY: 500,
             stateSave: true,

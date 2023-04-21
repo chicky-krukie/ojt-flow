@@ -1,8 +1,8 @@
-<tr class="col-1 product_row">
-    <td class="text-center align-middle"><input type="checkbox" name="checkbox" id="checkbox" class="select-row"></td>
+<tr class="product_row">
+    <td class="text-center align-middle width-50"><input type="checkbox" name="checkbox" id="checkbox" class="select-row"></td>
 
     {{-- Get art_crop and normal image link --}}
-    <td>
+    <td class="td-height">
         @if ($item['product']['art_crop'] !== null && $item['product']['normal'] !== null)
             <img src="{{ $item['product']['art_crop'] }}" alt="{{ $item['product']['name'] }}"
                 class="thumbnail align-middle text-center" onmouseenter="this.src='{{ $item['product']['normal'] }}'"
@@ -54,7 +54,7 @@
                         @endif
                     @endforeach
                 </div>
-                <input name="price_each" value="{{ $item['price_each'] }}" type="text" class="form-control tcg_mid">
+                <input name="price_each" value="{{ $item['price_each'] }}" type="text" class="form-control tcg_mid"><span hidden>{{ $item['price_each'] }}</span>
                 <button type="submit" class="btn btn-primary" data-bs-toggle="tooltip" data-bs-placement="top"
                     title="Save Price"><i class="fa fa-save"></i></button>
             </div>
