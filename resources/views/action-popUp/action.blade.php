@@ -63,8 +63,8 @@
                             </div>
 
                             <div class="mb-3">
-                                <input type="text" name="payment_status"
-                                    value="{{ $settings['status'][2]['id'] }}" class="hidden d-none">
+                                <input type="text" name="payment_status" value="{{ $settings['status'][2]['id'] }}"
+                                    class="hidden d-none">
                             </div>
                         </div>
 
@@ -102,14 +102,13 @@
                                             {{ $currency['symbol'] }}
                                         @endif
                                     @endforeach
-                                  
-                                    @if (!empty($item['log'])) 
-                                    {{ floatval($settings['multiplier_cost']) * floatval(preg_replace('/[^-0-9\.]/', '',   $item['log'][0]['properties']['old']['price_each'])) }}
-                                    @else 
-                                    {{ floatval($settings['multiplier_cost']) * floatval(preg_replace('/[^-0-9\.]/', '',   $item['price_each'])) }}
-                                        
+
+                                    @if (!empty($item['log']))
+                                        {{ floatval($settings['multiplier_cost']) * floatval(preg_replace('/[^-0-9\.]/', '', $item['log'][0]['properties']['old']['price_each'])) }}
+                                    @else
+                                        {{ floatval($settings['multiplier_cost']) * floatval(preg_replace('/[^-0-9\.]/', '', $item['price_each'])) }}
                                     @endif
-                                    
+
                                 </div>
                             </div>
 
@@ -122,10 +121,10 @@
                         </div>
 
 
-                        
+
                     </div>
 
-                  
+
                 </div>
 
                 {{-- fotter button --}}
