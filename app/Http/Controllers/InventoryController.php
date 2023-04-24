@@ -36,7 +36,7 @@ class InventoryController extends Controller
 
         //$inventories = DataUpload::all();
         $inventories = DataUpload::with('product')->get()->toArray();
-     
+
         return view('inventory')->with(compact('inventories', 'settings'));
     }
 
@@ -157,12 +157,13 @@ class InventoryController extends Controller
         //SOLD POP UP STORED IN DATA TABLES OF 'Order'
         $csv = DataUpload::with('product')->find($id)->toArray();
 
-
+        // dd($csv);
         DataUpload::find($id)->update([
             'quantity' =>  (int)($csv['quantity']) -  (int)$request->quantity
-        ]);
-        $orders = new Order;
 
+        ]);
+
+        $orders = new Order;
         $orders->sold_date = Carbon::now()->format('Y/m/d');
         $orders->sold_to = $request->name;
         $orders->card_name = $csv['product']['name'];
@@ -179,6 +180,7 @@ class InventoryController extends Controller
         $orders->multiplier = $request->multiplier;
         $orders->multiplier_price = $request->multiplied_price;
         $orders->note = $request->note;
+        $orders->product_id = $csv['id'];
         $orders->save();
 
         return redirect()->route('sortQuantity')->with('success', 'Product updated');

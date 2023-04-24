@@ -83,7 +83,7 @@
                 @if ($orders->count())
                     @foreach ($orders as $order)
                         <tr id="tr_{{ $order->id }}">
-                            <th><input class="sub_chk" data-id="{{ $order->id }}" type="checkbox"></th>
+                            <th><input class="sub_chk" name="id[]" data-id="{{ $order->id }}" type="checkbox"></th>
                             <td>{{ $order->sold_date }}</td>
                             <td>{{ $order->sold_to }}</td>
                             <td>{{ $order->card_name }}</td>
@@ -110,7 +110,7 @@
                                 @include('order-modals.edit-modal')
 
                                 <button type="button" class="btn" data-toggle="modal"
-                                    data-target="{{ '#order' . $order->id }}"><i class='fa fa-trash'></i></button>
+                                    data-target="{{ '#order' . $order->id }}"><i class='fa fa-undo'></i></button>
                                 @include('order-modals.delete-modal')
 
                             </td>
@@ -151,7 +151,7 @@
                     </tr>
                 @endif
 
-         
+
             </tbody>
         </table>
     </div>
@@ -163,9 +163,18 @@
             "lengthMenu": [50, 100, 200, 500],
             dom: 'Bfrtip',
             buttons: [
-                'pageLength',
-                'excelHtml5',
 
+                {
+                    'pageLength'
+                },
+                {
+                    'excelHtml5'
+                },
+                {
+                    extend: 'columnVisibility',
+                    text: 'Show all',
+                    visibilitiy: true
+                },
             ]
 
         });
@@ -201,14 +210,8 @@
                             data: 'ids=' + selected,
                             success: function(data) {
                                 if (data['success']) {
-                                    $(".sub_chk:checked").each(function() {
-                                        $(this).parents("tr").remove();
-                                    });
-                                    alert(data['success']);
-                                } else if (data['error']) {
-                                    alert(data['error']);
-                                } else {
-                                    alert('Something went wrong!');
+
+                                    location.reload()
                                 }
                             },
                             error: function(data) {
