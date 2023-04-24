@@ -28,7 +28,7 @@
                     </div>
                     <div class="col-auto">
                         <button class="btn btn-success" data-bs-target="#cache" data-bs-toggle="modal"
-                            data-bs-placement="top" title="Upload CSV">Counter<i class="fa fa-upload ml-2"></i></button>
+                            data-bs-placement="top" title="Upload CSV">Counter<i class="fa fa-th ml-2"></i></button>
                         @include('action-popUp.cache')
                     </div>
                 </div>
@@ -41,3 +41,7 @@
     @include('table.inventoryTable')
 
 @endsection
+
+
+
+

@@ -1,5 +1,6 @@
 <tr class="product_row">
-    <td class="text-center align-middle width-50"><input type="checkbox" name="checkbox" id="checkbox" class="select-row"></td>
+    <td class="text-center align-middle width-50"><input type="checkbox" name="checkbox" id="checkbox" class="select-row">
+    </td>
 
     {{-- Get art_crop and normal image link --}}
     <td class="td-height">
@@ -25,16 +26,18 @@
     {{-- Increment/Decrement --}}
     <td class="text-center align-middle">
         <div class="btn-group" role="group" aria-label="Quantity">
-            <form method="post" action="{{ route('quantity.down', $item['id']) }}">
+            <form method="post" action="{{ route('quantity.down', $item['id']) }}" class="disable-form">
                 @method('PUT')
                 @csrf
-                <button type="submit" class="btn btn-secondary btn-sm"><i class="fa fa-minus"></i></button>
+                <button type="submit" class="btn btn-secondary btn-sm disable-quantity"><i
+                        class="fa fa-minus"></i></button>
             </form>
             <span class="mx-3">{{ $item['quantity'] }}</span>
-            <form method="post" action="{{ route('quantity.up', $item['id']) }}">
+            <form method="post" action="{{ route('quantity.up', $item['id']) }}" class="disable-form">
                 @method('PUT')
                 @csrf
-                <button type="submit" class="btn btn-secondary btn-sm"><i class="fa fa-plus"></i></button>
+                <button type="submit" class="btn btn-secondary btn-sm disable-quantity"><i
+                        class="fa fa-plus"></i></button>
             </form>
         </div>
     </td>
@@ -42,7 +45,7 @@
 
     {{-- Price (Edit) --}}
     <td class="col-1 align-middle width-200">
-        <form method="post" action="{{ route('price_each.edit', $item['id']) }}">
+        <form method="post" action="{{ route('price_each.edit', $item['id']) }} " class="disable-form">
             @method('PUT')
             @csrf
             <div class="input-group text-center">
@@ -54,9 +57,10 @@
                         @endif
                     @endforeach
                 </div>
-                <input name="price_each" value="{{ $item['price_each'] }}" type="text" class="form-control tcg_mid"><span hidden>{{ $item['price_each'] }}</span>
-                <button type="submit" class="btn btn-primary" data-bs-toggle="tooltip" data-bs-placement="top"
-                    title="Save Price"><i class="fa fa-save"></i></button>
+                <input name="price_each" value="{{ $item['price_each'] }}" type="text"
+                    class="form-control tcg_mid"><span hidden>{{ $item['price_each'] }}</span>
+                <button type="submit" class="btn btn-primary disable-price" data-bs-toggle="tooltip"
+                    data-bs-placement="top" title="Save Price"><i class="fa fa-save"></i></button>
             </div>
         </form>
     </td>
@@ -88,3 +92,18 @@
         </div>
     </td>
 </tr>
+
+<script>
+    $(document).on('click', '.disable-quantity, .disable-price', function(event) {
+        if ($(this).hasClass('disabled')) {
+            event.preventDefault();
+            return false;
+        }
+    });
+
+    $('.disable-form').on('submit', function() {
+        var btn = $(this).find('.disable-quantity, .disable-price');
+        btn.addClass('disabled');
+    });
+    
+</script>
