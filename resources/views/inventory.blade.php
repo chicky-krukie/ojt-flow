@@ -41,10 +41,20 @@
                 </div>
             @endif
             <br>
-        </div>
-    </div>
-    </div>
 
-    @include('table.inventoryTable')
+        </div>
+
+        <br>
+    </div>
+</div>
+
+@include('table.inventoryTable')
+
 
 @endsection
+
+
+
+
+@endsection
+

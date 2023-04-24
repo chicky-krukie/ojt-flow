@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Http\Controllers\Controller;
 use App\Models\Currency;
+use App\Models\DataUpload;
 use App\Models\Order;
 use App\Models\PaymentMethod;
 use App\Models\PaymentStatus;
@@ -24,29 +25,37 @@ class OrderController extends Controller
         return view('orders', [
             'orders' => $orders, 'settings' => $settings,
         ]);
-        
+
         // return view('orders')->with(compact('orders'));
     }
 
-    public function deleteOrder($id){
+    public function returnOrder($tcgplacer_id)
+    {
+       
+        $return_order = Order::with('product')->where('tcgplacer_id', (int)$tcgplacer_id)->get()->first()->toArray();
+        
+        DataUpload::where('product_id', $tcgplacer_id)->update([
+            'quantity' =>  (int)($return_order['qty']) + (int)($return_order['product']['quantity'])
+        ]);
 
-        $order = Order::find($id)->delete();
+    
+        Order::where('tcgplacer_id', $tcgplacer_id)->delete();
 
         return redirect()->route('sortQuantity')->with('success', 'Order Deleted');
-
     }
 
-    public function editOrder(Request $request, $id){
+    public function editOrder(Request $request, $id)
+    {
         $order = Order::find($id)->update(['payment_status' => $request->payment_status]);
 
         return redirect()->back();
     }
 
-    public function deleteSelectOrder(Request $request){
-       
-        $ids = $request->ids;
-        Order::whereIn('id',explode(",",$ids))->delete();
-        return response()->json(['success' => "Order Deleted."]);
+    public function deleteSelectOrder(Request $request)
+    {
 
+        $ids = $request->ids;
+        Order::whereIn('id', explode(",", $ids))->delete();
+        return response()->json(['success' => "Order Deleted."]);
     }
 }
