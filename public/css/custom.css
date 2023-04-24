@@ -6,11 +6,34 @@ body {
     width: 200px;
 }
 
-.width-120{
+.width-120 {
     width: 120px;
+}
+
+.width-50{
+    width: 50px;
 }
 
 .thumbnail {
     height: 14vh;
     width: 7vw;
+}
+
+.td-height{
+    height: 14vh;
+    width: 7vw;
+}
+
+th {
+    white-space: nowrap;
+}
+
+thead input {
+    width: 100%;
+    padding: 3px;
+    box-sizing: border-box;
+}
+
+.tr-background{
+    /* background-color: darkgrey; */
 }
