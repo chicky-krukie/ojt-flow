@@ -28,12 +28,16 @@ th {
     white-space: nowrap;
 }
 
-thead input {
+thead input{
     width: 100%;
     padding: 3px;
     box-sizing: border-box;
 }
 
-.tr-background{
-    /* background-color: darkgrey; */
+thead select{
+    width: 100%;
+    height: 3.55vh;
+    padding: 3px;
+    box-sizing: border-box;
+    color: grey;
 }

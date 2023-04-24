@@ -6,11 +6,11 @@
                         <thead class="bg-light table-group-divider table-divider-color">
                             <tr class="tr-background">
                                 <th scope="col" class="text-center width-50">Selector</th>
-                                <th scope="col" class="text-center">Thumbnail</th>
-                                <th scope="col" class="text-center">Name</th>
+                                <th scope="col" class="text-center width-200">Thumbnail</th>
+                                <th scope="col" class="text-center width-200">Name</th>
                                 <th scope="col" class="text-center width-120">Color Identity</th>
                                 <th scope="col" class="text-center">Type</th>
-                                <th scope="col" class="text-center width-120">Frame Effects</th>
+                                <th scope="col" class="text-center">Frame Effects</th>
                                 <th scope="col" class="text-center">Finish</th>
                                 <th scope="col" class="text-center">Rarity</th>
                                 <th scope="col" class="col-1 text-center"><a href="#sort" data-bs-toggle="modal"
@@ -28,7 +28,7 @@
                                 <td scope="col" class="text-center">Name</td>
                                 <td scope="col" class="text-center width-120">Color Identity</td>
                                 <td scope="col" class="text-center">Type</td>
-                                <td scope="col" class="text-center width-120">Frame Effects</td>
+                                <td scope="col" class="text-center">Frame Effects</td>
                                 <td scope="col" class="text-center">Finish</td>
                                 <td scope="col" class="text-center">Rarity</td>
                                 <td scope="col" class="col-1 text-center"><a href="#sort" data-bs-toggle="modal"
@@ -67,10 +67,11 @@
                                 @endif
                             @endforeach
                         </tbody>
-                    </table>
-                    <tfoot>
+                        <tfoot>
 
-                    </tfoot>
+                        </tfoot>
+                    </table>
+
                 </div>
             @else
                 <br>
@@ -89,9 +90,29 @@
         </div>
 
         <script>
-            $('#ojt_flow thead td').each(function() {
-                var title = $('#ojt_flow thead td').eq($(this).index()).text();
-                $(this).html('<input type="text" placeholder="' + title + '" />');
+            var finish = 6;
+            var rarity = 7;
+            //Input Text and Dropdown
+            $('#ojt_flow thead td').each(function(index) {
+                if (index === 6) {
+                    var title = "Finish";
+                    $(this).html('<select><option value="">' + title +
+                        '</option><option value="' + "Normal" +
+                        '">Normal</option><option value="' + "Foil" +
+                        '">Foil</option></select>'
+                    );
+                } else if (index === 7) {
+                    var title = "Rarity";
+                    $(this).html('<select><option value="">' + title +
+                        '</option><option value="' + "uncommon" +
+                        '">Uncommon</option><option value="' + "rare" +
+                        '">Rare</option><option value="' + "mythic" +
+                        '">Mythic</option></select>'
+                    );
+                } else {
+                    var title = $(this).text();
+                    $(this).html('<input type="text" placeholder="' + title + '" />');
+                }
             });
 
             // DataTable
@@ -100,21 +121,19 @@
                 scrollY: '55vh',
                 scrollCollapse: true,
                 stateSave: true,
-                // dom: '<"top"if>rt<"bottom" lp>',
-                // dom: 'lBfrtip',
-                // colReorder: true,
-                // buttons: ['colvis'],
+
             });
+
 
             // Apply the search
             table.columns().eq(0).each(function(colIdx) {
-                $('input', table.column(colIdx).header()).on('keyup change', function() {
+                $('input, select', table.column(colIdx).header()).on('keyup change', function() {
                     table
                         .column(colIdx)
                         .search(this.value)
                         .draw();
                 });
-                $('input', table.column(colIdx).header()).on('click', function(e) {
+                $('input, select', table.column(colIdx).header()).on('click', function(e) {
                     e.stopPropagation();
                 });
             });
