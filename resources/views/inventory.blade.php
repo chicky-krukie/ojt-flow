@@ -1,44 +1,32 @@
 @extends('layout')
 @section('pageTitle', 'Inventory')
 @section('content')
-    <br>
-    <div class="container-fluid px-5">
-        <div class="col-auto">
-            <div class="d-flex justify-content-between">
-                <h2>Inventory</h2>
-                <div class="d-flex">
-                    <div class="col-auto">
-                        {{-- Upload CSV --}}
-                        <button class="btn btn-success" data-bs-target="#upload" data-bs-toggle="modal" data-bs-placement="top"
-                            title="Upload CSV">Upload File<i class="fa fa-upload ml-2"></i></button>
-                        @include('action-popUp.upload')
-                        {{-- Error handler for file import --}}
-                        @if ($errors->any())
-                            <div class="alert alert-danger form-control">
-                                <button type="button" class="close" data-dismiss="alert" aria-label="Close">
-                                    <span aria-hidden="true">&times;</span>
-                                </button>
-                                @foreach ($errors->all() as $error)
-                                    <div class="note note-danger mb-3">
-                                        <strong>{{ $error[0] }}:</strong> {{ $error[1] }}
-                                    </div>
-                                @endforeach
-                            </div>
-                        @endif
-                    </div>
-                    <div class="col-auto">
-                        <button class="btn btn-success" data-bs-target="#cache" data-bs-toggle="modal"
-                            data-bs-placement="top" title="Upload CSV">Counter<i class="fa fa-th ml-2"></i></button>
-                        @include('action-popUp.cache')
-                    </div>
-                </div>
-            </div>
-            <br>
-        </div>
-    </div>
-    </div>
 
-    @include('table.inventoryTable')
+<br>
+<div class="container-fluid px-5">
+    <h2 class="mb-4">Inventory</h2>
+    <div class="col-auto">
+
+        <form id="importForm" action="{{ route('importProductFromCsv') }}" class="row justify-content-center" accept-charset="utf-8" enctype="multipart/form-data" method="POST">
+            @csrf
+            <input type="file" name="file" id="importFile" class="form-control col-8 w-75 mr-2">
+            <button type="submit" id="submit" class="btn btn-success col-2 w-auto ">Import CSV</button>
+        </form>
+
+        <div class="col-auto my-4">
+            <p class="text-center m">Uploading file please wait...</p>
+            <div class="progress">
+                <div id="progress-bar" class="progress-bar progress-bar-striped" role="progressbar" style="width: 0%;" aria-valuenow="0" aria-valuemin="0" aria-valuemax="100">25%</div>
+
+            </div>
+        </div>
+
+        <br>
+    </div>
+</div>
+
+@include('table.inventoryTable')
+
 
 @endsection
 
