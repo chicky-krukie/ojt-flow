@@ -12,27 +12,34 @@
                         <button class="btn btn-success" data-bs-target="#upload" data-bs-toggle="modal" data-bs-placement="top"
                             title="Upload CSV">Upload File<i class="fa fa-upload ml-2"></i></button>
                         @include('action-popUp.upload')
-                        {{-- Error handler for file import --}}
-                        @if ($errors->any())
-                            <div class="alert alert-danger form-control">
-                                <button type="button" class="close" data-dismiss="alert" aria-label="Close">
-                                    <span aria-hidden="true">&times;</span>
-                                </button>
-                                @foreach ($errors->all() as $error)
-                                    <div class="note note-danger mb-3">
-                                        <strong>{{ $error[0] }}:</strong> {{ $error[1] }}
-                                    </div>
-                                @endforeach
-                            </div>
-                        @endif
                     </div>
-                    <div class="col-auto">
-                        <button class="btn btn-success" data-bs-target="#cache" data-bs-toggle="modal"
-                            data-bs-placement="top" title="Upload CSV">Counter<i class="fa fa-upload ml-2"></i></button>
-                        @include('action-popUp.cache')
+                    <div class="dropdown">
+                        <a class="btn btn-secondary dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown"
+                            aria-expanded="false">
+                            Filter
+                        </a>
+
+                        <form action="{{route('filterInventory')}}" class="dropdown-menu">
+                            <button class="dropdown-item" value="default" name="filter" type="submit">Default</button>
+                            <button class="dropdown-item" value="all" name="filter" type="submit">Show All</button>
+                            <button class="dropdown-item" value="zero" name="filter" type="submit">Zero Quantity</button>
+                        </form>
                     </div>
                 </div>
             </div>
+            {{-- Error handler for file import --}}
+            @if ($errors->any())
+                <div class="alert alert-danger form-control w-75 mx-auto">
+                    <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                    @foreach ($errors->all() as $error)
+                        <div class="note note-danger mb-3 text-center">
+                            <strong>{{ $error[0] }}:</strong> {{ $error[1] }}
+                        </div>
+                    @endforeach
+                </div>
+            @endif
             <br>
         </div>
     </div>

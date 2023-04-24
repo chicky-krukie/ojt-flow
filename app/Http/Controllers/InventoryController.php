@@ -20,7 +20,7 @@ use App\Jobs\ProcessCsvImport;
 use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\DB;
 use Maatwebsite\Excel\Facades\Excel;
-use Spatie\Activitylog\Models\Activity;
+
 
 class InventoryController extends Controller
 {
@@ -36,7 +36,7 @@ class InventoryController extends Controller
 
         //$inventories = DataUpload::all();
         $inventories = DataUpload::with('product')->get()->toArray();
-     
+
         return view('inventory')->with(compact('inventories', 'settings'));
     }
 
@@ -100,6 +100,29 @@ class InventoryController extends Controller
         // dd($inventories);
         return view('inventory')
             ->with(compact('inventories', 'condition', 'value', 'settings'));
+    }
+
+    //Filter Inventory
+    public function filterInventory(Request $request)
+    {
+
+        $condition = $request->input('filter');
+        $value = $request->input('value');
+       // dd($value);
+
+        $query = DB::table('products')->orderBy('quantity');
+
+        $inventories = DataUpload::with('product', 'log')->get()->toArray();
+        if ($value === "default") {
+            return view('filter-inventory.filtered')
+            ->with(compact('inventories', 'value', 'filter'));
+        } else if ($value === "all") {
+            return view('filter-inventory.filtered')
+            ->with(compact('inventories', 'value'));
+        } else {
+            return view('filter-inventory.filtered')
+            ->with(compact('inventories', 'value'));
+        }
     }
 
     //Increment QTY

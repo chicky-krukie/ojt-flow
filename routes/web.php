@@ -18,6 +18,9 @@ Route::post('/importProduct', [InventoryController::class, 'importCsv'])->name('
 //Sort Quantity
 Route::get('/inventory', [InventoryController::class, 'sortQuantity'])->name('sortQuantity');
 
+//Filter Inventory Row
+Route::get('/filter', [InventoryController::class, 'filterInventory'])->name('filterInventory');
+
 //Increment Quantity
 Route::put('/increment/{id}', [InventoryController::class, 'up'])->name('quantity.up');
 
