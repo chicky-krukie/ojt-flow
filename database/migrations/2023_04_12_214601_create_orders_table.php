@@ -32,6 +32,7 @@ return new class extends Migration
             $table->string('tracking_number')->nullable();
             $table->string('multiplier')->nullable();
             $table->string('multiplier_price')->nullable();
+            $table->unsignedBigInteger('product_id')->nullable();
             $table->timestamps();
         });
     }
