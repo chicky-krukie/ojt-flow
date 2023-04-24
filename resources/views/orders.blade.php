@@ -58,7 +58,7 @@
                     <button type="button" class="btn" data-toggle="modal" data-target="{{ '#edit-order' . $order->id }}"><i class='fa fa-pencil'></i></button>
                     @include('order-modals.edit-modal')
 
-                    <button type="button" class="btn" data-toggle="modal" data-target="{{ '#order' . $order->id }}"><i class='fa fa-trash'></i></button>
+                    <button type="button" class="btn" data-toggle="modal" data-target="{{ '#order' . $order->id }}"><i class='fa fa-undo'></i></button>
                     @include('order-modals.delete-modal')
 
                 </td>
@@ -95,6 +95,7 @@
         buttons: [
             'pageLength',
             'excelHtml5',
+            'colvis'
         ],
         "footerCallback": function(row, data, start, end, display) {
             var api = this.api(),

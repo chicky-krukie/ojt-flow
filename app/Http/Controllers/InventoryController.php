@@ -35,7 +35,7 @@ class InventoryController extends Controller
         $settings['currency_option'] =  Currency::get(['id', 'currency_name', 'symbol'])->toArray();
 
         //$inventories = DataUpload::all();
-        $inventories = DataUpload::with('product')->get()->toArray();
+        $inventories = DataUpload::with('product')->orderby('quantity', 'desc')->get()->toArray();
      
         return view('inventory')->with(compact('inventories', 'settings'));
     }
