@@ -22,6 +22,10 @@ class DataUpload extends Model
         'total',
     ];
 
+    protected $casts = [
+        'quantity' => 'integer',
+    ];
+
     protected static $logAttributes = ['product_id','quantity','price_each'];
     protected static $ignoreChangeAttributes = ['product_id','quantity','price_each'];
     protected static $recordEvents = ['created','updated','deleted'];

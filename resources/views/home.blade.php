@@ -2,7 +2,15 @@
 @section('content')
 
 <div class="col-lg-10 mx-auto">
+    <div class="d-flex justify-content-between">
         <h1 class="my-4">Activity log</h1>
+        <div class="col-auto">
+            <button class="btn btn-success my-4" data-bs-target="#cache" data-bs-toggle="modal"
+                data-bs-placement="top" title="Counter">Counter<i class="fa fa-th ml-2"></i></button>
+            @include('action-popUp.cache')
+        </div>
+    </div>
+       
 
         <table class="table" id='order-table'>
             <thead>

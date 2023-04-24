@@ -20,7 +20,7 @@ use App\Jobs\ProcessCsvImport;
 use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\DB;
 use Maatwebsite\Excel\Facades\Excel;
-use Spatie\Activitylog\Models\Activity;
+
 
 class InventoryController extends Controller
 {
@@ -35,8 +35,11 @@ class InventoryController extends Controller
         $settings['currency_option'] =  Currency::get(['id', 'currency_name', 'symbol'])->toArray();
 
         //$inventories = DataUpload::all();
-        $inventories = DataUpload::with('product')->get()->toArray();
-     
+
+
+        $inventories = DataUpload::with('product')->orderby('quantity', 'desc')->get()->toArray();
+
+
         return view('inventory')->with(compact('inventories', 'settings'));
     }
 
@@ -102,6 +105,30 @@ class InventoryController extends Controller
             ->with(compact('inventories', 'condition', 'value', 'settings'));
     }
 
+    //Filter Inventory
+    public function filterInventory(Request $request)
+    {
+
+        $condition = $request->input('filter');
+        $value = $request->input('value');
+        //dd($value);
+
+        $query = DB::table('products')->orderBy('quantity');
+
+        $inventories = DataUpload::with('product', 'log')->get()->toArray();
+       // dd($condition);
+        if ($condition === "default") {
+            return view('filter-inventory.filtered')
+            ->with(compact('inventories', 'value', 'condition'));
+        } else if ($condition === "all") {
+            return view('filter-inventory.filtered')
+            ->with(compact('inventories', 'value', 'condition'));
+        } else {
+            return view('filter-inventory.filtered')
+            ->with(compact('inventories', 'value', 'condition'));
+        }
+    }
+
     //Increment QTY
     public function up(Request $request, $id)
     {
@@ -157,12 +184,13 @@ class InventoryController extends Controller
         //SOLD POP UP STORED IN DATA TABLES OF 'Order'
         $csv = DataUpload::with('product')->find($id)->toArray();
 
-
+        // dd($csv);
         DataUpload::find($id)->update([
             'quantity' =>  (int)($csv['quantity']) -  (int)$request->quantity
-        ]);
-        $orders = new Order;
 
+        ]);
+
+        $orders = new Order;
         $orders->sold_date = Carbon::now()->format('Y/m/d');
         $orders->sold_to = $request->name;
         $orders->card_name = $csv['product']['name'];
@@ -179,6 +207,7 @@ class InventoryController extends Controller
         $orders->multiplier = $request->multiplier;
         $orders->multiplier_price = $request->multiplied_price;
         $orders->note = $request->note;
+        $orders->product_id = $csv['id'];
         $orders->save();
 
         return redirect()->route('sortQuantity')->with('success', 'Product updated');

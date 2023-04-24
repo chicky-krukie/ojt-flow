@@ -21,5 +21,11 @@ class Order extends Model
         'payment_status',
         'payment_method',
         'multiplier_default',
+        'product_id'
     ];
+
+    public function product()
+    {
+        return $this->belongsTo(DataUpload::class, 'product_id');
+    }
 }

@@ -18,6 +18,9 @@ Route::post('/importProduct', [InventoryController::class, 'importCsv'])->name('
 //Sort Quantity
 Route::get('/inventory', [InventoryController::class, 'sortQuantity'])->name('sortQuantity');
 
+//Filter Inventory Row
+Route::get('/filter', [InventoryController::class, 'filterInventory'])->name('filterInventory');
+
 //Increment Quantity
 Route::put('/increment/{id}', [InventoryController::class, 'up'])->name('quantity.up');
 
@@ -42,7 +45,7 @@ Route::get('/',[HomeController::class,'home'])->name('home');
 
 
 
-Route::get('/delete-order/{id}', [OrderController::class, 'deleteOrder'])->name('delete-order');
+Route::get('/delete-order/{tcgplacer_id}', [OrderController::class, 'returnOrder'])->name('delete-order');
 Route::post('/edit-order/{id}', [OrderController::class, 'editOrder'])->name('edit-order');
 Route::delete('/delete-selected-order', [OrderController::class, 'deleteSelectOrder'])->name('delete-selected-order');
 
