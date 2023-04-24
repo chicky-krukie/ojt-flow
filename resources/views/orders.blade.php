@@ -139,7 +139,7 @@
 
 
 
-            // Update footer
+            // footer column 6
             $(api.column(6).footer()).html(`<b>
             <?php 
             foreach ($settings['currency_option'] as $currency) :
@@ -150,8 +150,10 @@
             ?> 
             ${column6total.toLocaleString(undefined, {minimumFractionDigits: 2})}</b>`);
 
+            // footer column 7
             $(api.column(7).footer()).html(`<b>${column7total}</b>`);
 
+            // footer column 8
             $(api.column(8).footer()).html(`<b>
             <?php foreach ($settings['currency_option'] as $currency) :
                 if ($settings['sold_price'] === $currency['id']) :
@@ -160,6 +162,7 @@
             ?> 
             ${column8total.toLocaleString(undefined, {minimumFractionDigits: 2})}</b>`);
 
+            // footer column 9
             $(api.column(9).footer()).html(`
             <?php foreach ($settings['currency_option'] as $currency) :
                 if ($settings['ship_cost'] === $currency['id']) :
