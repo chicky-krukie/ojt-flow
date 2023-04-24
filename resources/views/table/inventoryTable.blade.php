@@ -137,7 +137,7 @@
 
                     }
                 })
-
+                
                 $(document).on('change', '.multiplier', function(event) {
                     if (event.target === this) {
                         var row = $(this).closest('.product_row')

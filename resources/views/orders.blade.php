@@ -3,6 +3,7 @@
 @section('content')
 
 
+
 <div class="mx-4">
     <h1 class="my-4">Orders</h1>
 
@@ -173,6 +174,7 @@
             <b>${column9total.toLocaleString(undefined, {minimumFractionDigits: 2})}</b>`);
         }
 
+
     });
 </script>
 
@@ -186,34 +188,34 @@
             }
         });
 
-        $('.delete_all').on('click', function(e) {
-            var allVals = [];
-            $(".sub_chk:checked").each(function() {
-                allVals.push($(this).attr('data-id'));
-            });
-            if (allVals.length <= 0) {
-                alert("Please Select Row");
-            } else {
-                var check = confirm("Are you sure you want to delete this row? ");
-                if (check == true) {
-                    var selected = allVals.join(",");
-                    $.ajax({
-                        url: $(this).data('url'),
-                        type: 'DELETE',
-                        headers: {
-                            'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
-                        },
-                        data: 'ids=' + selected,
-                        success: function(data) {
-                            if (data['success']) {
-                                $(".sub_chk:checked").each(function() {
-                                    $(this).parents("tr").remove();
-                                });
-                                alert(data['success']);
-                            } else if (data['error']) {
-                                alert(data['error']);
-                            } else {
-                                alert('Something went wrong!');
+
+            $('.delete_all').on('click', function(e) {
+                var allVals = [];
+                $(".sub_chk:checked").each(function() {
+                    allVals.push($(this).attr('data-id'));
+                });
+                if (allVals.length <= 0) {
+                    alert("Please Select Row");
+                } else {
+                    var check = confirm("Are you sure you want to delete this row? ");
+                    if (check == true) {
+                        var selected = allVals.join(",");
+                        $.ajax({
+                            url: $(this).data('url'),
+                            type: 'DELETE',
+                            headers: {
+                                'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+                            },
+                            data: 'ids=' + selected,
+                            success: function(data) {
+                                if (data['success']) {
+
+                                    location.reload()
+                                }
+                            },
+                            error: function(data) {
+                                alert(data.responseText);
+
                             }
                         },
                         error: function(data) {

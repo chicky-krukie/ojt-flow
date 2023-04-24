@@ -1,6 +1,7 @@
 @extends('layout')
 @section('pageTitle', 'Inventory')
 @section('content')
+
 <br>
 <div class="container-fluid px-5">
     <h2 class="mb-4">Inventory</h2>
@@ -16,6 +17,7 @@
             <p class="text-center m">Uploading file please wait...</p>
             <div class="progress">
                 <div id="progress-bar" class="progress-bar progress-bar-striped" role="progressbar" style="width: 0%;" aria-valuenow="0" aria-valuemin="0" aria-valuemax="100">25%</div>
+
             </div>
         </div>
 
@@ -27,3 +29,7 @@
 
 
 @endsection
+
+
+
+

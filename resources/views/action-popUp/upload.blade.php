@@ -11,7 +11,7 @@
                         accept-charset="utf-8" enctype="multipart/form-data" method="POST">
                         @csrf
                         <input type="file" name="file" id="importFile" class="form-control col-8 w-75 mr-2">
-                        <button type="submit" id="submit" class="btn btn-success col-2 w-auto ">Import CSV</button>
+                        <button type="submit" id="submit" class="btn btn-success col-2 w-auto disable">Import CSV</button>
                     </form>
                 </div>
             </div>
@@ -19,5 +19,12 @@
     </div>
 </div>
 {{-- <span class="badge badge-primary rounded-pill">14</span> --}}
-
-
+<script>
+    $(document).on('click', '.disable', function(event) {
+        if ($(this).hasClass('disabled')) {
+            event.preventDefault();
+            return false;
+        }
+        $(this).addClass('disabled');
+    });
+</script>
