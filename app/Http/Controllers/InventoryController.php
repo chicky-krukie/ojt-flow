@@ -108,20 +108,21 @@ class InventoryController extends Controller
 
         $condition = $request->input('filter');
         $value = $request->input('value');
-       // dd($value);
+        //dd($value);
 
         $query = DB::table('products')->orderBy('quantity');
 
         $inventories = DataUpload::with('product', 'log')->get()->toArray();
-        if ($value === "default") {
+       // dd($condition);
+        if ($condition === "default") {
             return view('filter-inventory.filtered')
-            ->with(compact('inventories', 'value', 'filter'));
-        } else if ($value === "all") {
+            ->with(compact('inventories', 'value', 'condition'));
+        } else if ($condition === "all") {
             return view('filter-inventory.filtered')
-            ->with(compact('inventories', 'value'));
+            ->with(compact('inventories', 'value', 'condition'));
         } else {
             return view('filter-inventory.filtered')
-            ->with(compact('inventories', 'value'));
+            ->with(compact('inventories', 'value', 'condition'));
         }
     }
 
