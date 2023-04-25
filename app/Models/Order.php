@@ -28,4 +28,6 @@ class Order extends Model
     {
         return $this->belongsTo(DataUpload::class, 'product_id');
     }
+
+
 }

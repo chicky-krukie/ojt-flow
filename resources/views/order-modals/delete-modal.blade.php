@@ -14,7 +14,7 @@
              </div>
              <div class="modal-footer">
                  <button type="button" class="btn btn-secondary" data-dismiss="modal">No</button>
-                 <a href="{{ route('delete-order', $order->tcgplacer_id ) }}">
+                 <a href="{{ route('delete-order', [$order->id, $order->tcgplacer_id]) }}">
                      <button type="button" class="btn btn-primary" id="delete">Yes</button>
                  </a>
              </div>
