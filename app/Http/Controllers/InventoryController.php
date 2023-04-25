@@ -28,19 +28,18 @@ class InventoryController extends Controller
     //Inventory Table Function
     public function inventoryTable()
     {
-
+        $condition = "";
+        $value = "";
+        
         $settings = Setting::with('paymentMethods', 'paymentStatus', 'currency')->first()->toArray();
         $settings['method'] =  PaymentMethod::get()->toArray();
         $settings['status'] =  PaymentStatus::get()->toArray();
         $settings['currency_option'] =  Currency::get(['id', 'currency_name', 'symbol'])->toArray();
 
-        //$inventories = DataUpload::all();
+        $inventories = DataUpload::with('product')->where('quantity', '>', 0)->get()->toArray();
 
-
-        $inventories = DataUpload::with('product')->orderby('quantity', 'desc')->get()->toArray();
-
-
-        return view('inventory')->with(compact('inventories', 'settings'));
+        return view('inventory', ['inventories' => $inventories])
+            ->with(compact('inventories','condition', 'value',  'settings'));
     }
 
     //Import CSV
@@ -58,9 +57,6 @@ class InventoryController extends Controller
         $data = Excel::toArray(new DataUploadImport, $path)[0];
 
         ProcessCsvImport::dispatch($data);
-
-        // Cache::forget('totalTime');
-        // Cache::forget('csv_import_progress');
 
         return redirect('inventory');
     }
@@ -111,21 +107,24 @@ class InventoryController extends Controller
 
         $condition = $request->input('filter');
         $value = $request->input('value');
-        //dd($value);
 
-        $query = DB::table('products')->orderBy('quantity');
+        $settings = Setting::with('paymentMethods', 'paymentStatus', 'currency')->first()->toArray();
+        $settings['method'] =  PaymentMethod::get()->toArray();
+        $settings['status'] =  PaymentStatus::get()->toArray();
+        $settings['currency_option'] =  Currency::get(['id', 'currency_name', 'symbol'])->toArray();
 
-        $inventories = DataUpload::with('product', 'log')->get()->toArray();
-       // dd($condition);
         if ($condition === "default") {
-            return view('filter-inventory.filtered')
-            ->with(compact('inventories', 'value', 'condition'));
+            $inventories = DataUpload::with('product')->where('quantity', '>', 0)->get()->toArray();
+            return view('inventory', ['inventories' => $inventories])
+                ->with(compact('inventories', 'condition', 'value', 'settings'));
         } else if ($condition === "all") {
-            return view('filter-inventory.filtered')
-            ->with(compact('inventories', 'value', 'condition'));
+            $inventories = DataUpload::with('product')->orderby('quantity', 'desc')->get()->toArray();
+
+            return view('inventory')->with(compact('inventories', 'condition', 'value', 'settings'));
         } else {
-            return view('filter-inventory.filtered')
-            ->with(compact('inventories', 'value', 'condition'));
+            $inventories = DataUpload::with('product')->where('quantity', 0)->get()->toArray();
+            return view('inventory', ['inventories' => $inventories])
+                ->with(compact('inventories', 'condition', 'value', 'settings'));
         }
     }
 

@@ -50,11 +50,11 @@
 
 @include('table.inventoryTable')
 
-
 @endsection
 
 
 
 
-@endsection
+
+
 

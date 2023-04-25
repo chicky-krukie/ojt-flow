@@ -10,7 +10,7 @@ use App\Http\Controllers\InventoryController;
 use App\Http\Controllers\CurrencyController;
 
 //Display Inventory Table
-Route::get('/inventory1', [InventoryController::class, 'inventoryTable'])->name('inventory');
+Route::get('/inventory1', [InventoryController::class, 'inventoryTable'])->name('inventoryTable');
 
 //Import CSV file
 Route::post('/importProduct', [InventoryController::class, 'importCsv'])->name('importProductFromCsv');;
@@ -29,8 +29,6 @@ Route::put('/decrement/{id}', [InventoryController::class, 'down'])->name('quant
 
 //Inline Edit price_each (TCG Mid)
 Route::put('/edit/{id}', [InventoryController::class, 'edit'])->name('price_each.edit');
-
-
 
 
 
