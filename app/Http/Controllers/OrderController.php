@@ -29,17 +29,17 @@ class OrderController extends Controller
         // return view('orders')->with(compact('orders'));
     }
 
-    public function returnOrder($tcgplacer_id)
+    public function returnOrder($id, $tcgplacer_id)
     {
-       
+
         $return_order = Order::with('product')->where('tcgplacer_id', (int)$tcgplacer_id)->get()->first()->toArray();
-        
+
+
         DataUpload::where('product_id', $tcgplacer_id)->update([
             'quantity' =>  (int)($return_order['qty']) + (int)($return_order['product']['quantity'])
         ]);
 
-    
-        Order::where('tcgplacer_id', $tcgplacer_id)->delete();
+        Order::where('id', $id)->delete();
 
         return redirect()->route('sortQuantity')->with('success', 'Order Deleted');
     }
