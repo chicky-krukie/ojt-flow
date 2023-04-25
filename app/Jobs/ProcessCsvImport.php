@@ -38,6 +38,7 @@ class ProcessCsvImport implements ShouldQueue
         $processedCount = 0;
         $startTime = now();
 
+    
         foreach ($batches as $batch) {
             $dataIds = $batch->pluck('product_id')->toArray();
 
@@ -124,8 +125,8 @@ class ProcessCsvImport implements ShouldQueue
                 return $item;
             })->toArray();
 
-            DataUpload::upsert($newBatch, ['product_id'], ['product_id','quantity' => DB::raw('data_uploads.quantity + VALUES(quantity)'), 'price_each', 'printing'], );
-            Product::upsert($apiData, ['tcgplayer_id'], [
+            DataUpload::upsert($newBatch, ['product_id','printing'], ['product_id','quantity' => DB::raw('quantity + VALUES(quantity)'), 'price_each', 'printing'], );
+            Product::upsert($apiData, ['tcgplayer_id','foil'], [
                 'object',
                 'object_id',
                 'oracle_id',
