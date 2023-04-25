@@ -217,12 +217,8 @@
                                 alert(data.responseText);
 
                             }
-                        },
-                        error: function(data) {
-                            alert(data.responseText);
-                        }
-
-                    });
+                        }),
+                    
                     $.each(allVals, function(orders, value) {
                         $('table tr').filter("[data-row-id'" + value + "']").remove();
                     });
