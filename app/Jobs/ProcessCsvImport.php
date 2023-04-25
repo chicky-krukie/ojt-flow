@@ -12,6 +12,7 @@ use Illuminate\Foundation\Bus\Dispatchable;
 use Illuminate\Queue\InteractsWithQueue;
 use Illuminate\Queue\SerializesModels;
 use Illuminate\Support\Facades\Cache;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Http;
 
 class ProcessCsvImport implements ShouldQueue
@@ -119,10 +120,11 @@ class ProcessCsvImport implements ShouldQueue
 
            $newBatch =  collect($batch)->map(function ($item) {
                 $item['price_each'] = str_replace('$', '', $item['price_each']);
+                $item['quantity'] = (int)$item['quantity'];
                 return $item;
             })->toArray();
 
-            DataUpload::upsert($newBatch, ['product_id'], ['product_id', 'quantity', 'price_each', 'printing']);
+            DataUpload::upsert($newBatch, ['product_id'], ['product_id','quantity' => DB::raw('data_uploads.quantity + VALUES(quantity)'), 'price_each', 'printing'], );
             Product::upsert($apiData, ['tcgplayer_id'], [
                 'object',
                 'object_id',
