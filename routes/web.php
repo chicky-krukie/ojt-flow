@@ -43,7 +43,7 @@ Route::get('/',[HomeController::class,'home'])->name('home');
 
 
 
-Route::get('/delete-order/{tcgplacer_id}', [OrderController::class, 'returnOrder'])->name('delete-order');
+Route::get('/delete-order/{tcgplacer_id}/{id}', [OrderController::class, 'returnOrder'])->name('delete-order');
 Route::post('/edit-order/{id}', [OrderController::class, 'editOrder'])->name('edit-order');
 Route::delete('/delete-selected-order', [OrderController::class, 'deleteSelectOrder'])->name('delete-selected-order');
 
