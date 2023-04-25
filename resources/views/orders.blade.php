@@ -25,6 +25,13 @@
                 <th scope="col">Ship Cost</th>
                 <th scope="col">Payment Status</th>
                 <th scope="col">Payment Method</th>
+                <th scope="col">Note</th>
+                <th scope="col">Ship Price</th>
+                <th scope="col">TCG Player ID</th>
+                <th scope="col">Tracking Number</th>
+                <th scope="col">Multiplier</th>
+                <th scope="col">Multiplier Price</th>
+                <th scope="col">Product ID</th>
                 <th scope="col"></th>
             </tr>
         </thead>
@@ -70,6 +77,13 @@
                     @endforeach
                 </td>
                 <td>{{ $order->payment_method }}</td>
+                <td>{{ $order->note }}</td>
+                <td>{{ $order->ship_price }}</td>
+                <td>{{ $order->tcgplacer_id }}</td>
+                <td>{{ $order->tracking_number }}</td>
+                <td>{{ $order->multiplier }}</td>
+                <td>{{ $order->multiplier_price }}</td>
+                <td>{{ $order->product_id }}</td>
 
 
                 <td class="">
@@ -113,6 +127,16 @@
         buttons: [
             'pageLength',
             'excelHtml5',
+            {
+            extend: 'colvis',
+            columns: [1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18],
+            columnText: function ( dt, idx, title ) {
+                return (idx)+': '+title;
+            }
+            }
+        ],
+        columnDefs: [
+            { targets: [12,13,14,15,16,17,18], visible: false }
         ],
         "footerCallback": function(row, data, start, end, display) {
             var api = this.api(),
