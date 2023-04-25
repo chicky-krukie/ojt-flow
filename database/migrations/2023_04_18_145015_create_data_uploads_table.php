@@ -15,11 +15,12 @@ return new class extends Migration
     {
         Schema::create('data_uploads', function (Blueprint $table) {
             $table->id();
-            $table->unsignedBigInteger('product_id')->unique();
+            $table->unsignedBigInteger('product_id');
             $table->string('quantity');
             $table->string('price_each');
             $table->string('printing');
             $table->timestamps();
+            $table->unique(['product_id', 'printing']);
         });
     }
 
