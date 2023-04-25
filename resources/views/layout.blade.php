@@ -64,7 +64,7 @@
                 <a class="nav-item nav-link mx-2" href="{{ route('home') }}">Activity Logs
                     <i class="fa fa-history" aria-hidden="true"></i>
                 </a>
-                <a class="nav-item nav-link mx-2" href="{{ url('inventory') }}">Inventory
+                <a class="nav-item nav-link mx-2" href="{{ route('inventoryTable') }}">Inventory
                     <i class="fa fa-archive" aria-hidden="true"></i>
                 </a>
                 <a class="nav-item nav-link mx-2" href="{{ route('orders') }}">Orders
