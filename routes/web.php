@@ -10,7 +10,7 @@ use App\Http\Controllers\InventoryController;
 use App\Http\Controllers\CurrencyController;
 
 //Display Inventory Table
-Route::get('/inventory1', [InventoryController::class, 'inventoryTable'])->name('inventory');
+Route::get('/inventory1', [InventoryController::class, 'inventoryTable'])->name('inventoryTable');
 
 //Import CSV file
 Route::post('/importProduct', [InventoryController::class, 'importCsv'])->name('importProductFromCsv');;
@@ -32,8 +32,6 @@ Route::put('/edit/{id}', [InventoryController::class, 'edit'])->name('price_each
 
 
 
-
-
 Route::get('/orders', [OrderController::class, 'orders'])->name('orders');
 
 Route::match(['post','get'],'/settings/{id?}', [SettingsController::class, 'settings'])->name('settings');
@@ -45,7 +43,7 @@ Route::get('/',[HomeController::class,'home'])->name('home');
 
 
 
-Route::get('/delete-order/{tcgplacer_id}', [OrderController::class, 'returnOrder'])->name('delete-order');
+Route::get('/delete-order/{tcgplacer_id}/{id}', [OrderController::class, 'returnOrder'])->name('delete-order');
 Route::post('/edit-order/{id}', [OrderController::class, 'editOrder'])->name('edit-order');
 Route::delete('/delete-selected-order', [OrderController::class, 'deleteSelectOrder'])->name('delete-selected-order');
 

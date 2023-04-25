@@ -4,6 +4,9 @@
 
     {{-- Get art_crop and normal image link --}}
     <td class="td-height">
+        @php
+            //dd($item['product']['name']);
+        @endphp
         @if ($item['product']['art_crop'] !== null && $item['product']['normal'] !== null)
             <img src="{{ $item['product']['art_crop'] }}" alt="{{ $item['product']['name'] }}"
                 class="thumbnail align-middle text-center" onmouseenter="this.src='{{ $item['product']['normal'] }}'"
