@@ -40,10 +40,27 @@
                 <td>{{ $order->card_name }}</td>
                 <td>{{ $order->set }}</td>
                 <td>{{ $order->finish }}</td>
-                <td>{{ $order->tcg_mid }}</td>
+                <td>
+                    @foreach ($settings['currency_option'] as $currency)
+                        @if ($settings['tcg_mid'] === $currency['id'])
+                            {{ $currency['symbol'] . number_format($order->tcg_mid, 2, '.', ',') }}
+                        @endif
+                    @endforeach
+                </td>
                 <td>{{ $order->qty }}</td>
-                <td>{{ $order->sold_price }}</td>
-                <td>{{ $order->ship_cost }}
+                <td>
+                    @foreach ($settings['currency_option'] as $currency)
+                        @if ($settings['sold_price'] === $currency['id'])
+                            {{ $currency['symbol'] . number_format($order->sold_price, 2, '.', ',') }}
+                        @endif
+                    @endforeach
+                </td>
+                <td>
+                    @foreach ($settings['currency_option'] as $currency)
+                        @if ($settings['ship_cost'] === $currency['id'])
+                            {{ $currency['symbol'] . number_format($order->ship_cost, 2, '.', ',') }}
+                        @endif
+                    @endforeach
                 </td>
                 <td>
                     @foreach ($settings['status'] as $status)
@@ -96,7 +113,6 @@
         buttons: [
             'pageLength',
             'excelHtml5',
-            'colvis'
         ],
         "footerCallback": function(row, data, start, end, display) {
             var api = this.api(),
