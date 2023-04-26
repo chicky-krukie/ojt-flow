@@ -25,6 +25,13 @@
                 <th scope="col">Ship Cost</th>
                 <th scope="col">Payment Status</th>
                 <th scope="col">Payment Method</th>
+                <th scope="col">Note</th>
+                <th scope="col">Ship Price</th>
+                <th scope="col">TCG Player ID</th>
+                <th scope="col">Tracking Number</th>
+                <th scope="col">Multiplier</th>
+                <th scope="col">Multiplier Price</th>
+                <th scope="col">Product ID</th>
                 <th scope="col"></th>
             </tr>
         </thead>
@@ -40,10 +47,27 @@
                 <td>{{ $order->card_name }}</td>
                 <td>{{ $order->set }}</td>
                 <td>{{ $order->finish }}</td>
-                <td>{{ $order->tcg_mid }}</td>
+                <td>
+                    @foreach ($settings['currency_option'] as $currency)
+                        @if ($settings['tcg_mid'] === $currency['id'])
+                            {{ $currency['symbol'] . number_format($order->tcg_mid, 2, '.', ',') }}
+                        @endif
+                    @endforeach
+                </td>
                 <td>{{ $order->qty }}</td>
-                <td>{{ $order->sold_price }}</td>
-                <td>{{ $order->ship_cost }}
+                <td>
+                    @foreach ($settings['currency_option'] as $currency)
+                        @if ($settings['sold_price'] === $currency['id'])
+                            {{ $currency['symbol'] . number_format($order->sold_price, 2, '.', ',') }}
+                        @endif
+                    @endforeach
+                </td>
+                <td>
+                    @foreach ($settings['currency_option'] as $currency)
+                        @if ($settings['ship_cost'] === $currency['id'])
+                            {{ $currency['symbol'] . number_format($order->ship_cost, 2, '.', ',') }}
+                        @endif
+                    @endforeach
                 </td>
                 <td>
                     @foreach ($settings['status'] as $status)
@@ -53,6 +77,13 @@
                     @endforeach
                 </td>
                 <td>{{ $order->payment_method }}</td>
+                <td>{{ $order->note }}</td>
+                <td>{{ $order->ship_price }}</td>
+                <td>{{ $order->tcgplacer_id }}</td>
+                <td>{{ $order->tracking_number }}</td>
+                <td>{{ $order->multiplier }}</td>
+                <td>{{ $order->multiplier_price }}</td>
+                <td>{{ $order->product_id }}</td>
 
 
                 <td class="">
@@ -96,7 +127,16 @@
         buttons: [
             'pageLength',
             'excelHtml5',
-            'colvis'
+            {
+            extend: 'colvis',
+            columns: [1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18],
+            columnText: function ( dt, idx, title ) {
+                return (idx)+': '+title;
+            }
+            }
+        ],
+        columnDefs: [
+            { targets: [12,13,14,15,16,17,18], visible: false }
         ],
         "footerCallback": function(row, data, start, end, display) {
             var api = this.api(),
