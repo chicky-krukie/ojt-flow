@@ -14,6 +14,10 @@ body {
     width: 50px;
 }
 
+.width-150{
+    width: 150px;
+}
+
 .thumbnail {
     height: 14vh;
     width: 7vw;

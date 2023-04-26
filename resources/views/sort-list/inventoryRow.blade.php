@@ -47,8 +47,9 @@
 
 
     {{-- Price (Edit) --}}
-    <td class="col-1 align-middle width-200">
-        <form method="post" action="{{ route('price_each.edit', $item['id']) }} " class="disable-form">
+    <td class="col-1 align-middle width-150">
+        <form method="post" action="{{ route('price_each.edit', $item['id']) }}" class="disable-form"
+            id="price_edit_{{ $item['id'] }}">
             @method('PUT')
             @csrf
             <div class="input-group text-center">
@@ -61,9 +62,8 @@
                     @endforeach
                 </div>
                 <input name="price_each" value="{{ $item['price_each'] }}" type="text"
-                    class="form-control tcg_mid"><span hidden>{{ $item['price_each'] }}</span>
-                <button type="submit" class="btn btn-primary disable-price" data-bs-toggle="tooltip"
-                    data-bs-placement="top" title="Save Price"><i class="fa fa-save"></i></button>
+                    class="form-control price_input" id="price_input_{{ $item['id'] }}"><span
+                    hidden>{{ $item['price_each'] }}</span>
             </div>
         </form>
     </td>
@@ -108,5 +108,13 @@
         var btn = $(this).find('.disable-quantity, .disable-price');
         btn.addClass('disabled');
     });
-    
+</script>
+
+<script>
+    $(document).on('blur', '.price_input', function(event){
+        if(event.target === this)
+        {
+          const form = $(this).closest('form').submit();
+        }
+    })
 </script>

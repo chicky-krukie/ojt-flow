@@ -121,6 +121,7 @@
                 scrollY: '55vh',
                 scrollCollapse: true,
                 stateSave: true,
+                "bFilter": false
 
             });
 
