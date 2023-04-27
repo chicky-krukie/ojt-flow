@@ -45,3 +45,8 @@ thead select{
     box-sizing: border-box;
     color: grey;
 }
+
+.view-image{
+    height: 30vh;
+    width: auto;
+}
