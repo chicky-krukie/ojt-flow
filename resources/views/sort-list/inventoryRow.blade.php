@@ -1,6 +1,5 @@
-<tr class="product_row">
-    <td class="text-center align-middle width-50"><input type="checkbox" name="checkbox" id="checkbox" class="select-row">
-    </td>
+<tr class="product_row" id="tr_{{ $item['id'] }}">
+    <th><input class="sub_chk text-center width-50" data-id="{{ $item['id'] }}" type="checkbox"></th>
 
     {{-- Get art_crop and normal image link --}}
     <td class="td-height">
@@ -111,10 +110,9 @@
 </script>
 
 <script>
-    $(document).on('blur', '.price_input', function(event){
-        if(event.target === this)
-        {
-          const form = $(this).closest('form').submit();
+    $(document).on('blur', '.price_input', function(event) {
+        if (event.target === this) {
+            const form = $(this).closest('form').submit();
         }
     })
 </script>
