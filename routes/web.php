@@ -52,3 +52,6 @@ Route::post('/import-product-from-excel', [HomeController::class, 'importProduct
 // settings
 Route::post('/add-currency', [CurrencyController::class, 'addCurrency'])->name('add-currency');
 Route::post('/add-method', [CurrencyController::class, 'addMethod'])->name('add-method');
+
+
+Auth::routes();
