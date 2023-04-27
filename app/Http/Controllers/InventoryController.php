@@ -30,7 +30,7 @@ class InventoryController extends Controller
     {
         $condition = "";
         $value = "";
-        
+
         $settings = Setting::with('paymentMethods', 'paymentStatus', 'currency')->first()->toArray();
         $settings['method'] =  PaymentMethod::get()->toArray();
         $settings['status'] =  PaymentStatus::get()->toArray();
@@ -38,8 +38,10 @@ class InventoryController extends Controller
 
         $inventories = DataUpload::with('product')->where('quantity', '>', 0)->get()->toArray();
 
+        // dd($inventories);
+
         return view('inventory', ['inventories' => $inventories])
-            ->with(compact('inventories','condition', 'value',  'settings'));
+            ->with(compact('inventories', 'condition', 'value',  'settings'));
     }
 
     //Import CSV
@@ -62,7 +64,7 @@ class InventoryController extends Controller
         return redirect('inventory');
     }
 
-   
+
     //Sort Quantity Function
     public function sortQuantity(Request $request)
     {
@@ -115,8 +117,10 @@ class InventoryController extends Controller
         $settings['status'] =  PaymentStatus::get()->toArray();
         $settings['currency_option'] =  Currency::get(['id', 'currency_name', 'symbol'])->toArray();
 
+        
         if ($condition === "default") {
             $inventories = DataUpload::with('product')->where('quantity', '>', 0)->get()->toArray();
+         
             return view('inventory', ['inventories' => $inventories])
                 ->with(compact('inventories', 'condition', 'value', 'settings'));
         } else if ($condition === "all") {
@@ -125,6 +129,7 @@ class InventoryController extends Controller
             return view('inventory')->with(compact('inventories', 'condition', 'value', 'settings'));
         } else {
             $inventories = DataUpload::with('product')->where('quantity', 0)->get()->toArray();
+           
             return view('inventory', ['inventories' => $inventories])
                 ->with(compact('inventories', 'condition', 'value', 'settings'));
         }
@@ -222,5 +227,16 @@ class InventoryController extends Controller
         $csv->delete();
 
         return redirect()->back()->with('sucess', 'Product deleted');
+    }
+
+    //Delete Selected Row
+    public function deleteSelectInventory(Request $request)
+    {
+
+        $ids = $request->ids;
+        $csv =  DataUpload::whereIn('id', explode(",", $ids));
+        $csv->delete();
+    
+        return response()->json(['success' => "Order Deleted."]);
     }
 }
