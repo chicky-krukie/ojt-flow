@@ -144,7 +144,13 @@ class InventoryController extends Controller
             $csvOutput->increment('quantity', 1);
         }
 
-        return $this->inventoryTable();
+        // return $this->inventoryTable();
+        //return route('viewZero');
+        if ($csvOutput->quantity === 0) {
+            return redirect()->back();
+        } else {
+            return $this->inventoryTable();
+        }
     }
 
     //Decrement QTY
@@ -159,9 +165,7 @@ class InventoryController extends Controller
                 $csvOutput->decrement('quantity', 1);
             }
         }
-        return $this->inventoryTable();
-        //return view('inventory');
-       // return redirect()->back();
+        return redirect()->back();
     }
 
 
