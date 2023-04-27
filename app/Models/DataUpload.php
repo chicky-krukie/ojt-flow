@@ -45,7 +45,7 @@ class DataUpload extends Model
 
     public function product()
     {
-        return $this->hasOne(Product::class, 'id');
+        return $this->hasOne(Product::class, 'tcgplayer_id', 'product_id');
     }
     public function log()
     {

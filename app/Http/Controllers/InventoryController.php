@@ -55,12 +55,14 @@ class InventoryController extends Controller
 
         $path = $request->file('file')->getRealPath();
         $data = Excel::toArray(new DataUploadImport, $path)[0];
+        // dd($data);
 
         ProcessCsvImport::dispatch($data);
 
         return redirect('inventory');
     }
 
+   
     //Sort Quantity Function
     public function sortQuantity(Request $request)
     {
