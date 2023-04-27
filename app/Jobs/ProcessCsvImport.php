@@ -70,7 +70,7 @@ class ProcessCsvImport implements ShouldQueue
                     'toughness' => isset($data['toughness']) ? $data['toughness'] : null,
                     'colors' => !empty($data['colors']) ?  implode(',', $data['colors']) : null,
                     'color_identity' => !empty($data['color_identity']) ? implode(',', $data['color_identity']) : 'land',
-                    'keywords' => empty($data['keywords']) ? implode(',', $data['keywords']) : null,
+                    'keywords' => !empty($data['keywords']) ? implode(',', $data['keywords']) : null,
                     'legalities' => isset($data['legalities']) ? json_encode($data['legalities']) : null,
                     'games' => !empty($data['games']) ?  implode(',', $data['games']) : null,
                     'reserved' => isset($data['reserved']) ? $data['reserved'] : null,

@@ -30,7 +30,7 @@ class InventoryController extends Controller
     {
         $condition = "";
         $value = "";
-        
+
         $settings = Setting::with('paymentMethods', 'paymentStatus', 'currency')->first()->toArray();
         $settings['method'] =  PaymentMethod::get()->toArray();
         $settings['status'] =  PaymentStatus::get()->toArray();
@@ -39,7 +39,7 @@ class InventoryController extends Controller
         $inventories = DataUpload::with('product')->where('quantity', '>', 0)->get()->toArray();
 
         return view('inventory', ['inventories' => $inventories])
-            ->with(compact('inventories','condition', 'value',  'settings'));
+            ->with(compact('inventories', 'condition', 'value',  'settings'));
     }
 
     //Import CSV
@@ -137,7 +137,7 @@ class InventoryController extends Controller
             $csvOutput->increment('quantity', 1);
         }
 
-        return redirect()->back();
+        return $this->inventoryTable();
     }
 
     //Decrement QTY
@@ -152,8 +152,9 @@ class InventoryController extends Controller
                 $csvOutput->decrement('quantity', 1);
             }
         }
-
-        return redirect()->back();
+        return $this->inventoryTable();
+        //return view('inventory');
+       // return redirect()->back();
     }
 
 
