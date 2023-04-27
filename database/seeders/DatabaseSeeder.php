@@ -8,6 +8,7 @@ use App\Models\Currency;
 use App\Models\PaymentMethod;
 use App\Models\PaymentStatus;
 use App\Models\Setting;
+use App\Models\User;
 use Illuminate\Database\Seeder;
 
 class DatabaseSeeder extends Seeder
@@ -71,6 +72,33 @@ class DatabaseSeeder extends Seeder
         
 
 
+        $users = [
+            [
+               'name'=>'Admin',
+               'email'=>'admin@email.com',
+               'role'=> 0,
+               'password'=> bcrypt('admin123'),
+            ],
+            [
+               'name'=>'Manager',
+               'email'=>'manager@email.com',
+               'role'=> 1,
+               'password'=> bcrypt('manager123'),
+            ],
+            [
+               'name'=>'Staff',
+               'email'=>'staff@email.com',
+               'role'=> 2,
+               'password'=> bcrypt('staff123'),
+            ],
+            
+        ];
+
+
+        foreach ($users as $key => $user) 
+        {
+            User::create($user);
+        }
 
 
     }
