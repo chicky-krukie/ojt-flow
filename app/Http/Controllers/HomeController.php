@@ -78,10 +78,6 @@ class HomeController extends Controller
         return view('home', ['msg' => 'Welcome, Admin!']);
     }
 
-    public function managerHome(){
-        return view('home', ['msg' => 'Welcome, Manager!']);
-    }
-
     public function staffHome(){
         return view('home', ['msg' => 'Welcome, Staff!']);
     }

@@ -80,15 +80,9 @@ class DatabaseSeeder extends Seeder
                'password'=> bcrypt('admin123'),
             ],
             [
-               'name'=>'Manager',
-               'email'=>'manager@email.com',
-               'role'=> 1,
-               'password'=> bcrypt('manager123'),
-            ],
-            [
                'name'=>'Staff',
                'email'=>'staff@email.com',
-               'role'=> 2,
+               'role'=> 1,
                'password'=> bcrypt('staff123'),
             ],
             
