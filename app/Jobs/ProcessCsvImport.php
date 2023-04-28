@@ -38,7 +38,7 @@ class ProcessCsvImport implements ShouldQueue
         $processedCount = 0;
         $startTime = now();
 
-    
+
         foreach ($batches as $batch) {
             $dataIds = $batch->pluck('product_id')->toArray();
 
@@ -61,10 +61,10 @@ class ProcessCsvImport implements ShouldQueue
                     'scryfall_uri' => isset($data['scryfall_uri']) ? $data['scryfall_uri'] : null,
                     'layout' => isset($data['layout']) ? $data['layout'] : null,
                     'highres_image' => isset($data['highres_image']) ? $data['highres_image'] : false,
-                    'image_status' => isset($data['image_status']) ? $data['image_status'] : null,
+                    'image_status' => isset($data['image_status']) ? str_replace('_', ' ', $data['image_status']) : null,
                     'art_crop' => isset($data['image_uris']) ?  $data['image_uris']['art_crop'] : null,
                     'normal' => isset($data['image_uris']) ? $data['image_uris']['normal'] : null,
-                    'mana_cost' => isset($data['mana_cost']) ? $data['mana_cost'] : null,
+                    'mana_cost' => isset($data['mana_cost']) ? str_replace(['{', '}'], '', $data['mana_cost']) : null,
                     'cmc' => isset($data['cmc']) ? $data['cmc'] : null,
                     'type_line' => isset($data['type_line']) ? $data['type_line'] : null,
                     'oracle_text' => isset($data['oracle_text']) ? $data['oracle_text'] : null,
@@ -73,7 +73,7 @@ class ProcessCsvImport implements ShouldQueue
                     'colors' => !empty($data['colors']) ?  implode(',', $data['colors']) : null,
                     'color_identity' => !empty($data['color_identity']) ? implode(',', $data['color_identity']) : 'land',
                     'keywords' => !empty($data['keywords']) ? implode(',', $data['keywords']) : null,
-                    'legalities' => isset($data['legalities']) ? json_encode($data['legalities']) : null,
+                    'legalities' => isset($data['legalities']) ? json_encode($data['legalities'], ) : null,
                     'games' => !empty($data['games']) ?  implode(',', $data['games']) : null,
                     'reserved' => isset($data['reserved']) ? $data['reserved'] : null,
                     'foil' => isset($data['foil']) ? $data['foil'] : false,
@@ -116,17 +116,16 @@ class ProcessCsvImport implements ShouldQueue
 
 
                 ];
-           
             })->toArray();
 
-           $newBatch =  collect($batch)->map(function ($item) {
+            $newBatch =  collect($batch)->map(function ($item) {
                 $item['price_each'] = str_replace('$', '', $item['price_each']);
                 $item['quantity'] = (int)$item['quantity'];
                 return $item;
             })->toArray();
 
-            DataUpload::upsert($newBatch, ['product_id','printing'], ['product_id','quantity' => DB::raw('quantity + VALUES(quantity)'), 'price_each', 'printing'], );
-            Product::upsert($apiData, ['tcgplayer_id','foil'], [
+            DataUpload::upsert($newBatch, ['product_id', 'printing'], ['product_id', 'quantity' => DB::raw('quantity + VALUES(quantity)'), 'price_each', 'printing'],);
+            Product::upsert($apiData, ['tcgplayer_id', 'foil'], [
                 'object',
                 'object_id',
                 'oracle_id',
