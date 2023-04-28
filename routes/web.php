@@ -2,12 +2,13 @@
 
 use App\Models\Inventory;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\OrderController;
+use App\Http\Controllers\CurrencyController;
 use App\Http\Controllers\SettingsController;
 use App\Http\Controllers\InventoryController;
-use App\Http\Controllers\CurrencyController;
 
 //Display Inventory Table
 Route::get('/inventoryTable', [InventoryController::class, 'inventoryTable'])->name('inventoryTable');
@@ -62,7 +63,7 @@ Auth::routes();
 
 //route admin
 Route::middleware(['auth', 'user-role:admin'])->group(function(){
-    Route::get('/', [HomeController::class, 'adminHome'])->name('home');
+    Route::get('/admin', [HomeController::class, 'adminHome'])->name('admin.home');
 });
 
 //route manager

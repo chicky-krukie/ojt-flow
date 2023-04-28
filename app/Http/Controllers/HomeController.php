@@ -23,8 +23,9 @@ class HomeController extends Controller
         // dd($logs);
         // $inventories = DataUpload::with('product')->get()->toArray();
         // return view('home')->with(compact('inventories'));
+        // dd($logs);
 
-        return view('home')->with(compact('logs'));
+        return view('home')->with(compact('logs'))->with('msg', 'Welcome, Admin!');
     }
 
     public function importProductFromExcel(Request $request)
@@ -74,9 +75,6 @@ class HomeController extends Controller
 
 
 
-    public function adminHome(){
-        return view('home', ['msg' => 'Welcome, Admin!']);
-    }
 
     public function staffHome(){
         return view('home', ['msg' => 'Welcome, Staff!']);
