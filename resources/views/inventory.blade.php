@@ -1,22 +1,22 @@
 @extends('layout')
 @section('pageTitle', 'Inventory')
 @section('content')
-@php
-// Check if the file is still in JSON format
-function is_valid_json($raw_json)
-{
-    $decoded = json_decode($raw_json, true);
-    if ($decoded == null || is_int($decoded)) {
-        return $raw_json;
-    } else {
-        $result = '';
-            foreach ($decoded as $key => $value) {
-                $result .='<br>' . '<b>' . $key . '</b>' . ': ' . $value ;
+    @php
+        // Check if the file is still in JSON format
+        function is_valid_json($raw_json)
+        {
+            $decoded = json_decode($raw_json, true);
+            if ($decoded == null || is_int($decoded)) {
+                return $raw_json;
+            } else {
+                $result = '';
+                foreach ($decoded as $key => $value) {
+                    $result .= '<br>' . '<b>' . $key . '</b>' . ': ' . $value;
+                }
+                print_r($result);
             }
-            print_r($result);
-    }
-}
-@endphp
+        }
+    @endphp
     <br>
     <div class="container-fluid px-5">
         <div class="col-auto">
@@ -35,10 +35,11 @@ function is_valid_json($raw_json)
                             Filter
                         </a>
 
-                        <form action="{{route('filterInventory')}}" class="dropdown-menu">
+                        <form action="{{ route('filterInventory') }}" class="dropdown-menu">
                             <button class="dropdown-item" value="default" name="filter" type="submit">Default</button>
                             <button class="dropdown-item" value="all" name="filter" type="submit">Show All</button>
-                            <button class="dropdown-item" value="zero" name="filter" type="submit">Zero Quantity</button>
+                            <button class="dropdown-item" value="zero" name="filter" type="submit">Zero
+                                Quantity</button>
                         </form>
                     </div>
                 </div>
@@ -62,15 +63,8 @@ function is_valid_json($raw_json)
 
         <br>
     </div>
-</div>
+    </div>
 
-@include('table.inventoryTable')
+    @include('table.inventoryTable')
 
 @endsection
-
-
-
-
-
-
-
