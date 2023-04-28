@@ -1,6 +1,19 @@
 @extends('layout')
 @section('content')
 
+<div class="card">
+    <div class="card-body">
+        @if (session('status'))
+            <div class="alert alert-success" role="alert">
+                {{ session('status') }}
+            </div>
+        @endif
+        {{ Auth::user()->name }}
+        <br>
+        {{$msg}}
+    </div>
+</div>
+
 <div class="col-lg-10 mx-auto">
     <div class="d-flex justify-content-between">
         <h1 class="my-4">Activity log</h1>

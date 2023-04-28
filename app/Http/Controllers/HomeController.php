@@ -18,6 +18,7 @@ class HomeController extends Controller
 {
     public function home()
     {
+
         $logs = Activity::get()->toArray();
         // dd($logs);
         // $inventories = DataUpload::with('product')->get()->toArray();
@@ -69,5 +70,15 @@ class HomeController extends Controller
 
 
         return redirect()->back();
+    }
+
+
+
+    public function adminHome(){
+        return view('home', ['msg' => 'Welcome, Admin!']);
+    }
+
+    public function staffHome(){
+        return view('home', ['msg' => 'Welcome, Staff!']);
     }
 }

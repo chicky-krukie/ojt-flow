@@ -55,3 +55,22 @@ Route::post('/import-product-from-excel', [HomeController::class, 'importProduct
 // settings
 Route::post('/add-currency', [CurrencyController::class, 'addCurrency'])->name('add-currency');
 Route::post('/add-method', [CurrencyController::class, 'addMethod'])->name('add-method');
+
+
+
+Auth::routes();
+
+//route admin
+Route::middleware(['auth', 'user-role:admin'])->group(function(){
+    Route::get('/', [HomeController::class, 'adminHome'])->name('home');
+});
+
+//route manager
+Route::middleware(['auth', 'user-role:manager'])->group(function(){
+    Route::get('/manager/home', [HomeController::class, 'managerHome'])->name('manager.home');
+});
+
+//route staff
+Route::middleware(['auth', 'user-role:staff'])->group(function(){
+    Route::get('/staff/home', [HomeController::class, 'staffHome'])->name('staff.home');
+});
