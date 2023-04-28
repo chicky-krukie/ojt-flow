@@ -12,6 +12,7 @@ use Illuminate\Foundation\Bus\Dispatchable;
 use Illuminate\Queue\InteractsWithQueue;
 use Illuminate\Queue\SerializesModels;
 use Illuminate\Support\Facades\Cache;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Http;
 
 class ProcessCsvImport implements ShouldQueue
@@ -37,6 +38,7 @@ class ProcessCsvImport implements ShouldQueue
         $processedCount = 0;
         $startTime = now();
 
+    
         foreach ($batches as $batch) {
             $dataIds = $batch->pluck('product_id')->toArray();
 
@@ -70,7 +72,7 @@ class ProcessCsvImport implements ShouldQueue
                     'toughness' => isset($data['toughness']) ? $data['toughness'] : null,
                     'colors' => !empty($data['colors']) ?  implode(',', $data['colors']) : null,
                     'color_identity' => !empty($data['color_identity']) ? implode(',', $data['color_identity']) : 'land',
-                    'keywords' => empty($data['keywords']) ? implode(',', $data['keywords']) : null,
+                    'keywords' => !empty($data['keywords']) ? implode(',', $data['keywords']) : null,
                     'legalities' => isset($data['legalities']) ? json_encode($data['legalities']) : null,
                     'games' => !empty($data['games']) ?  implode(',', $data['games']) : null,
                     'reserved' => isset($data['reserved']) ? $data['reserved'] : null,
@@ -119,11 +121,12 @@ class ProcessCsvImport implements ShouldQueue
 
            $newBatch =  collect($batch)->map(function ($item) {
                 $item['price_each'] = str_replace('$', '', $item['price_each']);
+                $item['quantity'] = (int)$item['quantity'];
                 return $item;
             })->toArray();
 
-            DataUpload::upsert($newBatch, ['product_id'], ['product_id', 'quantity', 'price_each', 'printing']);
-            Product::upsert($apiData, ['tcgplayer_id'], [
+            DataUpload::upsert($newBatch, ['product_id','printing'], ['product_id','quantity' => DB::raw('quantity + VALUES(quantity)'), 'price_each', 'printing'], );
+            Product::upsert($apiData, ['tcgplayer_id','foil'], [
                 'object',
                 'object_id',
                 'oracle_id',

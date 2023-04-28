@@ -2,7 +2,9 @@
 <html lang="en">
 
 <head>
+
 @include('metatags')
+
 </head>
 <style>
     body {
@@ -69,3 +71,41 @@
 </body>
 
 </html>
+
+{{-- 
+    
+<div class="d-flex justify-content-center text-center">
+                                    <h6><b>ID's</b></h6>
+                                </div>
+
+                                <div class="d-flex justify-content-between">
+                                    <h6>Object ID:</h6>
+                                    <p><strong>{{ $item['product']['object_id'] }}</strong></p>
+                                </div>
+
+                                <div class="d-flex justify-content-between">
+                                    <h6>Oracle ID:</h6>
+                                    <p><strong>{{ $item['product']['oracle_id'] }}</strong></p>
+                                </div>
+
+                                <div class="d-flex justify-content-between">
+                                    <h6>Multiverse ID:</h6>
+                                    <p><strong>{{ $item['product']['multiverse_ids'] }}</strong></p>
+                                </div>
+
+                                <div class="d-flex justify-content-between">
+                                    <h6>MTGO ID:</h6>
+                                    <p><strong>{{ $item['product']['mtgo_id'] }}</strong></p>
+                                </div>
+
+                                <div class="d-flex justify-content-between">
+                                    <h6>TCGPLAYER ID:</h6>
+                                    <p><strong>{{ $item['product']['tcgplayer_id'] }}</strong></p>
+                                </div>
+
+                                <div class="d-flex justify-content-between">
+                                    <h6>Card Market ID:</h6>
+                                    <p><strong>{{ $item['product']['cardmarket_id'] }}</strong></p>
+                                </div>
+    
+--}}
