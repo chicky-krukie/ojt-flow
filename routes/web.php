@@ -10,7 +10,7 @@ use App\Http\Controllers\InventoryController;
 use App\Http\Controllers\CurrencyController;
 
 //Display Inventory Table
-Route::get('/inventory1', [InventoryController::class, 'inventoryTable'])->name('inventoryTable');
+Route::get('/inventoryTable', [InventoryController::class, 'inventoryTable'])->name('inventoryTable');
 
 //Import CSV file
 Route::post('/importProduct', [InventoryController::class, 'importCsv'])->name('importProductFromCsv');;
@@ -30,16 +30,19 @@ Route::put('/decrement/{id}', [InventoryController::class, 'down'])->name('quant
 //Inline Edit price_each (TCG Mid)
 Route::put('/edit/{id}', [InventoryController::class, 'edit'])->name('price_each.edit');
 
+//Selected Delete Inventory
+Route::delete('/delete-selected-inventory', [InventoryController::class, 'deleteSelectInventory'])->name('delete-selected-inventory');
+
 
 
 Route::get('/orders', [OrderController::class, 'orders'])->name('orders');
 
-Route::match(['post','get'],'/settings/{id?}', [SettingsController::class, 'settings'])->name('settings');
+Route::match(['post', 'get'], '/settings/{id?}', [SettingsController::class, 'settings'])->name('settings');
 
 Route::post('/update/{id}', [InventoryController::class, 'sold'])->name('csv.update');
 Route::post('/delete/{id}', [InventoryController::class, 'delete'])->name('csv.delete');
 
-Route::get('/',[HomeController::class,'home'])->name('home');
+Route::get('/', [HomeController::class, 'home'])->name('home');
 
 
 

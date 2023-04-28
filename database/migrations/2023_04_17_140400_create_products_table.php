@@ -20,7 +20,7 @@ return new class extends Migration
             $table->text('oracle_id')->nullable();
             $table->text('multiverse_ids')->nullable();
             $table->integer('mtgo_id')->nullable();
-            $table->unsignedBigInteger('tcgplayer_id')->unique();
+            $table->unsignedBigInteger('tcgplayer_id');
             $table->integer('cardmarket_id')->nullable();
             $table->text('name')->nullable();
             $table->text('lang')->nullable();
@@ -82,6 +82,8 @@ return new class extends Migration
             $table->json('related_uris')->nullable();
             $table->json('purchase_uris')->nullable();
             $table->timestamps();
+            $table->unique(['tcgplayer_id', 'foil']);
+          
         });
     }
 
