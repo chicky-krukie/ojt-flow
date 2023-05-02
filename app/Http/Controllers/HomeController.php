@@ -18,12 +18,14 @@ class HomeController extends Controller
 {
     public function home()
     {
+
         $logs = Activity::get()->toArray();
         // dd($logs);
         // $inventories = DataUpload::with('product')->get()->toArray();
         // return view('home')->with(compact('inventories'));
+        // dd($logs);
 
-        return view('home')->with(compact('logs'));
+        return view('home')->with(compact('logs'))->with('msg', 'Welcome, Admin!');
     }
 
     public function importProductFromExcel(Request $request)
@@ -69,5 +71,12 @@ class HomeController extends Controller
 
 
         return redirect()->back();
+    }
+
+
+
+
+    public function staffHome(){
+        return view('home', ['msg' => 'Welcome, Staff!']);
     }
 }
